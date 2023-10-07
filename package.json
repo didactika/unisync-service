@@ -2,20 +2,20 @@
   "name": "unisync-service",
   "version": "1.0.0",
   "description": "Moodle migration service",
-  "main": "dist/src/index.ts",
+  "main": "dist/src/bin/app.js",
   "types": "src/structures/types/index.d.ts",
   "engines": {
     "node": ">=14"
   },
   "scripts": {
     "build": "tsc -b",
-    "start": "npm run build && nodemon --exec npx ts-node dist/src/bin/server.js",
-    "dev": "nodemon --exec npx ts-node src/bin/server.ts"
+    "start": "npm run build && nodemon --exec npx ts-node dist/src/bin/app.js",
+    "dev": "nodemon --exec npx ts-node src/bin/app.ts"
   },
   "keywords": [
     "moodle",
     "migration"
-    ],
+  ],
   "author": "Hector L. Arrechea <hectorlazaroarrechea@gmail.com> (https://github.com/hector-ae21)",
   "license": "MIT",
   "dependencies": {
@@ -24,9 +24,12 @@
     "express": "^4.18.2",
     "i": "^0.3.7",
     "mongoose": "^7.6.0",
+    "nodemon": "^3.0.1",
     "npm": "^10.2.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.14",
+    "@types/express": "^4.17.18",
     "npm-run-all": "^4.1.5",
     "typescript": "^4.1.2"
   },
