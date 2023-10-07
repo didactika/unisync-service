@@ -1,0 +1,41 @@
+{
+  "name": "unisync-service",
+  "version": "1.0.0",
+  "description": "Moodle migration service",
+  "main": "dist/src/index.ts",
+  "types": "src/structures/types/index.d.ts",
+  "engines": {
+    "node": ">=14"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "start": "npm run build && nodemon --exec npx ts-node dist/src/bin/server.js",
+    "dev": "nodemon --exec npx ts-node src/bin/server.ts"
+  },
+  "keywords": [
+    "moodle",
+    "migration"
+    ],
+  "author": "Hector L. Arrechea <hectorlazaroarrechea@gmail.com> (https://github.com/hector-ae21)",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "i": "^0.3.7",
+    "mongoose": "^7.6.0",
+    "npm": "^10.2.0"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5",
+    "typescript": "^4.1.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/didactika/unisync-service"
+  },
+  "bugs": {
+    "url": "https://github.com/didactika/unisync-service/issues"
+  },
+  "homepage": "https://github.com/didactika/unisync-service/blob/master/README.md"
+}
