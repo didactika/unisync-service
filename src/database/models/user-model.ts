@@ -1,6 +1,6 @@
 import { Schema, Types, model } from "mongoose";
 import { v4 as uuidv4 } from 'uuid';
-import IUserModel from "../../structures/interfaces/models-interfaces/user-model-interface";
+import IUserModel from "../../structures/interfaces/models-interfaces/user-interfaces";
 import PasswordHandler from "../../utils/password-handler";
 
 /**
