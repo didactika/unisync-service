@@ -13,8 +13,7 @@ export default class CampusModelMiddleware extends ModelMiddleware {
        * @memberof CampusModelMiddleware
        */
     public static validateUrl(this: IMCampus, next: () => void): void {
-        if (!URLHandler.isValid(this.url))
-            throw new Error("Invalid url");
+        URLHandler.validate(this.url);
         next();
     }
 }
