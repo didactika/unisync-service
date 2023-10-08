@@ -61,7 +61,7 @@ export default class Campus implements ICampus {
      * @memberof Campus
      */
     public async Create(): Promise<void> {
-        await models.user.create({
+        await models.campus.create({
             name: this._name,
             url: this._url,
             token: this._token
@@ -96,7 +96,7 @@ export default class Campus implements ICampus {
   public static async ReadOneByFilter(
     filter: CampusFilter
   ): Promise<CampusFormatedResponse | null> {
-    const campusFound = await models.user.findOne(filter) as ICampus;
+    const campusFound = await models.campus.findOne(filter) as ICampus;
     return campusFound
       ? this.GetFormatReadResponse(campusFound)
       : null;
@@ -110,7 +110,7 @@ export default class Campus implements ICampus {
    * @memberof Campus
    */
   public static async ReadByFilter(filter: CampusFilter): Promise<CampusFormatedResponse[]> {
-    const campusFound = await models.user.find(filter) as ICampus[];
+    const campusFound = await models.campus.find(filter) as ICampus[];
     return campusFound.map(campus => this.GetFormatReadResponse(campus));
   }
 
@@ -121,7 +121,7 @@ export default class Campus implements ICampus {
    * @memberof Campus
    */
   public static async ReadAll(): Promise<CampusFormatedResponse[]> {
-    const campusFound = await models.user.find() as ICampus[];
+    const campusFound = await models.campus.find() as ICampus[];
     return campusFound.map(campus => this.GetFormatReadResponse(campus));
   }
 }
