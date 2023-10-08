@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import constants from "./constants";
 import database from "../database/database";
+import router from "../api/routes/router";
 
 class App {
   private app: express.Application;
@@ -10,8 +11,6 @@ class App {
     this.app = express();
     console.log("Setting configs...")
     this.config();
-    console.log("Setting routes...");
-    this.routes();
     console.log("Connecting database...");
     database.connect();
   }
@@ -21,14 +20,11 @@ class App {
    */
   private config(): void {
     this.app.use(express.json());
+    this.app.use(express.urlencoded({ extended: false }));
     this.app.use(cors());
+    this.app.use("/api", router);
   }
 
-  /**
-   * Setting routes
-   */
-  private routes(): void {
-  }
   /**
    * Run server
    * @returns server
