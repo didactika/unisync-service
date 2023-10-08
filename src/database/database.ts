@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 import constants from "../bin/constants";
 
+/**
+ * @class Database
+ */
 class Database {
   /**
    * Database connection

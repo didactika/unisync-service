@@ -3,10 +3,17 @@ import { v4 as uuidv4 } from 'uuid';
 import IUserModel from "../../structures/interfaces/models-interfaces/user-model-interface";
 import PasswordHandler from "../../utils/password-handler";
 
+/**
+ * @interface MUser
+ * @description Mongoose User Interface
+ */
 interface MUser extends Omit<IUserModel, "id"> {
     id: Types.ObjectId
 }
 
+/**
+ * @description Mongoose User Schema
+ */
 const userSchema = new Schema<MUser>({
     id: {
         type: Schema.ObjectId,
