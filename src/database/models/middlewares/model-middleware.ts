@@ -1,4 +1,5 @@
 import { MongoServerError } from "mongodb";
+import { Document } from "mongoose";
 
 /**
  * @class ModelMiddleware
@@ -10,7 +11,7 @@ export default abstract class ModelMiddleware {
    * @param {(error?: Error) => void} next
    * @memberof VerifyDataModelMiddleware
    */
-  public static isDuplicatedData(error: Error, next: (error?: Error) => void) {
+  public static isDuplicatedData(error: Error, doc:Document, next: (error?: Error) => void) {
     const err = error as MongoServerError;
     if (err && err.name === 'MongoServerError' && err.code === 11000) {
       const field = Object.keys(err.keyValue)[0];
