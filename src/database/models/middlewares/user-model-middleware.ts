@@ -71,6 +71,9 @@ export default class UserModelMiddleware {
 
   /**
    * Check if have data is duplicate
+   * @param {Error} error
+   * @param {IMUser} doc
+   * @param {(error?: Error) => void} next
    * @memberof UserModelMiddleware
    */
   public static isDuplicatedData(error: Error, doc: IMUser, next: (error?: Error) => void) {
