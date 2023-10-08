@@ -2,13 +2,15 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 
 export default class JWT {
   /**
-   * Generate a token
+   * @method GenerateAccessToken
+   * @description Generate access token
    * @param {object} payload The data of the token
    * @param {string} secret The secret of the token
    * @param {string | number | undefined} expiresIn Time to expire the token
-   * @returns token
+   * @returns {string} token
+   * @memberof JWT
    */
-  public static generateAccessToken(
+  public static GenerateAccessToken(
     payload: object,
     secret: string,
     expiresIn: string | number | undefined = undefined
@@ -19,12 +21,14 @@ export default class JWT {
   }
 
   /**
-   * Veryfy token 
+   * @method VerifyToken
+   * @description Veryfy token 
    * @param {string} token Token of the user
    * @param {string} secret Secret of the token
-   * @returns JwtPayload
+   * @returns {JwtPayload} JwtPayload
+   * @memberof JWT
    */
-  public static verifyToken(token: string, secret: string): JwtPayload {
+  public static VerifyToken(token: string, secret: string): JwtPayload {
     return jwt.verify(token, secret) as JwtPayload;
   }
 }
