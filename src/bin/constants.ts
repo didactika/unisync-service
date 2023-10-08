@@ -23,4 +23,5 @@ export default {
 
     //JWT environment variables
     JWT_EXPIRES_IN: process.env.EXPIRES_IN || "3h",
+    JWT_SECRET: process.env.JWT_SECRET || "uc23yPpgEkvty",
 } 

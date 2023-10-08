@@ -57,7 +57,7 @@ export default class UserController {
                     username: userToLogin.username,
                     email: userToLogin.email,
                 },
-                password,
+                constants.JWT_SECRET,
                 constants.JWT_EXPIRES_IN
             );
             res.status(200).json({ ...userToLogin, sessionToken });
