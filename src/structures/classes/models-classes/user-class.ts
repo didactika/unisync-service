@@ -1,6 +1,6 @@
 import IUser from "../../interfaces/models-interfaces/user-interfaces";
 import models from "../../../database/models/models";
-import { UserFilter } from "../../types/models-classes-types/user-class-types";
+import { UserFilter, UserFormatedResponse } from "../../types/models-classes-types/user-class-types";
 
 /**
  * @class User
@@ -65,6 +65,24 @@ export default class User implements IUser {
             password: this._password
         });
     }
+
+    /**
+   * @method GetFormatReadResponse
+   * @description Format the response of the read methods
+   * @param user user to be formatted
+   * @returns Formatted user
+   * @memberof User
+   */
+  private static GetFormatReadResponse(user: IUser): UserFormatedResponse {
+    return {
+        id: user.id,
+        uuid: user.uuid,
+        username: user.username,
+        email: user.email,
+        password: user.password,
+        createdAt: user.createdAt
+    }
+  }
     
     /**
    * @method ReadOneByFilter
@@ -75,10 +93,12 @@ export default class User implements IUser {
    */
   public static async ReadOneByFilter(
     filter: UserFilter
-  ): Promise<IUser | null> {
-    const userFound = await models.user.findOne({ filter }) as IUser;
+  ): Promise<UserFormatedResponse | null> {
+    console.log(filter);
+    
+    const userFound = await models.user.findOne(filter) as IUser;
     return userFound
-      ? userFound
+      ? this.GetFormatReadResponse(userFound)
       : null;
   }
 
@@ -89,9 +109,9 @@ export default class User implements IUser {
    * @returns Users found
    * @memberof User
    */
-  public static async ReadByFilter(filter: UserFilter): Promise<IUser[]> {
+  public static async ReadByFilter(filter: UserFilter): Promise<UserFormatedResponse[]> {
     const usersFound = await models.user.find(filter) as IUser[];
-    return usersFound;
+    return usersFound.map(user => this.GetFormatReadResponse(user));
   }
 
   /**
@@ -100,10 +120,8 @@ export default class User implements IUser {
    * @returns Users found
    * @memberof User
    */
-  public static async ReadAll(): Promise<IUser[]> {
+  public static async ReadAll(): Promise<UserFormatedResponse[]> {
     const usersFound = await models.user.find() as IUser[];
-    return usersFound;
+    return usersFound.map(user => this.GetFormatReadResponse(user));
   }
-
-    
 }

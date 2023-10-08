@@ -38,7 +38,13 @@ const userSchema = new Schema<IMUser>({
     }
 });
 
-userSchema.pre("save", UserModelMiddleware.validateData);
+/**
+ * @description Mongoose User Schema Middlewares
+ */
+userSchema.pre("save", UserModelMiddleware.validateUserName);
+userSchema.pre("save", UserModelMiddleware.validateEmail);
+userSchema.pre("save", UserModelMiddleware.validatePassword);
+userSchema.pre("save", UserModelMiddleware.encryptPassword);
 userSchema.post("save", UserModelMiddleware.isDuplicatedData);
 
 export default model('User', userSchema);

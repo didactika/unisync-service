@@ -13,6 +13,7 @@ class App {
     this.config();
     console.log("Connecting database...");
     database.connect();
+    console.log("App ready!!");
   }
 
   /**
@@ -30,7 +31,6 @@ class App {
    * @returns server
    */
   public run() {
-
     return this.app.listen(constants.APP_PORT, async () => {
       console.log(`Server Up on port: ${constants.APP_PORT}!!`);
     });

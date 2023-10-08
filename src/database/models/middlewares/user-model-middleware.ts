@@ -1,6 +1,5 @@
 import PasswordHandler from '../../../utils/password-handler';
 import IMUser from '../../../structures/types/database-schemas-types/user-schema-types';
-import mongoose from 'mongoose';
 import { MongoServerError } from 'mongodb';
 
 /**
@@ -9,26 +8,12 @@ import { MongoServerError } from 'mongodb';
 export default class UserModelMiddleware {
 
   /**
-   * @description Validate dataç
-   * @param {IMUser} this
-   * @param {() => void} next
-   * @memberof UserModelMiddleware
-   */
-  public static validateData(this: IMUser, next: () => void): void {
-    this.validateUserName;
-    this.validateEmail;
-    this.validatePassword;
-    this.encryptPassword;
-    next();
-  }
-
-  /**
    * Validate the username
    * @param {IMUser} this 
    * @param {() => void} next 
    * @memberof UserModelMiddleware
    */
-  private static validateUserName(this: IMUser, next: () => void): void {
+  public static validateUserName(this: IMUser, next: () => void): void {
     if (!new RegExp(/^[a-z.,@#]+$/).test(this.username))
       throw new Error("Invalid username");
     next();
@@ -40,7 +25,7 @@ export default class UserModelMiddleware {
    * @param {() => void} next
    * @memberof UserModelMiddleware
    */
-  private static validateEmail(this: IMUser, next: () => void) {
+  public static validateEmail(this: IMUser, next: () => void) {
     if (!new RegExp(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/).test(this.email))
       throw new Error("Invalid email");
     next();
@@ -52,7 +37,7 @@ export default class UserModelMiddleware {
    * @param {() => void} next 
    * @memberof UserModelMiddleware
    */
-  private static validatePassword(this: IMUser, next: () => void) {
+  public static validatePassword(this: IMUser, next: () => void) {
     if (!PasswordHandler.isValidPassword(this.password)) {
       throw new Error("Invalid password");
     }
@@ -65,8 +50,9 @@ export default class UserModelMiddleware {
    * @param {() => void} next 
    * @memberof UserModelMiddleware
    */
-  private static encryptPassword(this: IMUser, next: () => void): void {
+  public static encryptPassword(this: IMUser, next: () => void): void {
     this.password = PasswordHandler.EncryptPassword(this.password);
+    next();
   }
 
   /**

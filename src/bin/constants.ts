@@ -19,5 +19,8 @@ export default {
     DOMAIN_ALLOW: process.env.DOMAIN_ALLOW || "localhost",
 
     //Crypto environment variables
-    CRYPTO_KEY: process.env.CRYPTO_KEY || "uc23yPpgEKVD"
+    CRYPTO_KEY: process.env.CRYPTO_KEY || "uc23yPpgEKVD",
+
+    //JWT environment variables
+    JWT_EXPIRES_IN: process.env.EXPIRES_IN || "3h",
 } 
