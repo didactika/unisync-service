@@ -51,7 +51,7 @@ export default class UserController {
             if (!PasswordHandler.ComparePasswords(password, userToLogin.password))
                 throw new Error("Invalid password");
 
-            const sessionToken = JWT.generateAccessToken(
+            const sessionToken = JWT.GenerateAccessToken(
                 {
                     uuid: userToLogin.uuid,
                     username: userToLogin.username,

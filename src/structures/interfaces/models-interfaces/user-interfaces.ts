@@ -1,4 +1,3 @@
-
 /**
  * User model interface
  * @interface IUser

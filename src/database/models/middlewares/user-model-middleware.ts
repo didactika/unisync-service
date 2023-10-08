@@ -1,11 +1,11 @@
 import PasswordHandler from '../../../utils/password-handler';
 import IMUser from '../../../structures/types/database-schemas-types/user-schema-types';
-import { MongoServerError } from 'mongodb';
+import ModelMiddleware from './model-middleware';
 
 /**
  * @class UserModelMiddleware
  */
-export default class UserModelMiddleware {
+export default class UserModelMiddleware extends ModelMiddleware {
 
   /**
    * Validate the username
@@ -53,21 +53,5 @@ export default class UserModelMiddleware {
   public static encryptPassword(this: IMUser, next: () => void): void {
     this.password = PasswordHandler.EncryptPassword(this.password);
     next();
-  }
-
-  /**
-   * Check if have data is duplicate
-   * @param {Error} error
-   * @param {IMUser} doc
-   * @param {(error?: Error) => void} next
-   * @memberof UserModelMiddleware
-   */
-  public static isDuplicatedData(error: Error, doc: IMUser, next: (error?: Error) => void) {
-    const err = error as MongoServerError;
-    if (err && err.name === 'MongoServerError' && err.code === 11000) {
-      const field = Object.keys(err.keyValue)[0];
-      next(new Error(`The ${field} is already in use`));
-    }
-    next(err);
   }
 }
