@@ -43,9 +43,26 @@ All types of mod elements that are within a course can be included
 
 ## Installation
 
-This service is built with [node][node] and express. And to run it you only need to configure the following environment variables in the path `/.env`:
-```
-```
+This service is built with node and express. And to run it you only need to configure the following environment variables in the path `/.env`:
+
+<div align="center">
+
+Name              | Default           | Description
+------------------|-------------------|------------
+APP_PORT          | 4000              | The port the app will run on
+SERVICE_APP_NAME  | 'unisync-service' | The name of the service
+DB_HOST           | 'localhost'       | MongoDB host
+DB_PORT           | 27017             | MongoDB port
+DB_NAME           | 'unisync-service' | MongoDB name of the database
+DB_USERNAME       | ''                | MongoDB username
+DB_PASSWORD       | ''                | MongoDB password
+DOMAIN_ALLOW      | 'localhost'       | Domain that will be allowed to make requests to the service
+CRYPTO_KEY        | ''                | The key to encrypt the passwords
+JWT_EXPIRES_IN    | '3h'              | The time that the JWT will be valid
+JWT_SECRET        | ''                | The secret to sign the JWT
+
+</div>
+
 Then run the following command:
 ```
 npm start
