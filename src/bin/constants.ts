@@ -16,5 +16,8 @@ export default {
     DB_PASSWORD: process.env.DB_PASSWORD || "",
 
     //Domain environment variable
-    DOMAIN_ALLOW: process.env.DOMAIN_ALLOW || "localhost"
+    DOMAIN_ALLOW: process.env.DOMAIN_ALLOW || "localhost",
+
+    //Crypto environment variables
+    CRYPTO_KEY: process.env.CRYPTO_KEY || "uc23yPpgEKVD"
 } 
