@@ -1,6 +1,7 @@
 import { Schema, Types, model } from "mongoose";
 import { v4 as uuidv4 } from 'uuid';
 import IMCampus from "../../structures/types/database-schemas-types/campus-schema-types";
+import CampusModelMiddleware from "./middlewares/campus-model-middleware";
 
 /**
  * @description Mongoose Campus Schema
@@ -42,5 +43,7 @@ const campusSchema = new Schema<IMCampus>({
 /**
  * @description Mongoose Campus Schema Middlewares
  */
+campusSchema.pre('save', CampusModelMiddleware.validateUrl);
+campusSchema.post('save', CampusModelMiddleware.isDuplicatedData);
 
 export default model('Campus', campusSchema);
