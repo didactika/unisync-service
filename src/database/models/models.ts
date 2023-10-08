@@ -1,4 +1,5 @@
-import userModel from "./user-model";
+import { model } from 'mongoose'
+import userModel from './user-model'
 
 export default {
     user: userModel

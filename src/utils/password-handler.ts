@@ -19,4 +19,8 @@ export default class PasswordHandler {
   ): boolean {
     return plainPassword === this.DecryptPasswords(storedCryptoPassword);
   }
+
+  public static isValidPassword(password: string): boolean {
+    return new RegExp(/^(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]).*(?=.*[a-z]).*(?=.*[A-Z]).*(?=.*[0-9]).{8,20}$/).test(password) ? true : false;
+  }
 }

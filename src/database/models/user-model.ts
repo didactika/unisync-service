@@ -1,21 +1,13 @@
 import { Schema, Types, model } from "mongoose";
 import { v4 as uuidv4 } from 'uuid';
-import IUserModel from "../../structures/interfaces/models-interfaces/user-interfaces";
-import PasswordHandler from "../../utils/password-handler";
-
-/**
- * @interface MUser
- * @description Mongoose User Interface
- */
-interface MUser extends Omit<IUserModel, "id"> {
-    id: Types.ObjectId
-}
+import IMUser from "../../structures/types/database-schemas-types/user-schema-types";
+import UserModelMiddleware from "./middlewares/user-model-middleware";
 
 /**
  * @description Mongoose User Schema
  */
-const userSchema = new Schema<MUser>({
-    id: {
+const userSchema = new Schema<IMUser>({
+    _id: {
         type: Schema.ObjectId,
         required: true,
         default: new Types.ObjectId()
@@ -27,24 +19,17 @@ const userSchema = new Schema<MUser>({
     },
     username: {
         type: String,
-        required: true,
+        required: [true, 'The username is required'],
         unique: true,
-        minlength: 3,
-        maxlength: 20
     },
     email: {
         type: String,
-        required: true,
-        unique: true,
-        minlength: 5,
-        maxlength: 50
+        required: [true, 'The email is required'],
+        unique: true
     },
     password: {
         type: String,
-        required: true,
-        minlength: 8,
-        maxlength: 20,
-        set: (password: string): string => PasswordHandler.EncryptPassword(password)
+        required: [true, 'The password is required'],
     },
     createdAt: {
         type: Date,
@@ -53,5 +38,7 @@ const userSchema = new Schema<MUser>({
     }
 });
 
-export default model("User", userSchema);
-    
+userSchema.pre("save", UserModelMiddleware.validateData);
+userSchema.post("save", UserModelMiddleware.isDuplicatedData);
+
+export default model('User', userSchema);
