@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import constants from "./constants";
+import database from "../database/database";
 
 class App {
   private app: express.Application;
@@ -12,6 +13,7 @@ class App {
     console.log("Setting routes...");
     this.routes();
     console.log("Connecting database...");
+    database.connect();
   }
 
   /**

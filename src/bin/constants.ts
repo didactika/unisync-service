@@ -13,7 +13,7 @@ export default {
     DB_PORT: process.env.DB_PORT || 27017,
     DB_NAME: process.env.DB_NAME || "unisync-service",
     DB_USERNAME: process.env.DB_USERNAME || "",
-    DB_PASSWORD: process.env.DB_PASSWORD || "230$",
+    DB_PASSWORD: process.env.DB_PASSWORD || "",
 
     //Domain environment variable
     DOMAIN_ALLOW: process.env.DOMAIN_ALLOW || "localhost"
