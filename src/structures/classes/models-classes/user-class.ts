@@ -58,8 +58,12 @@ export default class User implements IUser {
      * Create a new user
      * @param {IUser} user 
      */
-    public async Create(user: IUser): Promise<void> {
-        await models.user.create(user);   
+    public async Create(): Promise<void> {
+        await models.user.create({
+            username: this._username,
+            email: this._email,
+            password: this._password
+        });
     }
     
     /**
@@ -72,7 +76,7 @@ export default class User implements IUser {
   public static async ReadOneByFilter(
     filter: UserFilter
   ): Promise<IUser | null> {
-    const userFound = await models.user.findOne({ filter });
+    const userFound = await models.user.findOne({ filter }) as IUser;
     return userFound
       ? userFound
       : null;
