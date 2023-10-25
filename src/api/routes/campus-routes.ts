@@ -9,4 +9,8 @@ campusRoutes.post("/", (req: Request, res: Response) => {
     CampusController.create(req, res);
 });
 
+campusRoutes.get("/", (req: Request, res: Response) => {
+    CampusController.readAll(req, res);
+});
+
 export default campusRoutes;

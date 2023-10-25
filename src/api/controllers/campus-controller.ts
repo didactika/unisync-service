@@ -19,4 +19,21 @@ export default class CampusController {
             }
         }
     }
+    public static async readAll(req: Request, res: Response): Promise<void> {
+        try {
+            const campusFounds = await Campus.ReadAll();
+            res.status(201).json(campusFounds.map(campus => {
+                return {
+                    uuid: campus.uuid,
+                    name: campus.name,
+                    url: campus.url
+                }
+            }));
+        } catch (error) {
+            if (error instanceof Error) {
+                log(error);
+                res.status(400).json(error.message);
+            }
+        }
+    }
 }
