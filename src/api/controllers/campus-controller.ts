@@ -22,7 +22,7 @@ export default class CampusController {
     public static async readAll(req: Request, res: Response): Promise<void> {
         try {
             const campusFounds = await Campus.ReadAll();
-            res.status(201).json(campusFounds.map(campus => {
+            res.status(200).json(campusFounds.map(campus => {
                 return {
                     uuid: campus.uuid,
                     name: campus.name,
