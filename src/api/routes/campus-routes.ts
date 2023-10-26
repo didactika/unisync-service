@@ -1,16 +1,21 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response} from "express";
 import CampusController from "../controllers/campus-controller";
+import SessionMiddleware from "../middlewares/session-middleware";
 
 const campusRoutes = express.Router({
     strict: true,
 })
 
 campusRoutes.post("/", (req: Request, res: Response) => {
-    CampusController.create(req, res);
+    SessionMiddleware.verifySessionToken(req, res, () => {
+        CampusController.create(req, res);
+    });
 });
 
 campusRoutes.get("/", (req: Request, res: Response) => {
-    CampusController.readAll(req, res);
+    SessionMiddleware.verifySessionToken(req, res, () => {
+        CampusController.readAll(req, res);
+    });
 });
 
 export default campusRoutes;
