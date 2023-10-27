@@ -19,8 +19,9 @@ export default class CampusController {
             }
         }
     }
-    public static async readAll(req: Request, res: Response): Promise<void> {
+    public static async readAll(req: Request, res: Response, error: Error | undefined): Promise<void> {
         try {
+            if (error) throw error;
             const campusFounds = await Campus.ReadAll();
             res.status(200).json(campusFounds.map(campus => {
                 return {
