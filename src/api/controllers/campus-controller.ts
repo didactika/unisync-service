@@ -12,7 +12,11 @@ export default class CampusController {
 
             const newCampus = new Campus({ name, url, token });
             await newCampus.Create();
-            res.status(201).json(newCampus);
+            res.status(201).json({
+                uuid: newCampus.uuid,
+                name: newCampus.name,
+                url: newCampus.url
+            });
         } catch (error) {
             ErrorMiddleware.responseError(error as Error, res);
         }
