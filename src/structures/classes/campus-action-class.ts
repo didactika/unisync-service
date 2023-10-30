@@ -31,6 +31,6 @@ export default class CampusAction {
                 webServiceFunction: "core_course_get_courses",
             },
             content: {}
-        }));
+        })).data as Array<any>;
     }
 }

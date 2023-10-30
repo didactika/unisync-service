@@ -13,8 +13,8 @@ campusRoutes.post("/", (req: Request, res: Response) => {
 });
 
 campusRoutes.get("/", (req: Request, res: Response) => {
-    SessionMiddleware.verifySessionToken(req, res, (error) => {
-            CampusController.readAll(req, res, error);
+    SessionMiddleware.verifySessionToken(req, res, () => {
+            CampusController.readAll(req, res);
     });
 });
 

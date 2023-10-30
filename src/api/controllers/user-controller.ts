@@ -21,11 +21,15 @@ export default class UserController {
         const { username, email, password } = req.body;
         try {
             if (!username || !email || !password || !username.trim() || !email.trim() || !password.trim())
-                throw new httpClient.errors.BadRequest({msg: "Invalid request body"});
+                throw new httpClient.errors.BadRequest({ msg: "Invalid request body" });
 
             const newUser = new User({ username, email, password });
             await newUser.Create();
-            res.status(201).json(newUser);
+            res.status(201).json({
+                uuid: newUser.uuid,
+                username: newUser.username,
+                email: newUser.email,
+            });
         } catch (error) {
             ErrorMiddleware.responseError(error as Error, res);
         }
@@ -43,12 +47,12 @@ export default class UserController {
             if ((!password || !password.trim())
                 || ((!username || !username.trim())
                     && (!email || !email.trim())))
-                throw new httpClient.errors.BadRequest({msg: "Invalid request body"});
-                
-            if (!userToLogin) throw new httpClient.errors.NotFound({msg: "User not found"});
+                throw new httpClient.errors.BadRequest({ msg: "Invalid request body" });
+
+            if (!userToLogin) throw new httpClient.errors.NotFound({ msg: "User not found" });
 
             if (!PasswordHandler.ComparePasswords(password, userToLogin.password))
-                throw new httpClient.errors.Unauthorized({msg: "Invalid password"});
+                throw new httpClient.errors.Unauthorized({ msg: "Invalid password" });
 
             const sessionToken = JWT.GenerateAccessToken(
                 {
@@ -59,7 +63,12 @@ export default class UserController {
                 constants.JWT_SECRET,
                 constants.JWT_EXPIRES_IN
             );
-            res.status(200).json({ ...userToLogin, sessionToken });
+            res.status(200).json({
+                uuid: userToLogin.username,
+                username: userToLogin.username,
+                email: userToLogin.email,
+                sessionToken
+            });
         } catch (error) {
             ErrorMiddleware.responseError(error as Error, res);
         }

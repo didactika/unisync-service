@@ -2,6 +2,7 @@ import IUser from "../../interfaces/models-interfaces/user-interfaces";
 import models from "../../../database/models/models";
 import ICampus from "../../interfaces/models-interfaces/campus-interfaces";
 import { CampusFilter, CampusFormatedResponse } from "../../types/models-classes-types/campus-class-types";
+import CampusActions from "../campus-action-class";
 
 /**
  * @class Campus
@@ -13,6 +14,7 @@ export default class Campus implements ICampus {
     private _name: string;
     private _url: string;
     private _token: string;
+    public readonly actions: CampusActions;
     public readonly createdAt?: Date;
 
     /**
@@ -27,6 +29,7 @@ export default class Campus implements ICampus {
         this._url = campus.url;
         this._token = campus.token;
         this.createdAt = campus.createdAt;
+        this.actions = new CampusActions(campus);
     }
 
     /**
