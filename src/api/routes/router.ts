@@ -1,6 +1,7 @@
 import express from "express";
 import userRoutes from "./user-routes";
 import campusRoutes from "./campus-routes";
+import courseRoutes from "./course-routes";
 
 const router = express.Router({
     strict: true,
@@ -8,6 +9,6 @@ const router = express.Router({
 
 router.use("/user", userRoutes);
 router.use("/campus", campusRoutes);
-router.use("/course", campusRoutes);
+router.use("/course", courseRoutes);
 
 export default router;
