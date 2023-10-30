@@ -3,7 +3,15 @@ import Campus from "../../structures/classes/models-classes/campus-class";
 import httpClient from "http-response-client";
 import ErrorMiddleware from "../middlewares/error-middleware";
 
+/**
+ * @class CampusController
+ */
 export default class CampusController {
+
+    /**
+     * Create a new campus
+     * @memberof CampusController
+     */
     public static async create(req: Request, res: Response): Promise<void> {
         const { name, url, token } = req.body;
         try {
@@ -22,6 +30,10 @@ export default class CampusController {
         }
     }
 
+    /**
+     * Read all campus
+     * @memberof CampusController
+     */
     public static async readAll(req: Request, res: Response): Promise<void> {
         try {
             const campusFounds = await Campus.ReadAll();

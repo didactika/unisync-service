@@ -4,8 +4,15 @@ import httpClient from "http-response-client";
 import ErrorMiddleware from "../middlewares/error-middleware";
 import ICampus from "../../structures/interfaces/models-interfaces/campus-interfaces";
 
+/**
+ * @class CourseController
+ */
 export default class CourseController {
 
+    /**
+     * Create a new course
+     * @memberof CourseController
+     */
     public static async readAll(req: Request, res: Response): Promise<void> {
         try {
             const { campusUuid } = req.body;
