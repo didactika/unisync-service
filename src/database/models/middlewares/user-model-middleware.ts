@@ -1,11 +1,12 @@
 import PasswordHandler from '../../../utils/password-handler';
 import IMUser from '../../../structures/types/database-schemas-types/user-schema-types';
-import { MongoServerError } from 'mongodb';
+import ModelMiddleware from './model-middleware';
+import httpClient from 'http-response-client';
 
 /**
  * @class UserModelMiddleware
  */
-export default class UserModelMiddleware {
+export default class UserModelMiddleware extends ModelMiddleware {
 
   /**
    * Validate the username
@@ -15,7 +16,7 @@ export default class UserModelMiddleware {
    */
   public static validateUserName(this: IMUser, next: () => void): void {
     if (!new RegExp(/^[a-z.,@#]+$/).test(this.username))
-      throw new Error("Invalid username");
+      throw new httpClient.errors.BadRequest({ msg: "Invalid username" });
     next();
   }
 
@@ -27,7 +28,7 @@ export default class UserModelMiddleware {
    */
   public static validateEmail(this: IMUser, next: () => void) {
     if (!new RegExp(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/).test(this.email))
-      throw new Error("Invalid email");
+      throw new httpClient.errors.BadRequest({ msg: "Invalid email" });
     next();
   }
 
@@ -39,7 +40,7 @@ export default class UserModelMiddleware {
    */
   public static validatePassword(this: IMUser, next: () => void) {
     if (!PasswordHandler.isValidPassword(this.password)) {
-      throw new Error("Invalid password");
+      throw new httpClient.errors.BadRequest({ msg: "Invalid password" });
     }
     next();
   }
@@ -53,21 +54,5 @@ export default class UserModelMiddleware {
   public static encryptPassword(this: IMUser, next: () => void): void {
     this.password = PasswordHandler.EncryptPassword(this.password);
     next();
-  }
-
-  /**
-   * Check if have data is duplicate
-   * @param {Error} error
-   * @param {IMUser} doc
-   * @param {(error?: Error) => void} next
-   * @memberof UserModelMiddleware
-   */
-  public static isDuplicatedData(error: Error, doc: IMUser, next: (error?: Error) => void) {
-    const err = error as MongoServerError;
-    if (err && err.name === 'MongoServerError' && err.code === 11000) {
-      const field = Object.keys(err.keyValue)[0];
-      next(new Error(`The ${field} is already in use`));
-    }
-    next(err);
   }
 }

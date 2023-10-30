@@ -55,8 +55,9 @@ export default class User implements IUser {
     }
 
     /**
-     * Create a new user
-     * @param {IUser} user 
+     * @method Create
+     * @description Create a new user
+     * @memberof User
      */
     public async Create(): Promise<void> {
         await models.user.create({
@@ -69,8 +70,8 @@ export default class User implements IUser {
     /**
    * @method GetFormatReadResponse
    * @description Format the response of the read methods
-   * @param user user to be formatted
-   * @returns Formatted user
+   * @param {IUser} user user to be formatted
+   * @returns {UserFormatedResponse} Formatted user
    * @memberof User
    */
   private static GetFormatReadResponse(user: IUser): UserFormatedResponse {
@@ -87,15 +88,13 @@ export default class User implements IUser {
     /**
    * @method ReadOneByFilter
    * @description Read one user by filter
-   * @param filter Filter to be used
-   * @returns user found
+   * @param {UserFilter} filter Filter to be used
+   * @returns {UserFormatedResponse | null} user found
    * @memberof User
    */
   public static async ReadOneByFilter(
     filter: UserFilter
   ): Promise<UserFormatedResponse | null> {
-    console.log(filter);
-    
     const userFound = await models.user.findOne(filter) as IUser;
     return userFound
       ? this.GetFormatReadResponse(userFound)
@@ -105,8 +104,8 @@ export default class User implements IUser {
   /**
    * @method ReadByFilter
    * @description Read some users by filter
-   * @param filter Filter to be used
-   * @returns Users found
+   * @param {UserFilter} filter Filter to be used
+   * @returns {UserFormatedResponse[]} Users found
    * @memberof User
    */
   public static async ReadByFilter(filter: UserFilter): Promise<UserFormatedResponse[]> {
@@ -117,7 +116,7 @@ export default class User implements IUser {
   /**
    * @method ReadAll
    * @description Read all users
-   * @returns Users found
+   * @returns {UserFormatedResponse[]} Users found
    * @memberof User
    */
   public static async ReadAll(): Promise<UserFormatedResponse[]> {

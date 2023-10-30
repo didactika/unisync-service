@@ -1,5 +1,6 @@
 import { Request } from "express";
 import constants from "../bin/constants";
+import httpClient from "http-response-client";
 
 /**
  * @class URLHandler
@@ -19,7 +20,7 @@ export default class URLHandler {
     try {
       return new URL(url);
     } catch {
-      throw new Error("Invalid url");
+      throw new httpClient.errors.BadRequest({ msg: "Invalid url" });
     }
   }
 
