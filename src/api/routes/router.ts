@@ -8,5 +8,6 @@ const router = express.Router({
 
 router.use("/user", userRoutes);
 router.use("/campus", campusRoutes);
+router.use("/course", campusRoutes);
 
 export default router;
