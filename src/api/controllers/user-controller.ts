@@ -4,6 +4,8 @@ import User from "../../structures/classes/models-classes/user-class";
 import JWT from "../../utils/jwt";
 import PasswordHandler from "../../utils/password-handler";
 import constants from "../../bin/constants";
+import httpClient from "http-response-client"
+import ErrorMiddleware from "../middlewares/error-middleware";
 
 /**
  * @class UserController
@@ -19,16 +21,13 @@ export default class UserController {
         const { username, email, password } = req.body;
         try {
             if (!username || !email || !password || !username.trim() || !email.trim() || !password.trim())
-                throw new Error("Invalid request body");
+                throw new httpClient.errors.BadRequest({msg: "Invalid request body"});
 
             const newUser = new User({ username, email, password });
             await newUser.Create();
             res.status(201).json(newUser);
         } catch (error) {
-            if (error instanceof Error) {
-                log(error);
-                res.status(400).json(error.message);
-            }
+            ErrorMiddleware.responseError(error as Error, res);
         }
     }
 
@@ -44,12 +43,12 @@ export default class UserController {
             if ((!password || !password.trim())
                 || ((!username || !username.trim())
                     && (!email || !email.trim())))
-                throw new Error("Invalid request body");
-
-            if (!userToLogin) throw new Error("User not found");
+                throw new httpClient.errors.BadRequest({msg: "Invalid request body"});
+                
+            if (!userToLogin) throw new httpClient.errors.NotFound({msg: "User not found"});
 
             if (!PasswordHandler.ComparePasswords(password, userToLogin.password))
-                throw new Error("Invalid password");
+                throw new httpClient.errors.Unauthorized({msg: "Invalid password"});
 
             const sessionToken = JWT.GenerateAccessToken(
                 {
@@ -62,10 +61,7 @@ export default class UserController {
             );
             res.status(200).json({ ...userToLogin, sessionToken });
         } catch (error) {
-            if (error instanceof Error) {
-                log(error);
-                res.status(400).json(error.message);
-            }
+            ErrorMiddleware.responseError(error as Error, res);
         }
     }
 }
