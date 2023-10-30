@@ -21,17 +21,18 @@ export default class CourseController {
                 throw new httpClient.errors.BadRequest({ msg: "Invalid request body" });
 
             const campusFound = await Campus.ReadOneByFilter({ uuid: campusUuid });
-            
+
             if (!campusFound)
                 throw new httpClient.errors.NotFound({ msg: "Campus not found" });
 
-            const campus = new Campus(campusFound as ICampus);
-            const courses = await campus.actions.GetCourses();
+            const campus = new Campus(campusFound as ICampus),
+                courses = await campus.actions.GetCourses();
 
-            res.status(200).json(courses.map(course => {
-                //mapear el curso, por ahora se envia completo
-                return course;
-            }));
+            res.status(200).json(courses.map(course => ({
+                shortname: course.shortname,
+                fullname: course.fullname,
+                status: "Pending",
+            })));
         } catch (error) {
             ErrorMiddleware.responseError(error as Error, res);
         }
