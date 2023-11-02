@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import IUser from "../../interfaces/models-interfaces/user-interfaces";
 
 /**

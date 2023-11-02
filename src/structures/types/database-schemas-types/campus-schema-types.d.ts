@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import ICampus from "../../interfaces/models-interfaces/campus-interfaces";
 
 /**

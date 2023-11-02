@@ -1,6 +1,6 @@
 import { Schema, Types, model } from "mongoose";
 import { v4 as uuidv4 } from 'uuid';
-import IMUser from "../../structures/types/database-schemas-types/user-schema-types";
+import {IMUser} from "../../structures/types/database-schemas-types/user-schema-types";
 import UserModelMiddleware from "./middlewares/user-model-middleware";
 
 /**

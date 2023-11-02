@@ -1,6 +1,6 @@
 import { Schema, Types, model } from "mongoose";
 import { v4 as uuidv4 } from 'uuid';
-import IMCampus from "../../structures/types/database-schemas-types/campus-schema-types";
+import {IMCampus} from "../../structures/types/database-schemas-types/campus-schema-types";
 import CampusModelMiddleware from "./middlewares/campus-model-middleware";
 
 /**
