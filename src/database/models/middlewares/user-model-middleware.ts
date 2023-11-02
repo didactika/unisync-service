@@ -1,5 +1,5 @@
 import PasswordHandler from '../../../utils/password-handler';
-import IMUser from '../../../structures/types/database-schemas-types/user-schema-types';
+import {IMUser} from '../../../structures/types/database-schemas-types/user-schema-types';
 import ModelMiddleware from './model-middleware';
 import httpClient from 'http-response-client';
 

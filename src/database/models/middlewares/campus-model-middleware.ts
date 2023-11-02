@@ -1,4 +1,4 @@
-import IMCampus from "../../../structures/types/database-schemas-types/campus-schema-types";
+import {IMCampus} from "../../../structures/types/database-schemas-types/campus-schema-types";
 import URLHandler from "../../../utils/url-handler";
 import ModelMiddleware from "./model-middleware";
 
