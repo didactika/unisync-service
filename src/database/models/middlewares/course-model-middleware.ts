@@ -1,3 +1,4 @@
+import { Schema } from "mongoose";
 import { IMCourse } from "../../../structures/types/database-schemas-types/course-schema-types";
 import { ECourseLanguage, ECourseMigrationStatus } from "../../../structures/types/models-classes-types/courses-class-types";
 import models from "../models";
@@ -8,40 +9,36 @@ import httpClient from 'http-response-client';
  * @class CourseModelMiddleware
  */
 export default class CourseModelMiddleware extends ModelMiddleware {
+
     /**
-     * Check if the course is duplicated
-     * @param {IMCourse} this
-     * @param {(error?: Error) => void} next
+     * Apply all middlewares
+     * @param {Schema} schema
      * @memberof CourseModelMiddleware
      */
-    static async checkDuplicateCourse(this: IMCourse, next: (error?: Error) => void): Promise<void> {
-        const duplicateCourse = await models.course.findOne({
-            campus: this.campus,
-            idOnCampus: this.idOnCampus
-        });
-
-        if (duplicateCourse)
-            throw new httpClient.errors.Conflict({ msg: `The course with id ${this.idOnCampus} already exists in campus with id ${this.campus}` });
-        next();
+    public static applyAll(schema: Schema<IMCourse>): void {
+        CourseModelMiddleware.checkDuplicateCourse(schema);
+        CourseModelMiddleware.checkDuplicatedData(schema);
+        CourseModelMiddleware.checkRequiredFields(schema);
+        CourseModelMiddleware.checkInvalidFields(schema);
+        CourseModelMiddleware.checkInvalidId(schema);
+        CourseModelMiddleware.validateUUID(schema);
     }
 
     /**
-     * Validate the course status
-     * @param {IMCourse} this
-     * @param {() => void} next
+     * Check if the course is duplicated
+     * @param {Schema} schema
      * @memberof CourseModelMiddleware
      */
-    static validateCourseStatus(this: any, next: () => void) {
-        const keys = Object.keys(this.toObject());
-        const validKeys = Object.keys(ECourseLanguage);
-        const validValues = Object.values(ECourseMigrationStatus);
+    static async checkDuplicateCourse(schema: Schema): Promise<void> {
+        schema.pre('save', async function (next) {
+            const duplicateCourse = await models.course.findOne({
+                campus: this.campus,
+                idOnCampus: this.idOnCampus
+            });
 
-        for (let key of keys) {
-            if (!validKeys.includes(key))
-                throw new httpClient.errors.BadRequest({ msg: `Invalid key: ${key}. Key must be one of: ${validKeys.join(', ')}` });
-            if (!validValues.includes(this[key]))
-                throw new httpClient.errors.BadRequest({ msg: `Invalid value for key ${key}: ${this[key]}. Value must be one of ${validValues.join(', ')}` });
-        }
-        next();
+            if (duplicateCourse)
+                next(new httpClient.errors.Conflict({ msg: `The course with id ${this.idOnCampus} already exists in campus with id ${this.campus}` }));
+            next();
+        });
     }
 }
