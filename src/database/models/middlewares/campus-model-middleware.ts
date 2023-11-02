@@ -17,7 +17,6 @@ export default class CampusModelMiddleware extends ModelMiddleware {
         CampusModelMiddleware.validateUrl(schema);
         CampusModelMiddleware.checkDuplicatedData(schema);
         CampusModelMiddleware.checkRequiredFields(schema);
-        CampusModelMiddleware.checkInvalidFields(schema);
         CampusModelMiddleware.checkInvalidId(schema);
         CampusModelMiddleware.validateUUID(schema);
     }

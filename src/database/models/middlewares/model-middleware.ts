@@ -17,7 +17,6 @@ export default abstract class ModelMiddleware {
   public static applyAll(schema: Schema): void {
     ModelMiddleware.checkDuplicatedData(schema);
     ModelMiddleware.checkRequiredFields(schema);
-    ModelMiddleware.checkInvalidFields(schema);
     ModelMiddleware.checkInvalidId(schema);
     ModelMiddleware.validateUUID(schema);
   };
@@ -54,24 +53,6 @@ export default abstract class ModelMiddleware {
       next(err);
     });
   }
-
-  /**
-   * Check if the fields are invalid
-   * @param {Schema} schema
-   * @memberof ModelMiddleware
-   */
-  public static checkInvalidFields(schema: Schema) {
-    schema.post('save', function (error: Error, doc: Document, next: (error?: Error) => void) {
-      const err = error as MongoServerError;
-      if (err && err.name === 'ValidationError') {
-        const fields = Object.keys(err.errors);
-        const msg = fields.map(field => err.errors[field].message).join(', ');
-        next(new httpClient.errors.BadRequest({ msg }));
-      }
-      next(err);
-    });
-  }
-
   /**
    * Check if the id is invalid
    * @param {Schema} schema

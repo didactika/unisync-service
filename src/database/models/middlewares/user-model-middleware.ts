@@ -21,7 +21,6 @@ export default class UserModelMiddleware extends ModelMiddleware {
     UserModelMiddleware.encryptPassword(schema);
     UserModelMiddleware.checkDuplicatedData(schema);
     UserModelMiddleware.checkRequiredFields(schema);
-    UserModelMiddleware.checkInvalidFields(schema);
     UserModelMiddleware.checkInvalidId(schema);
     UserModelMiddleware.validateUUID(schema);
   }
