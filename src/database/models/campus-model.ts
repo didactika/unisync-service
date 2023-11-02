@@ -14,7 +14,7 @@ const campusSchema = new Schema<IMCampus>({
     },
     uuid: {
         type: String,
-        required: [true, 'UUID is required'],
+        required: true,
         unique: true,
         default: uuidv4()
     },
