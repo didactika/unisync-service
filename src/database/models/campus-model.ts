@@ -1,6 +1,6 @@
 import { Schema, Types, model } from "mongoose";
 import { v4 as uuidv4 } from 'uuid';
-import IMCampus from "../../structures/types/database-schemas-types/campus-schema-types";
+import {IMCampus} from "../../structures/types/database-schemas-types/campus-schema-types";
 import CampusModelMiddleware from "./middlewares/campus-model-middleware";
 
 /**
@@ -14,7 +14,7 @@ const campusSchema = new Schema<IMCampus>({
     },
     uuid: {
         type: String,
-        required: [true, 'UUID is required'],
+        required: true,
         unique: true,
         default: uuidv4()
     },
@@ -38,12 +38,11 @@ const campusSchema = new Schema<IMCampus>({
         required: true,
         default: new Date()
     }
-});
+}, { versionKey: false });
 
 /**
  * @description Mongoose Campus Schema Middlewares
  */
-campusSchema.pre('save', CampusModelMiddleware.validateUrl);
-campusSchema.post('save', CampusModelMiddleware.isDuplicatedData);
+CampusModelMiddleware.applyAll(campusSchema);
 
 export default model('Campus', campusSchema);

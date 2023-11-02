@@ -6,6 +6,7 @@ import PasswordHandler from "../../utils/password-handler";
 import constants from "../../bin/constants";
 import httpClient from "http-response-client"
 import ErrorMiddleware from "../middlewares/error-middleware";
+import { NextFunction } from "express";
 
 /**
  * @class UserController
@@ -17,11 +18,9 @@ export default class UserController {
      * Create a new user
      * @memberof UserController
      */
-    public static async create(req: Request, res: Response): Promise<void> {
+    public static async create(req: Request, res: Response, next: NextFunction): Promise<void> {
         const { username, email, password } = req.body;
         try {
-            if (!username || !email || !password || !username.trim() || !email.trim() || !password.trim())
-                throw new httpClient.errors.BadRequest({ msg: "Invalid request body" });
 
             const newUser = new User({ username, email, password });
             await newUser.Create();
@@ -31,7 +30,7 @@ export default class UserController {
                 email: newUser.email,
             });
         } catch (error) {
-            ErrorMiddleware.responseError(error as Error, res);
+            next(error);
         }
     }
 
@@ -39,7 +38,7 @@ export default class UserController {
      * Login a user
      * @memberof UserController
      */
-    public static async login(req: Request, res: Response): Promise<void> {
+    public static async login(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { username, email, password } = req.body;
             const userToLogin = await User.ReadOneByFilter(username ? { username } : { email });
@@ -70,7 +69,7 @@ export default class UserController {
                 sessionToken
             });
         } catch (error) {
-            ErrorMiddleware.responseError(error as Error, res);
+            next(error);
         }
     }
 }

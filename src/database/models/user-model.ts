@@ -1,6 +1,6 @@
 import { Schema, Types, model } from "mongoose";
 import { v4 as uuidv4 } from 'uuid';
-import IMUser from "../../structures/types/database-schemas-types/user-schema-types";
+import {IMUser} from "../../structures/types/database-schemas-types/user-schema-types";
 import UserModelMiddleware from "./middlewares/user-model-middleware";
 
 /**
@@ -36,15 +36,11 @@ const userSchema = new Schema<IMUser>({
         required: true,
         default: new Date()
     }
-});
+}, { versionKey: false });
 
 /**
  * @description Mongoose User Schema Middlewares
  */
-userSchema.pre("save", UserModelMiddleware.validateUserName);
-userSchema.pre("save", UserModelMiddleware.validateEmail);
-userSchema.pre("save", UserModelMiddleware.validatePassword);
-userSchema.pre("save", UserModelMiddleware.encryptPassword);
-userSchema.post("save", UserModelMiddleware.isDuplicatedData);
+UserModelMiddleware.applyAll(userSchema);
 
 export default model('User', userSchema);
