@@ -1,3 +1,9 @@
+import IUser from "../../interfaces/models-interfaces/user-interfaces";
+
+/**
+ * @type UserFilter
+ * @description The user filter for the read methods
+ */
 export type UserFilter = {
     id?: string;
     uuid?: string;
@@ -5,11 +11,8 @@ export type UserFilter = {
     email?: string;
 }
 
-export type UserFormatedResponse = {
-    id?: string;
-    uuid?: string;
-    username: string;
-    email: string;
-    password: string;
-    createdAt?: Date;
-}
+/**
+ * @type UserFormatedResponse
+ * @description The user formated response for the read methods
+ */
+export type UserFormatedResponse = IUser;

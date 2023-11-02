@@ -1,3 +1,9 @@
+import ICampus from "../../interfaces/models-interfaces/campus-interfaces";
+
+/**
+ * @type CampusFilter
+ * @description The campus filter for the read methods
+ */
 export type CampusFilter = {
     id?: string;
     uuid?: string;
@@ -5,11 +11,8 @@ export type CampusFilter = {
     url?: string;
 }
 
-export type CampusFormatedResponse = {
-    id?: string;
-    uuid?: string;
-    name?: string;
-    url?: string;
-    token?: string;
-    createdAt?: Date;
-}
+/**
+ * @type CampusFormatedResponse
+ * @description The campus formated response for the read methods
+ */
+export type CampusFormatedResponse = ICampus
