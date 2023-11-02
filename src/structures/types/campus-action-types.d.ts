@@ -13,7 +13,7 @@ export namespace CampusActionTypes {
         id: number;
         fullname: string;
         shortname: string;
-        visible: boolean;
+        visible: nummber;
     }
 
 }

@@ -24,11 +24,11 @@ export default class CourseStatusModelMiddleware {
     static validateData(schema: Schema) {
         schema.pre('validate', function (next) {
             const keys = Object.keys(this.toObject());
-            const validKeys = Object.keys(ECourseLanguage);
+            const validKeys = Object.values(ECourseLanguage);
             const validValues = Object.values(ECourseMigrationStatus);
 
             for (let key of keys) {
-                if (!validKeys.includes(key))
+                if (!validKeys.includes(key as ECourseLanguage))
                     next(new httpClient.errors.BadRequest({ msg: `Invalid key: ${key}. Key must be one of: ${validKeys.join(', ')}` }));
                 if (!validValues.includes(this[key]))
                     next(new httpClient.errors.BadRequest({ msg: `Invalid value for key ${key}: ${this[key]}. Value must be one of ${validValues.join(', ')}` }));

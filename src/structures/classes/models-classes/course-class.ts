@@ -1,7 +1,9 @@
+import mongoose from "mongoose";
 import models from "../../../database/models/models";
 import ICampus from "../../interfaces/models-interfaces/campus-interfaces";
 import ICourse from "../../interfaces/models-interfaces/course-interfaces";
 import { CampusActionTypes } from "../../types/campus-action-types";
+import { v4 as uuidv4 } from 'uuid';
 import { CourseFilter, CourseFormatedResponse, CourseStatus, ECourseLanguage, ECourseMigrationStatus } from "../../types/models-classes-types/courses-class-types";
 
 /**
@@ -81,8 +83,10 @@ export default class Course implements ICourse {
      */
     public static async CreateMany(courses: ICourse[]): Promise<void> {
         await models.course.insertMany(courses.map(course => ({
+            _id: new mongoose.Types.ObjectId(),
+            uuid: uuidv4(),
             idOnCampus: course.idOnCampus,
-            campus: course.campus,
+            campus: course.campus.id,
             fullname: course.fullname,
             shortname: course.shortname,
             status: course.status

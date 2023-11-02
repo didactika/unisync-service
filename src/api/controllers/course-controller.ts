@@ -23,10 +23,13 @@ export default class CourseController {
     private static async createCourses(campus: Campus, courses: CampusActionTypes.GetCoursesResponse[]): Promise<void> {
         const coursesFormated: ICourse[] = courses.map(course => ({
             campus: campus as ICampus,
+            idOnCampus: course.id,
             fullname: course.fullname,
             shortname: course.shortname,
             status: Course.GetCourseStatusDefault(),
         }));
+        console.log(courses);
+        
         await Course.CreateMany(coursesFormated);
     }
 
@@ -83,6 +86,9 @@ export default class CourseController {
     public static async readAll(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { campusUuid } = req.params;
+            console.log(req.query);
+            console.log(req.params);
+            
             const lang = req.query.lang as ECourseLanguage || "es";
 
             if (!campusUuid || !campusUuid.trim())
