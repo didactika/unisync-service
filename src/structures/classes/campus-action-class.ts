@@ -1,5 +1,6 @@
 import ICampusAction from "../interfaces/campus-action-interfaces";
 import { moodleClient } from "moodle-web-service-client";
+import { CampusActionTypes } from "../types/campus-action-types";
 
 /**
  * @class CampusAction
@@ -23,14 +24,15 @@ export default class CampusAction {
      * @description Get All courses from one campus
      * @memberof CampusAction
      */
-    public async GetCourses() {
-        return (await moodleClient({
+    public async GetCourses(isActive: boolean = true): Promise<CampusActionTypes.GetCoursesResponse[]> {
+        const data = (await moodleClient({
             urlRequest: {
                 rootURL: this.url,
                 token: this.token,
                 webServiceFunction: "core_course_get_courses",
             },
             content: {}
-        })).data as Array<any>;
+        })).data as CampusActionTypes.GetCoursesResponse[];
+        return data.filter(course => course.visible === isActive);
     }
 }

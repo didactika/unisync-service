@@ -1,7 +1,8 @@
 import models from "../../../database/models/models";
 import ICampus from "../../interfaces/models-interfaces/campus-interfaces";
 import ICourse from "../../interfaces/models-interfaces/course-interfaces";
-import { CourseFilter, CourseFormatedResponse, CourseStatus } from "../../types/models-classes-types/courses-class-types";
+import { CampusActionTypes } from "../../types/campus-action-types";
+import { CourseFilter, CourseFormatedResponse, CourseStatus, ECourseLanguage, ECourseMigrationStatus } from "../../types/models-classes-types/courses-class-types";
 
 /**
  * @class Course
@@ -73,6 +74,20 @@ export default class Course implements ICourse {
             status: this.status
         });
     }
+    /**
+     * @method CreateMany
+     * @description Create many courses
+     * @memberof Course
+     */
+    public static async CreateMany(courses: ICourse[]): Promise<void> {
+        await models.course.insertMany(courses.map(course => ({
+            idOnCampus: course.idOnCampus,
+            campus: course.campus,
+            fullname: course.fullname,
+            shortname: course.shortname,
+            status: course.status
+        })));
+    }
 
     /**
    * @method GetFormatReadResponse
@@ -132,4 +147,55 @@ export default class Course implements ICourse {
         const coursesFound = await models.course.find() as ICourse[];
         return coursesFound.map(course => this.GetFormatReadResponse(course));
     }
+
+    /**
+     * @method isDataChanged
+     * @description Check if the data is changed
+     * @param {Omit<ICourse, "campus" | "status">} newCourse new course data
+     * @param {ICourse} oldCourse old course data
+     * @returns {boolean} true if the data is changed
+     * @memberof Course
+     */
+    public static isDataChanged(newCourse: CampusActionTypes.GetCoursesResponse, oldCourse: ICourse): boolean {
+        return newCourse.fullname !== oldCourse.fullname
+            || newCourse.shortname !== oldCourse.shortname;
+    }
+
+    /**
+     * @method UpdateMany
+     * @description Update many courses
+     * @param {ICourse[]} courses courses to be updated
+     * @returns {void}
+     * @memberof Course
+     */
+    public static async UpdateMany(courses: ICourse[]): Promise<void> {
+        const updates = courses.map(course => ({
+            updateOne: {
+                filter: { idOnCampus: course.idOnCampus },
+                update: {
+                    $set: {
+                        fullname: course.fullname,
+                        shortname: course.shortname,
+                        status: course.status
+                    }
+                }
+            }
+        }));
+    
+        await models.course.bulkWrite(updates);
+    }
+
+    /**
+     * @method GetCourseStatusDefault
+     * @description Get the course status default
+     * @returns {CourseStatus} the course status default
+     * @memberof Course
+     */
+    public static GetCourseStatusDefault(): CourseStatus {
+        return Object.values(ECourseLanguage).reduce((acc, lang) => {
+            acc[lang] = ECourseMigrationStatus.PENDING;
+            return acc;
+        }, {} as CourseStatus);
+    }
+
 }
