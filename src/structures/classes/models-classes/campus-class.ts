@@ -1,4 +1,3 @@
-import IUser from "../../interfaces/models-interfaces/user-interfaces";
 import models from "../../../database/models/models";
 import ICampus from "../../interfaces/models-interfaces/campus-interfaces";
 import { CampusFilter, CampusFormatedResponse } from "../../types/models-classes-types/campus-class-types";
