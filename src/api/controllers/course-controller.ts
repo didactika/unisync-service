@@ -3,6 +3,7 @@ import Campus from "../../structures/classes/models-classes/campus-class";
 import httpClient from "http-response-client";
 import ErrorMiddleware from "../middlewares/error-middleware";
 import ICampus from "../../structures/interfaces/models-interfaces/campus-interfaces";
+import { NextFunction } from "express";
 
 /**
  * @class CourseController
@@ -13,7 +14,7 @@ export default class CourseController {
      * Create a new course
      * @memberof CourseController
      */
-    public static async readAll(req: Request, res: Response): Promise<void> {
+    public static async readAll(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { campusUuid } = req.body;
 
@@ -34,7 +35,7 @@ export default class CourseController {
                 status: "Pending",
             })));
         } catch (error) {
-            ErrorMiddleware.responseError(error as Error, res);
+            next(error);
         }
     }
 }

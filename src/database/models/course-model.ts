@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { IMCourse } from "../../structures/types/database-schemas-types/course-schema-types";
 import { CourseStatus } from "../../structures/types/models-classes-types/courses-class-types";
 import CourseModelMiddleware from "./middlewares/course-model-middleware";
+import CourseStatusModelMiddleware from "./middlewares/course-status-model-middleware";
 
 /**
  * @description Mongoose Course Status Schema
@@ -57,12 +58,11 @@ const courseSchema = new Schema<IMCourse>({
 /**
  * @description Mongoose Course Schema Middlewares
  */
-courseSchema.pre('save', CourseModelMiddleware.checkDuplicateCourse);
-courseSchema.post('save', CourseModelMiddleware.checkDuplicatedData);
+CourseModelMiddleware.applyAll(courseSchema);
 
 /**
  * @description Mongoose Course Status Schema Middlewares
  */
-courseStatusSchema.pre('validate',CourseModelMiddleware.validateCourseStatus);
+CourseStatusModelMiddleware.applyAll(courseStatusSchema);
 
 export default model('Course', courseSchema);

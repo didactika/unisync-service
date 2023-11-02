@@ -19,10 +19,10 @@ export default class SessionMiddleware {
             if (!req.headers.authorization) throw new httpClient.errors.Unauthorized({msg: "No session token provided"});
             const sessionToken = req.headers.authorization.split(" ")[1];
             const session = JWT.VerifyToken(sessionToken, constants.JWT_SECRET) as UserSessionPayload;
-            if(session.exp > Date.now()) throw new httpClient.errors.Unauthorized({msg: "Session expired"});
+            if(session.exp > Date.now()) next(new httpClient.errors.Unauthorized({msg: "Session expired"}));
             next();
         } catch (error) {
-            ErrorMiddleware.responseError(error as Error, res);
+            next(error);
         }
     }
 }

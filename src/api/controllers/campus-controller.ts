@@ -2,6 +2,7 @@ import { Request, Response } from "express-serve-static-core";
 import Campus from "../../structures/classes/models-classes/campus-class";
 import httpClient from "http-response-client";
 import ErrorMiddleware from "../middlewares/error-middleware";
+import { NextFunction } from "express";
 
 /**
  * @class CampusController
@@ -12,7 +13,7 @@ export default class CampusController {
      * Create a new campus
      * @memberof CampusController
      */
-    public static async create(req: Request, res: Response): Promise<void> {
+    public static async create(req: Request, res: Response, next: NextFunction): Promise<void> {
         const { name, url, token } = req.body;
         try {
             if (!name || !url || !token || !name.trim() || !url.trim() || !token.trim())
@@ -26,7 +27,7 @@ export default class CampusController {
                 url: newCampus.url
             });
         } catch (error) {
-            ErrorMiddleware.responseError(error as Error, res);
+            next
         }
     }
 
@@ -34,7 +35,7 @@ export default class CampusController {
      * Read all campus
      * @memberof CampusController
      */
-    public static async readAll(req: Request, res: Response): Promise<void> {
+    public static async readAll(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const campusFounds = await Campus.ReadAll();
             res.status(200).json(campusFounds.map(campus => {
@@ -45,7 +46,7 @@ export default class CampusController {
                 }
             }));
         } catch (error) {
-            ErrorMiddleware.responseError(error as Error, res);
+            next(error);
         }
     }
 }

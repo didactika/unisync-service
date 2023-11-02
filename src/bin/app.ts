@@ -1,8 +1,9 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import constants from "./constants";
 import database from "../database/database";
 import router from "../api/routes/router";
+import ErrorMiddleware from "../api/middlewares/error-middleware";
 
 class App {
   private app: express.Application;
@@ -24,6 +25,9 @@ class App {
     this.app.use(express.urlencoded({ extended: false }));
     this.app.use(cors());
     this.app.use("/api", router);
+    this.app.use((err: Error, req: Request, res: Response, next: NextFunction):void => {
+      ErrorMiddleware.responseError(err, res);
+    });
   }
 
   /**

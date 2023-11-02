@@ -1,4 +1,4 @@
-import express, { Request, Response} from "express";
+import express, { NextFunction, Request, Response} from "express";
 import SessionMiddleware from "../middlewares/session-middleware";
 import CourseController from "../controllers/course-controller";
 
@@ -7,9 +7,9 @@ const courseRoutes = express.Router({
 })
 
 
-courseRoutes.get("/", (req: Request, res: Response) => {
+courseRoutes.get("/", (req: Request, res: Response, next: NextFunction) => {
     SessionMiddleware.verifySessionToken(req, res, () => {
-            CourseController.readAll(req, res);
+            CourseController.readAll(req, res, next);
     });
 });
 

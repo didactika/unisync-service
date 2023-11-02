@@ -43,7 +43,6 @@ const campusSchema = new Schema<IMCampus>({
 /**
  * @description Mongoose Campus Schema Middlewares
  */
-campusSchema.pre('save', CampusModelMiddleware.validateUrl);
-campusSchema.post('save', CampusModelMiddleware.checkDuplicatedData);
+CampusModelMiddleware.applyAll(campusSchema);
 
 export default model('Campus', campusSchema);
