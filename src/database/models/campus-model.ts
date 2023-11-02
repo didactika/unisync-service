@@ -38,7 +38,7 @@ const campusSchema = new Schema<IMCampus>({
         required: true,
         default: new Date()
     }
-});
+}, { versionKey: false });
 
 /**
  * @description Mongoose Campus Schema Middlewares

@@ -36,7 +36,7 @@ const userSchema = new Schema<IMUser>({
         required: true,
         default: new Date()
     }
-});
+}, { versionKey: false });
 
 /**
  * @description Mongoose User Schema Middlewares
