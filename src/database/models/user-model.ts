@@ -45,6 +45,6 @@ userSchema.pre("save", UserModelMiddleware.validateUserName);
 userSchema.pre("save", UserModelMiddleware.validateEmail);
 userSchema.pre("save", UserModelMiddleware.validatePassword);
 userSchema.pre("save", UserModelMiddleware.encryptPassword);
-userSchema.post("save", UserModelMiddleware.isDuplicatedData);
+userSchema.post("save", UserModelMiddleware.checkDuplicatedData);
 
 export default model('User', userSchema);

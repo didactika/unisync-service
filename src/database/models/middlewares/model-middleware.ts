@@ -10,9 +10,9 @@ export default abstract class ModelMiddleware {
  * Check if have data is duplicate
  * @param {Error} error
  * @param {(error?: Error) => void} next
- * @memberof VerifyDataModelMiddleware
+ * @memberof ModelMiddleware
  */
-  public static isDuplicatedData(error: Error, doc: Document, next: (error?: Error) => void) {
+  public static checkDuplicatedData(error: Error, doc: Document, next: (error?: Error) => void) {
     const err = error as MongoServerError;
     if (err && err.name === 'MongoServerError' && err.code === 11000) {
       const field = Object.keys(err.keyValue)[0];
