@@ -29,8 +29,8 @@ export default class CourseController {
                 courses = await campus.actions.GetCourses();
 
             res.status(200).json(courses.map(course => ({
-                shortname: course.shortname,
-                fullname: course.fullname,
+                shortname: course.shortname as string,
+                fullname: course.fullname as string,
                 status: "Pending",
             })));
         } catch (error) {
