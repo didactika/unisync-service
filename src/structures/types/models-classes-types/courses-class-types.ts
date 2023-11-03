@@ -9,7 +9,7 @@ export enum ECourseLanguage {
     SPANISH = "es",
     FRENCH = "fr",
     PORTUGUESE = "pt",
-    ITALIAN = "it",
+    ITALIAN = "it"
 }
 
 /**
@@ -45,5 +45,5 @@ export type CourseFilter = {
     uuid?: string;
     fullname?: string;
     shortname?: string;
-    campusId?: string;
+    campus?: string;
 }

@@ -8,11 +8,12 @@ import ICampus from "./campus-interfaces";
  */
 export default interface ICourse {
     id?: string;
-    idOnCampus?: number;
+    idOnCampus: number;
     uuid?: string;
     campus: ICampus;
     fullname: string;
     shortname: string;
     status: CourseStatus;
     createdAt?: Date;
+    updatedAt?: Date;
 }

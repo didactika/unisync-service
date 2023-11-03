@@ -21,7 +21,6 @@ export default class UserController {
     public static async create(req: Request, res: Response, next: NextFunction): Promise<void> {
         const { username, email, password } = req.body;
         try {
-
             const newUser = new User({ username, email, password });
             await newUser.Create();
             res.status(201).json({
@@ -63,7 +62,7 @@ export default class UserController {
                 constants.JWT_EXPIRES_IN
             );
             res.status(200).json({
-                uuid: userToLogin.username,
+                uuid: userToLogin.uuid,
                 username: userToLogin.username,
                 email: userToLogin.email,
                 sessionToken

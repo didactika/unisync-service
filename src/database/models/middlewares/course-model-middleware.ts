@@ -19,7 +19,6 @@ export default class CourseModelMiddleware extends ModelMiddleware {
         CourseModelMiddleware.checkDuplicateCourse(schema);
         CourseModelMiddleware.checkDuplicatedData(schema);
         CourseModelMiddleware.checkRequiredFields(schema);
-        CourseModelMiddleware.checkInvalidFields(schema);
         CourseModelMiddleware.checkInvalidId(schema);
         CourseModelMiddleware.validateUUID(schema);
     }

@@ -3,6 +3,7 @@ import Campus from "../../structures/classes/models-classes/campus-class";
 import httpClient from "http-response-client";
 import ErrorMiddleware from "../middlewares/error-middleware";
 import { NextFunction } from "express";
+import CourseController from "./course-controller";
 
 /**
  * @class CampusController
@@ -16,11 +17,9 @@ export default class CampusController {
     public static async create(req: Request, res: Response, next: NextFunction): Promise<void> {
         const { name, url, token } = req.body;
         try {
-            if (!name || !url || !token || !name.trim() || !url.trim() || !token.trim())
-                throw new httpClient.errors.BadRequest({ msg: "Invalid request body" });
-
             const newCampus = new Campus({ name, url, token });
             await newCampus.Create();
+            CourseController.compareData(newCampus);
             res.status(201).json({
                 uuid: newCampus.uuid,
                 name: newCampus.name,
