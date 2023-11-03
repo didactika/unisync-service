@@ -62,7 +62,7 @@ export default class UserController {
                 constants.JWT_EXPIRES_IN
             );
             res.status(200).json({
-                uuid: userToLogin.username,
+                uuid: userToLogin.uuid,
                 username: userToLogin.username,
                 email: userToLogin.email,
                 sessionToken
