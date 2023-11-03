@@ -109,7 +109,14 @@ export default class Course implements ICourse {
             id: course.id,
             idOnCampus: course.idOnCampus,
             uuid: course.uuid,
-            campus: course.campus,
+            campus: {
+                id: new Types.ObjectId(course.campus.id).toString(),
+                uuid: course.campus.uuid,
+                name: course.campus.name,
+                url: course.campus.url,
+                token: course.campus.token,
+                createdAt: course.campus.createdAt,
+            },
             fullname: course.fullname,
             shortname: course.shortname,
             status: course.status,
@@ -122,13 +129,16 @@ export default class Course implements ICourse {
    * @method ReadOneByFilter
    * @description Read one course by filter
    * @param {CourseFilter} filter Filter to be used
+   * @param {boolean} isPopulated if the data is populated
    * @returns {CourseFormatedResponse | null} course found
    * @memberof Course
    */
     public static async ReadOneByFilter(
-        filter: CourseFilter
+        filter: CourseFilter, isPopulated: boolean = false
     ): Promise<CourseFormatedResponse | null> {
-        const courseFound = await models.course.findOne(filter) as ICourse;
+        const courseFound = (isPopulated)
+            ? await models.course.findOne(filter).populate("campus") as ICourse
+            : await models.course.findOne(filter) as ICourse;
         return courseFound
             ? this.GetFormatReadResponse(courseFound)
             : null;
@@ -138,22 +148,28 @@ export default class Course implements ICourse {
      * @method ReadByFilter
      * @description Read some courses by filter
      * @param {CourseFilter} filter Filter to be used
+     * @param {boolean} isPopulated if the data is populated
      * @returns {CourseFormatedResponse} Courses found
      * @memberof Course
      */
-    public static async ReadByFilter(filter: CourseFilter): Promise<CourseFormatedResponse[]> {
-        const coursesFound = await models.course.find(filter) as ICourse[];
+    public static async ReadByFilter(filter: CourseFilter, isPopulated: boolean = false): Promise<CourseFormatedResponse[]> {
+        const coursesFound = (isPopulated)
+            ? await models.course.find(filter).populate("campus") as ICourse[]
+            : await models.course.find(filter) as ICourse[];
         return coursesFound.map(course => this.GetFormatReadResponse(course));
     }
 
     /**
      * @method ReadAll
      * @description Read all courses
+     * @param {boolean} isPopulated if the data is populated
      * @returns {CourseFormatedResponse} Courses found
      * @memberof Course
      */
-    public static async ReadAll(): Promise<CourseFormatedResponse[]> {
-        const coursesFound = await models.course.find() as ICourse[];
+    public static async ReadAll(isPopulated: boolean = false): Promise<CourseFormatedResponse[]> {
+        const coursesFound = (isPopulated)
+            ? await models.course.find().populate("campus") as ICourse[]
+            : await models.course.find() as ICourse[];
         return coursesFound.map(course => this.GetFormatReadResponse(course));
     }
 
@@ -191,7 +207,7 @@ export default class Course implements ICourse {
                 }
             }
         }));
-    
+
         await models.course.bulkWrite(updates);
     }
 
