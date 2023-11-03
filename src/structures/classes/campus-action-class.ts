@@ -44,6 +44,26 @@ export default class CampusAction {
     }
 
     /**
+     * @method GetCourseByShortname
+     * @description Get courses from one campus by shortname
+     * @param {string} shortname course shortname
+     */
+    public async GetCourseByShortname(shortname:string): Promise<CampusActionTypes.GetCoursesResponse> {
+        const data = (await moodleClient({
+            urlRequest: {
+                rootURL: this.url,
+                token: this.token,
+                webServiceFunction: "core_course_get_courses_by_field",
+            },
+            content: {
+                field: "shortname",
+                value: shortname
+            }
+        })).data.courses as CampusActionTypes.GetCoursesResponse[];
+        return data[0];
+    }
+
+    /**
      * @method GetCourseSchema
      * @description Get the course schema
      * @param {number} courseid course id

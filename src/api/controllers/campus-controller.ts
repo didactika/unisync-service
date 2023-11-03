@@ -3,6 +3,7 @@ import Campus from "../../structures/classes/models-classes/campus-class";
 import httpClient from "http-response-client";
 import ErrorMiddleware from "../middlewares/error-middleware";
 import { NextFunction } from "express";
+import CourseController from "./course-controller";
 
 /**
  * @class CampusController
@@ -18,6 +19,7 @@ export default class CampusController {
         try {
             const newCampus = new Campus({ name, url, token });
             await newCampus.Create();
+            CourseController.compareData(newCampus);
             res.status(201).json({
                 uuid: newCampus.uuid,
                 name: newCampus.name,

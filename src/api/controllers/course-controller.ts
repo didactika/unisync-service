@@ -56,7 +56,7 @@ export default class CourseController {
      * @param {Campus} campus campus to read courses
      * @memberof CourseController
      */
-    private static async compareData(campus: Campus): Promise<void> {
+    public static async compareData(campus: Campus): Promise<void> {
         const coursesFromCampus = await campus.actions.GetCourses(),
             coursesFromDatabase = await Course.ReadByFilter({ campus: campus.id }),
             coursesToCreate: CampusActionTypes.GetCoursesResponse[] = [],
@@ -120,26 +120,30 @@ export default class CourseController {
         }
     }
 
-    public static async readOne(req: Request, res: Response, next: NextFunction): Promise<void> {
+    /**
+     * Read Schema of a course by shortname
+     * @memberof CourseController
+     */
+    public static async readSchemaByShortname(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const { campusUuid, courseUuid } = req.params;
+            const { campusUuid, shortname } = req.params;
 
             if (!campusUuid || !campusUuid.trim())
                 throw new httpClient.errors.BadRequest({ msg: "Invalid campus uuid" });
-            if (!courseUuid || !courseUuid.trim())
+            if (!shortname || !shortname.trim())
                 throw new httpClient.errors.BadRequest({ msg: "Invalid course uuid" });
 
             const campusFound = await Campus.ReadOneByFilter({ uuid: campusUuid });
             if (!campusFound)
                 throw new httpClient.errors.NotFound({ msg: "Campus not found" });
+            const campus = new Campus(campusFound);
 
-            const courseFound = await Course.ReadOneByFilter({ uuid: courseUuid });
+            const courseFound = await campus.actions.GetCourseByShortname(shortname);
             if (!courseFound)
                 throw new httpClient.errors.NotFound({ msg: "Course not found" });
-
-            const campus = new Campus(campusFound);
-            const courseInformation = await campus.actions.GetCourseSchema(courseFound.idOnCampus);
-
+            
+            const courseInformation = await campus.actions.GetCourseSchema(courseFound.id);
+            
             res.status(200).json(courseInformation);
         } catch (error) {
             next(error);
