@@ -4,7 +4,6 @@ import httpClient from "http-response-client";
 import ICampus from "../../structures/interfaces/models-interfaces/campus-interfaces";
 import { NextFunction } from "express";
 import Course from "../../structures/classes/models-classes/course-class";
-import ICourse from "../../structures/interfaces/models-interfaces/course-interfaces";
 import { CourseFormatedResponse, ECourseLanguage, ECourseMigrationStatus } from "../../structures/types/models-classes-types/courses-class-types";
 import { CampusActionTypes } from "../../structures/types/campus-action-types";
 import { CoursesToUpdate, UpdateCoursesRequest } from "../../structures/types/controller-types/course-controller-types";
@@ -104,6 +103,7 @@ export default class CourseController {
                 (await Course.ReadByFilter({ campus: campus.id })).map((course) => ({
                     id: course.id,
                     uuid: course.uuid,
+                    idOnCampus: course.idOnCampus,
                     campus: course.campus,
                     fullname: course.fullname,
                     shortname: course.shortname,
@@ -115,6 +115,32 @@ export default class CourseController {
                 fullname: course.fullname as string,
                 status: course.status,
             })));
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    public static async readOne(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { campusUuid, courseUuid } = req.params;
+
+            if (!campusUuid || !campusUuid.trim())
+                throw new httpClient.errors.BadRequest({ msg: "Invalid campus uuid" });
+            if (!courseUuid || !courseUuid.trim())
+                throw new httpClient.errors.BadRequest({ msg: "Invalid course uuid" });
+
+            const campusFound = await Campus.ReadOneByFilter({ uuid: campusUuid });
+            if (!campusFound)
+                throw new httpClient.errors.NotFound({ msg: "Campus not found" });
+
+            const courseFound = await Course.ReadOneByFilter({ uuid: courseUuid });
+            if (!courseFound)
+                throw new httpClient.errors.NotFound({ msg: "Course not found" });
+
+            const campus = new Campus(campusFound);
+            const courseInformation = await campus.actions.GetCourseJSONSchema(courseFound.idOnCampus);
+
+            res.status(200).json(courseInformation);
         } catch (error) {
             next(error);
         }

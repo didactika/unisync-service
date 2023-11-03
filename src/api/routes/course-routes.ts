@@ -13,4 +13,10 @@ courseRoutes.get("/", (req: Request, res: Response, next: NextFunction) => {
     });
 });
 
+courseRoutes.get("/:courseUuid", (req: Request, res: Response, next: NextFunction) => {
+    SessionMiddleware.verifySessionToken(req, res, () => {
+            CourseController.readOne(req, res, next);
+    });
+});
+
 export default courseRoutes;

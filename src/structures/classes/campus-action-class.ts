@@ -41,4 +41,24 @@ export default class CampusAction {
             && course.categoryid !== 0
             && (categoryid ? course.categoryid === categoryid : true));
     }
+
+    /**
+     * @method GetCourseJSONSchema
+     * @description Get the course json schema
+     * @param {number} courseid course id
+     * @memberof CampusAction
+     */
+    public async GetCourseJSONSchema(courseid: number): Promise<Object> {
+        const data = (await moodleClient({
+            urlRequest: {
+                rootURL: this.url,
+                token: this.token,
+                webServiceFunction: "local_unisync_course_json_get",
+            },
+            content: {
+                courseid,
+            }
+        })).data as CampusActionTypes.GetCourseJSONSchemaResponse;
+        return JSON.parse(data.course_schema);
+    }
 }

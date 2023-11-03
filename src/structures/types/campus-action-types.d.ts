@@ -17,4 +17,12 @@ export namespace CampusActionTypes {
         categoryid: number;
     }
 
+    /**
+     * @type GetCourseJSONSchemaResponse
+     * @description The get course json schema response
+     */
+    type GetCourseJSONSchemaResponse = {
+        course_schema: string;
+    }
+
 }
