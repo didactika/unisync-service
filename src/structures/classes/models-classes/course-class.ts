@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import { Types } from "mongoose";
 import models from "../../../database/models/models";
 import ICampus from "../../interfaces/models-interfaces/campus-interfaces";
 import ICourse from "../../interfaces/models-interfaces/course-interfaces";
@@ -26,9 +26,9 @@ export default class Course implements ICourse {
      * @param {ICourse} course course data
      */
     constructor(course: ICourse) {
-        this.id = course.id;
+        this.id = course.id || new Types.ObjectId().toString();
         this.idOnCampus = course.idOnCampus;
-        this.uuid = course.uuid;
+        this.uuid = course.uuid || uuidv4();
         this.campus = course.campus;
         this._fullname = course.fullname;
         this._shortname = course.shortname;
@@ -69,6 +69,8 @@ export default class Course implements ICourse {
      */
     public async Create(): Promise<void> {
         await models.course.create({
+            _id: this.id,
+            uuid: this.uuid,
             idOnCampus: this.idOnCampus,
             campus: this.campus,
             fullname: this.fullname,
@@ -83,8 +85,8 @@ export default class Course implements ICourse {
      */
     public static async CreateMany(courses: ICourse[]): Promise<void> {
         await models.course.insertMany(courses.map(course => ({
-            _id: new mongoose.Types.ObjectId(),
-            uuid: uuidv4(),
+            _id: course.id,
+            uuid: course.uuid,
             idOnCampus: course.idOnCampus,
             campus: course.campus.id,
             fullname: course.fullname,

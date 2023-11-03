@@ -1,6 +1,8 @@
 import IUser from "../../interfaces/models-interfaces/user-interfaces";
 import models from "../../../database/models/models";
 import { UserFilter, UserFormatedResponse } from "../../types/models-classes-types/user-class-types";
+import { v4 as uuidv4 } from "uuid";
+import { Types } from "mongoose";
 
 /**
  * @class User
@@ -20,8 +22,8 @@ export default class User implements IUser {
      * @param {IUser} user User model
      */
     constructor(user: IUser) {
-        this.id = user.id;
-        this.uuid = user.uuid;
+        this.id = user.id || new Types.ObjectId().toString();
+        this.uuid = user.uuid || uuidv4();
         this._username = user.username;
         this._email = user.email;
         this._password = user.password;

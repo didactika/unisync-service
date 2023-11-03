@@ -1,7 +1,9 @@
+import { Types } from "mongoose";
 import models from "../../../database/models/models";
 import ICampus from "../../interfaces/models-interfaces/campus-interfaces";
 import { CampusFilter, CampusFormatedResponse } from "../../types/models-classes-types/campus-class-types";
 import CampusActions from "../campus-action-class";
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  * @class Campus
@@ -22,8 +24,8 @@ export default class Campus implements ICampus {
      * @param {ICampus} campus campus model
      */
     constructor(campus: ICampus) {
-        this.id = campus.id;
-        this.uuid = campus.uuid;
+        this.id = campus.id || new Types.ObjectId().toString();
+        this.uuid = campus.uuid || uuidv4();
         this._name = campus.name;
         this._url = campus.url;
         this._token = campus.token;
@@ -64,6 +66,8 @@ export default class Campus implements ICampus {
      */
     public async Create(): Promise<void> {
         await models.campus.create({
+            _id: this.id,
+            uuid: this.uuid,
             name: this._name,
             url: this._url,
             token: this._token
