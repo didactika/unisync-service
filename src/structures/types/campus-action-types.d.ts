@@ -18,11 +18,18 @@ export namespace CampusActionTypes {
     }
 
     /**
-     * @type GetCourseJSONSchemaResponse
-     * @description The get course json schema response
+     * @type GetCourseSchemaResponse
+     * @description The get course schema response
      */
-    type GetCourseJSONSchemaResponse = {
+    type GetCourseSchemaResponse = {
         course_schema: string;
     }
 
+    /**
+     * @type GetCourseSchemaObject
+     * @description The get course schema object
+     */
+    type GetCourseSchemaObject = {
+        
+    }
 }

@@ -44,12 +44,12 @@ export default class CampusAction {
     }
 
     /**
-     * @method GetCourseJSONSchema
-     * @description Get the course json schema
+     * @method GetCourseSchema
+     * @description Get the course schema
      * @param {number} courseid course id
      * @memberof CampusAction
      */
-    public async GetCourseJSONSchema(courseid: number): Promise<Object> {
+    public async GetCourseSchema(courseid: number): Promise<Object> {
         const data = (await moodleClient({
             urlRequest: {
                 rootURL: this.url,
@@ -59,7 +59,7 @@ export default class CampusAction {
             content: {
                 courseid,
             }
-        })).data as CampusActionTypes.GetCourseJSONSchemaResponse;
+        })).data as CampusActionTypes.GetCourseSchemaResponse;
         const json = data.course_schema;
         return  JSON.parse(Parser.ParseUnicodeCharacters(json));
     }

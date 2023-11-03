@@ -138,7 +138,7 @@ export default class CourseController {
                 throw new httpClient.errors.NotFound({ msg: "Course not found" });
 
             const campus = new Campus(campusFound);
-            const courseInformation = await campus.actions.GetCourseJSONSchema(courseFound.idOnCampus);
+            const courseInformation = await campus.actions.GetCourseSchema(courseFound.idOnCampus);
 
             res.status(200).json(courseInformation);
         } catch (error) {
