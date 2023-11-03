@@ -4,8 +4,8 @@ import CourseController from "../controllers/course-controller";
 
 const courseRoutes = express.Router({
     strict: true,
+    mergeParams: true
 })
-
 
 courseRoutes.get("/", (req: Request, res: Response, next: NextFunction) => {
     SessionMiddleware.verifySessionToken(req, res, () => {

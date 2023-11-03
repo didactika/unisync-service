@@ -4,6 +4,7 @@ import SessionMiddleware from "../middlewares/session-middleware";
 
 const campusRoutes = express.Router({
     strict: true,
+    mergeParams: true
 })
 
 campusRoutes.post("/", (req: Request, res: Response, next: NextFunction) => {

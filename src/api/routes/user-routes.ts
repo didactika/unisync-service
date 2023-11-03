@@ -3,6 +3,7 @@ import UserController from "../controllers/user-controller";
 
 const userRoutes = express.Router({
     strict: true,
+    mergeParams: true
 })
 
 userRoutes.post("/", (req: Request, res: Response, next: NextFunction) => {
