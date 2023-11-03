@@ -7,16 +7,14 @@ const campusRoutes = express.Router({
     mergeParams: true
 })
 
+campusRoutes.use(SessionMiddleware.verifySessionToken);
+
 campusRoutes.post("/", (req: Request, res: Response, next: NextFunction) => {
-    SessionMiddleware.verifySessionToken(req, res, () => {
-        CampusController.create(req, res, next);
-    });
+    CampusController.create(req, res, next);
 });
 
 campusRoutes.get("/", (req: Request, res: Response, next: NextFunction) => {
-    SessionMiddleware.verifySessionToken(req, res, () => {
-            CampusController.readAll(req, res, next);
-    });
+    CampusController.readAll(req, res, next);
 });
 
 export default campusRoutes;

@@ -4,7 +4,7 @@ import JWT from "../../utils/jwt";
 import constants from "../../bin/constants";
 import { UserSessionPayload } from "../../structures/types/jwt-types";
 import httpClient from "http-response-client"
-import ErrorMiddleware from "./error-middleware";
+import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 /**
  * @class SessionMiddleware
  */
@@ -14,15 +14,21 @@ export default class SessionMiddleware {
      * @description middleware to verify if the session token of the user is active
      * @memberof SessionMiddleware
      */
-    public static async verifySessionToken(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try {
-            if (!req.headers.authorization) throw new httpClient.errors.Unauthorized({msg: "No session token provided"});
-            const sessionToken = req.headers.authorization.split(" ")[1];
-            const session = JWT.VerifyToken(sessionToken, constants.JWT_SECRET) as UserSessionPayload;
-            if(session.exp > Date.now()) next(new httpClient.errors.Unauthorized({msg: "Session expired"}));
+    public static verifySessionToken(req: Request, res: Response, next: NextFunction): void {
+        try{
+            if (!req.headers.authorization) next(new httpClient.errors.Unauthorized({msg: "No session token provided"}));
+            const sessionToken = req.headers.authorization!.split(" ")[1];
+            JWT.VerifyToken(sessionToken, constants.JWT_SECRET) as UserSessionPayload;
             next();
-        } catch (error) {
+        }
+        catch(error){
+            if(error instanceof TokenExpiredError){
+                next(new httpClient.errors.Unauthorized({msg: "Session expired"}));
+            } else if(error instanceof JsonWebTokenError){
+                next(new httpClient.errors.Unauthorized({msg: "Invalid token"}));
+            }
             next(error);
         }
+        
     }
 }
