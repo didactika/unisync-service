@@ -22,9 +22,11 @@ export default class CampusAction {
     /**
      * @method GetCourses
      * @description Get All courses from one campus
+     * @param {boolean} isActive if true get only active courses
+     * @param {number} categoryid category id
      * @memberof CampusAction
      */
-    public async GetCourses(isActive: boolean = true): Promise<CampusActionTypes.GetCoursesResponse[]> {
+    public async GetCourses(isActive: boolean = true, categoryid?: number): Promise<CampusActionTypes.GetCoursesResponse[]> {
         const isVisible = isActive ? 1 : 0;
         const data = (await moodleClient({
             urlRequest: {
@@ -34,6 +36,9 @@ export default class CampusAction {
             },
             content: {}
         })).data as CampusActionTypes.GetCoursesResponse[];
-        return data.filter(course => course.visible === isVisible);
+        return data.filter(course => 
+            course.visible === isVisible 
+            && course.categoryid !== 0
+            && (categoryid ? course.categoryid === categoryid : true));
     }
 }
