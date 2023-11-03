@@ -1,6 +1,7 @@
 import ICampusAction from "../interfaces/campus-action-interfaces";
 import { moodleClient } from "moodle-web-service-client";
 import { CampusActionTypes } from "../types/campus-action-types";
+import Parser from "../../utils/parser";
 
 /**
  * @class CampusAction
@@ -59,6 +60,7 @@ export default class CampusAction {
                 courseid,
             }
         })).data as CampusActionTypes.GetCourseJSONSchemaResponse;
-        return JSON.parse(data.course_schema);
+        const json = data.course_schema;
+        return  JSON.parse(Parser.ParseUnicodeCharacters(json));
     }
 }
