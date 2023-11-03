@@ -83,7 +83,7 @@ export default class Course implements ICourse {
      * @description Create many courses
      * @memberof Course
      */
-    public static async CreateMany(courses: ICourse[]): Promise<void> {
+    public static async CreateMany(courses: Course[]): Promise<void> {
         await models.course.insertMany(courses.map(course => ({
             _id: course.id,
             uuid: course.uuid,
@@ -174,7 +174,7 @@ export default class Course implements ICourse {
      * @returns {void}
      * @memberof Course
      */
-    public static async UpdateMany(courses: ICourse[]): Promise<void> {
+    public static async UpdateMany(courses: Course[]): Promise<void> {
         const updates = courses.map(course => ({
             updateOne: {
                 filter: { idOnCampus: course.idOnCampus },
