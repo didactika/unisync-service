@@ -63,6 +63,8 @@ export default class User implements IUser {
      */
     public async Create(): Promise<void> {
         await models.user.create({
+            _id: this.id,
+            uuid: this.uuid,
             username: this._username,
             email: this._email,
             password: this._password
