@@ -15,4 +15,5 @@ export default interface ICourse {
     shortname: string;
     status: CourseStatus;
     createdAt?: Date;
+    updatedAt?: Date;
 }

@@ -52,6 +52,11 @@ const courseSchema = new Schema<IMCourse>({
         type: Date,
         required: true,
         default: new Date()
+    },
+    updatedAt: {
+        type: Date,
+        required: false,
+        default: undefined
     }
 }, { versionKey: false });
 

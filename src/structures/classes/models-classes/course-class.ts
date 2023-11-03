@@ -19,6 +19,7 @@ export default class Course implements ICourse {
     private _shortname: string;
     private _status: CourseStatus;
     public readonly createdAt?: Date;
+    public readonly updatedAt?: Date;
 
     /**
      * Define the course class
@@ -34,6 +35,7 @@ export default class Course implements ICourse {
         this._shortname = course.shortname;
         this._status = course.status;
         this.createdAt = course.createdAt;
+        this.updatedAt = course.updatedAt;
     }
 
     /**
@@ -111,7 +113,8 @@ export default class Course implements ICourse {
             fullname: course.fullname,
             shortname: course.shortname,
             status: course.status,
-            createdAt: course.createdAt
+            createdAt: course.createdAt,
+            updatedAt: course.updatedAt
         }
     }
 
@@ -182,7 +185,8 @@ export default class Course implements ICourse {
                     $set: {
                         fullname: course.fullname,
                         shortname: course.shortname,
-                        status: course.status
+                        status: course.status,
+                        updatedAt: new Date()
                     }
                 }
             }
