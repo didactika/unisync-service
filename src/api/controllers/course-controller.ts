@@ -92,7 +92,7 @@ export default class CourseController {
             const lang = req.query.lang as ECourseLanguage || "es";
 
             if (!campusUuid || !campusUuid.trim())
-                throw new httpClient.errors.BadRequest({ msg: "Invalid request body" });
+                throw new httpClient.errors.BadRequest({ msg: "Invalid campus uuid" });
 
             const campusFound = await Campus.ReadOneByFilter({ uuid: campusUuid });
 
