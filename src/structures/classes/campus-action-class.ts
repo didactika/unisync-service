@@ -49,7 +49,7 @@ export default class CampusAction {
      * @param {number} courseid course id
      * @memberof CampusAction
      */
-    public async GetCourseSchema(courseid: number): Promise<Object> {
+    public async GetCourseSchema(courseid: number): Promise<CampusActionTypes.GetCourseSchemaObject> {
         const data = (await moodleClient({
             urlRequest: {
                 rootURL: this.url,

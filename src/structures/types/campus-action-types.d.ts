@@ -1,3 +1,4 @@
+import { CourseSkeletonTypes } from "./moodle-types/course-skeleton-types";
 
 /**
  * @namespace CampusActionTypes
@@ -29,7 +30,5 @@ export namespace CampusActionTypes {
      * @type GetCourseSchemaObject
      * @description The get course schema object
      */
-    type GetCourseSchemaObject = {
-        
-    }
+    type GetCourseSchemaObject = CourseSkeletonTypes.CourseSkeleton;
 }
