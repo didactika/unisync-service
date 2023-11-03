@@ -1,7 +1,7 @@
 import { MongoServerError } from "mongodb";
 import { Document, Schema } from "mongoose";
 import httpClient from "http-response-client";
-import uuid from "uuid";
+import uuidPackage from "uuid";
 
 /**
  * @class ModelMiddleware
@@ -74,10 +74,14 @@ export default abstract class ModelMiddleware {
    * @memberof ModelMiddleware
    */
   public static validateUUID(schema: Schema) {
-    schema.pre('save', function (next) {
-      if (!uuid.validate(this.uuid) || uuid.version(this.uuid) !== 4)
+    schema.pre('save', function (next: Function) {
+      const uuidv4Regex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+      if (!uuidv4Regex.test(this.uuid)) {
         next(new httpClient.errors.BadRequest({ msg: `Invalid uuid: ${this.uuid}` }));
-      next();
+      } else {
+        next();
+      }
     });
   }
+
 }
