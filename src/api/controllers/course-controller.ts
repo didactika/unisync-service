@@ -21,15 +21,13 @@ export default class CourseController {
      * @memberof CourseController
      */
     private static async createCourses(campus: Campus, courses: CampusActionTypes.GetCoursesResponse[]): Promise<void> {
-        const coursesFormated: ICourse[] = courses.map(course => ({
+        const coursesFormated: Course[] = courses.map(course => (new Course({
             campus: campus as ICampus,
             idOnCampus: course.id,
             fullname: course.fullname,
             shortname: course.shortname,
             status: Course.GetCourseStatusDefault(),
-        }));
-        console.log(courses);
-        
+        })));
         await Course.CreateMany(coursesFormated);
     }
 
@@ -39,8 +37,8 @@ export default class CourseController {
      * @memberof CourseController
      */
     private static async updateCourses(data: UpdateCoursesRequest): Promise<void> {
-        const coursesToUpdate: ICourse[] = data.courses.map(courseToUpdate => {
-            return {
+        const coursesToUpdate: Course[] = data.courses.map(courseToUpdate => (
+            new Course({
                 idOnCampus: courseToUpdate.newCourse.id,
                 campus: data.campus as ICampus,
                 fullname: courseToUpdate.newCourse.fullname,
@@ -48,8 +46,8 @@ export default class CourseController {
                 status: courseToUpdate.oldCourse
                     ? courseToUpdate.oldCourse.status
                     : Course.GetCourseStatusDefault(),
-            };
-        });
+            })
+        ));
         await Course.UpdateMany(coursesToUpdate);
     }
 
@@ -86,8 +84,6 @@ export default class CourseController {
     public static async readAll(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { campusUuid } = req.params;
-            console.log(req.query);
-            console.log(req.params);
             
             const lang = req.query.lang as ECourseLanguage || "es";
 
