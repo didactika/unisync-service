@@ -12,7 +12,7 @@ import { CourseFilter, CourseFormatedResponse, CourseStatus, ECourseLanguage, EC
  */
 export default class Course implements ICourse {
     public readonly id?: string;
-    public readonly idOnCampus?: number;
+    public readonly idOnCampus: number;
     public readonly uuid?: string;
     public readonly campus: ICampus;
     private _fullname: string;
