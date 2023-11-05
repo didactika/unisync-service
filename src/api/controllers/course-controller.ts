@@ -131,7 +131,7 @@ export default class CourseController {
             if (!campusUuid || !campusUuid.trim())
                 throw new httpClient.errors.BadRequest({ msg: "Invalid campus uuid" });
             if (!shortname || !shortname.trim())
-                throw new httpClient.errors.BadRequest({ msg: "Invalid course uuid" });
+                throw new httpClient.errors.BadRequest({ msg: "Invalid course shortname" });
 
             const campusFound = await Campus.ReadOneByFilter({ uuid: campusUuid });
             if (!campusFound)
@@ -143,6 +143,9 @@ export default class CourseController {
                 throw new httpClient.errors.NotFound({ msg: "Course not found" });
             
             const courseInformation = await campus.actions.GetCourseSchema(courseFound.id);
+
+            if (!courseInformation)
+                throw new httpClient.errors.NotFound({ msg: "Course not found" });
             
             res.status(200).json(courseInformation);
         } catch (error) {
