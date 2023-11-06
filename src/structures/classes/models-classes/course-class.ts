@@ -212,6 +212,17 @@ export default class Course implements ICourse {
     }
 
     /**
+     * @method UpdateOneByFilter
+     * @description Update one course by filter
+     * @param {CourseFilter} filter Filter to be used
+     * @param {Partial<ICourse>} update update to be used
+     * @memberof Course
+     */
+    public static async UpdateOneByFilter(filter: CourseFilter, update: Partial<ICourse>): Promise<void> {
+        await models.course.updateOne(filter, update);
+    }
+
+    /**
      * @method GetCourseStatusDefault
      * @description Get the course status default
      * @returns {CourseStatus} the course status default
