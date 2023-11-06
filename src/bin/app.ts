@@ -21,11 +21,11 @@ class App {
    * Setting express config
    */
   private config(): void {
-    this.app.use(express.json());
-    this.app.use(express.urlencoded({ extended: false }));
+    this.app.use(express.json({ limit: '1mb' }));
+    this.app.use(express.urlencoded({ limit: '1mb', extended: true }));
     this.app.use(cors());
     this.app.use("/api", router);
-    this.app.use((err: Error, req: Request, res: Response, next: NextFunction):void => {
+    this.app.use((err: Error, req: Request, res: Response, next: NextFunction): void => {
       ErrorMiddleware.responseError(err, res);
     });
   }
