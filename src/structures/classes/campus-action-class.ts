@@ -83,4 +83,32 @@ export default class CampusAction {
         const json = data.course_schema;
         return  JSON.parse(Parser.ParseUnicodeCharacters(json));
     }
+
+    /**
+     * @method CreateCourseBySchema
+     * @description Create a course by schema
+     * @param {CampusActionTypes.GetCourseSchemaObject} jsonSchema course schema
+     * @memberof CampusAction
+     * @returns {Promise<boolean>} true if course was created
+     */
+    public CreateCourseBySchema(jsonSchema: CampusActionTypes.GetCourseSchemaObject): boolean {
+        try {
+            moodleClient({
+                urlRequest: {
+                    rootURL: this.url,
+                    token: this.token,
+                    webServiceFunction: "local_unisync_course_create",
+                },
+                content: {
+                    course_schema: JSON.stringify(jsonSchema),
+                }
+            });
+            return true;
+        } catch (error) {
+            throw error;
+        }
+        
+    }
+
+
 }
