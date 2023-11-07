@@ -70,7 +70,7 @@ export default class CampusAction {
      * @memberof CampusAction
      */
     public async GetCourseSchema(courseid: number): Promise<CampusActionTypes.GetCourseSchemaObject> {
-        const data = (await moodleClient({
+        return (await moodleClient({
             urlRequest: {
                 rootURL: this.url,
                 token: this.token,
@@ -79,9 +79,7 @@ export default class CampusAction {
             content: {
                 courseid,
             }
-        })).data as CampusActionTypes.GetCourseSchemaResponse;
-        const json = data.course_schema;
-        return  JSON.parse(Parser.ParseUnicodeCharacters(json));
+        })).data as CampusActionTypes.GetCourseSchemaObject;
     }
 
     /**
