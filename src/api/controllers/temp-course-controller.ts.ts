@@ -66,7 +66,7 @@ export default class TempCourseController {
                 throw new httpClient.errors.NotFound({ msg: "Old campus not found" });
             const oldCampus = new Campus(oldCampusFound);
             
-            let courseFound = await Course.ReadOneByFilter({ campus: campus.id, shortname });
+            let courseFound = await Course.ReadOneByFilter({ campus: oldCampus.id, shortname });
             if (!courseFound)
                 throw new httpClient.errors.NotFound({ msg: "Course not found" });
 
@@ -136,7 +136,7 @@ export default class TempCourseController {
                 const oldCampus = new Campus(oldCampusFound);
 
 
-                let courseFound = await Course.ReadOneByFilter({ campus: campus.id, shortname });
+                let courseFound = await Course.ReadOneByFilter({ campus: oldCampus.id, shortname });
             if (!courseFound)
                 throw new httpClient.errors.NotFound({ msg: "Course not found" });
     
@@ -195,7 +195,7 @@ export default class TempCourseController {
                 throw new httpClient.errors.NotFound({ msg: "Old campus not found" });
             const oldCampus = new Campus(oldCampusFound);
 
-            let courseFound = await Course.ReadOneByFilter({ campus: campus.id, shortname });
+            let courseFound = await Course.ReadOneByFilter({ campus: oldCampus.id, shortname });
             if (!courseFound)
                 throw new httpClient.errors.NotFound({ msg: "Course not found" });
 
