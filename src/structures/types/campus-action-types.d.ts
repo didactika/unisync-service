@@ -14,7 +14,7 @@ export namespace CampusActionTypes {
         id: number;
         fullname: string;
         shortname: string;
-        visible: nummber;
+        visible: number;
         categoryid: number;
     }
 
