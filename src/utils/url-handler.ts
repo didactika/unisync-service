@@ -1,5 +1,5 @@
 import { Request } from "express";
-import constants from "../bin/constants";
+import constants from "../config";
 import httpClient from "http-response-client";
 
 /**
@@ -32,7 +32,7 @@ export default class URLHandler {
    * @memberof URLHandler
    */
   public static ObtainUrl(req: Request): string {
-    return `${req.protocol}://${req.headers.host}${constants.SERVICE_APP_NAME
+    return `${req.protocol}://${req.headers.host}${constants.app.APP_NAME
       }${req.baseUrl}${req.url.split("?")[0]}`;
   }
 }

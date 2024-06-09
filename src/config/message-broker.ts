@@ -1,0 +1,1 @@
+export const MESSAGE_BROKER_HOST = process.env.MESSAGE_BROKER_HOST;
