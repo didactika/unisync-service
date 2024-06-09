@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
-import constants from "./config";
+import config from "./config";
 import cors from "cors";
 import database from "./database";
 import router from "./api/routes/router";
@@ -11,7 +11,7 @@ class App {
   constructor() {
     this.app = express();
     console.log("Setting configs...")
-    this.config();
+    this.setConfig();
     console.log("Connecting database...");
     database.connect();
     console.log("App ready!!");
@@ -20,7 +20,7 @@ class App {
   /**
    * Setting express config
    */
-  private config(): void {
+  private setConfig(): void {
     this.app.use(express.json({ limit: '1mb' }));
     this.app.use(express.urlencoded({ limit: '1mb', extended: true }));
     this.app.use(cors());
@@ -35,8 +35,8 @@ class App {
    * @returns server
    */
   public run() {
-    return this.app.listen(constants.app.APP_PORT, async () => {
-      console.log(`Server Up on port: ${constants.app.APP_PORT}!!`);
+    return this.app.listen(config.app.APP_PORT, async () => {
+      console.log(`Server Up on port: ${config.app.APP_PORT}!!`);
     });
   }
 }

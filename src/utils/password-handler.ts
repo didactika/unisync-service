@@ -1,4 +1,4 @@
-import constants from "../bin/constants";
+import config from "../bin/config";
 import CryptoJS from "crypto-js";
 
 /**
@@ -13,7 +13,7 @@ export default class PasswordHandler {
    * @memberof PasswordHandler
    */
   public static EncryptPassword(plainPassword: string): string {
-    return CryptoJS.AES.encrypt(plainPassword, constants.CRYPTO_KEY).toString();
+    return CryptoJS.AES.encrypt(plainPassword, config.CRYPTO_KEY).toString();
   }
 
   /**
@@ -26,7 +26,7 @@ export default class PasswordHandler {
   private static DecryptPasswords(storedCryptoPassword: string): string {
       return CryptoJS.AES.decrypt(
         storedCryptoPassword,
-        constants.CRYPTO_KEY
+        config.CRYPTO_KEY
       ).toString(CryptoJS.enc.Utf8);
   }
 

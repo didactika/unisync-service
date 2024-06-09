@@ -1,7 +1,7 @@
 import { NextFunction } from "connect";
 import { Request, Response } from "express-serve-static-core";
 import JWT from "../../utils/jwt";
-import constants from "../../config";
+import config from "../../config";
 import { UserSessionPayload } from "../../structures/types/jwt-types";
 import httpClient from "http-response-client"
 import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
@@ -18,7 +18,7 @@ export default class SessionMiddleware {
         try{
             if (!req.headers.authorization) next(new httpClient.errors.Unauthorized({msg: "No session token provided"}));
             const sessionToken = req.headers.authorization!.split(" ")[1];
-            JWT.VerifyToken(sessionToken, constants.jwt.JWT_SECRET) as UserSessionPayload;
+            JWT.VerifyToken(sessionToken, config.jwt.JWT_SECRET) as UserSessionPayload;
             next();
         }
         catch(error){
