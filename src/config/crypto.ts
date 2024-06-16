@@ -1,1 +1,1 @@
-export const CRYPTO_KEY = process.env.CRYPTO_KEY;
+export const CRYPTO_KEY = process.env.CRYPTO_KEY as string;

@@ -1,8 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import config from "./config";
 import cors from "cors";
-import database from "./database";
-import router from "./api/routes/router";
+import DB from "./db";
 import ErrorResponseMiddleware from "http-response-client/lib/middlewares/error-response-middleware";
 
 class App {
@@ -12,8 +11,8 @@ class App {
     this.app = express();
     console.log("Setting configs...")
     this.setConfig();
-    console.log("Connecting database...");
-    database.connect();
+    console.log("Connecting to database...")
+    DB.initialize();
     console.log("App ready!!");
   }
 
@@ -24,7 +23,6 @@ class App {
     this.app.use(express.json({ limit: '1mb' }));
     this.app.use(express.urlencoded({ limit: '1mb', extended: true }));
     this.app.use(cors());
-    this.app.use("/api", router);
     this.app.use((err: Error, req: Request, res: Response, next: NextFunction): void => {
       ErrorResponseMiddleware.errorCatcher(err, res);
     });
