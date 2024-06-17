@@ -11,8 +11,6 @@ class ComponentManager {
 
   private async installComponent(component: string): Promise<void> {
     // Verify if component is installed if not install it
-    if ()
-    
     await ComponentLoader.loadComponents({
         componentsToSearch: [component],
         specificFile: "install.ts",
