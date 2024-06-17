@@ -1,4 +1,4 @@
-import config from "../config";
+import environment from "../config/environment";
 import CryptoJS from "crypto-js";
 
 /**

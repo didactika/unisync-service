@@ -1,5 +1,5 @@
 import { Request } from "express";
-import config from "../config";
+import environment from "../config/environment";
 import httpClient from "http-response-client";
 
 /**

@@ -6,6 +6,11 @@ export interface LoadOptions {
      * The directory to search for components.
      */
     directory?: string;
+
+    /**
+     * The components to search for.
+     */
+    componentsToSearch?: string[];
   
     /**
      * The method to call on the components.

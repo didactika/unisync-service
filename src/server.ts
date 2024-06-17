@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
-import config from "./config";
+import environment from "./config/environment";
 import cors from "cors";
 import DB from "./db";
 import ErrorResponseMiddleware from "http-response-client/lib/middlewares/error-response-middleware";
@@ -33,8 +33,8 @@ class App {
    * @returns server
    */
   public run() {
-    return this.app.listen(config.app.APP_PORT, async () => {
-      console.log(`Server Up on port: ${config.app.APP_PORT}!!`);
+    return this.app.listen(environment.app.APP_PORT, async () => {
+      console.log(`Server Up on port: ${environment.app.APP_PORT}!!`);
     });
   }
 }

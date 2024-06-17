@@ -28,8 +28,13 @@ class ComponentLoader {
    * Get the list of component directories.
    * @returns The list of component directories.
    */
-  private static getComponentDirectories(): string[] {
-    return Object.values(componentsJSON as ComponentConfig).flatMap((type) => Object.values(type));
+  private static getComponentDirectories(componentToSearch?: string[]): string[] {
+    if (!componentToSearch || componentToSearch.length === 0)
+      return Object.values(componentsJSON as ComponentConfig).flatMap((type) => Object.values(type));
+
+    return Object.values(componentsJSON as ComponentConfig)
+      .flatMap((type) => Object.values(type))
+      .filter((type) => componentToSearch.includes(type));
   }
 
   /**
@@ -42,7 +47,10 @@ class ComponentLoader {
     if (!fs.existsSync(componentsDir)) {
       return [];
     }
-    return specificFile ? [specificFile] : fs.readdirSync(componentsDir);
+    if (specificFile && fs.existsSync(path.join(componentsDir, specificFile))) {
+      return [specificFile];
+    }
+    return fs.readdirSync(componentsDir);
   }
 
   /**
@@ -90,13 +98,12 @@ class ComponentLoader {
    * @returns The loaded components or null.
    */
   public static async loadComponents(options: LoadOptions = {}) {
-    const componentDirectories = this.getComponentDirectories();
+    const componentDirectories = this.getComponentDirectories(options.componentsToSearch);
     const directory = options.directory;
     const components: any[] = [];
 
     for (const component of componentDirectories) {
       const componentsDir = path.join(__dirname, `../../modules/${component}/${directory}`);
-      console.log(`Loading components from ${componentsDir}`);
 
       const files = this.loadFilesFromDirectory(componentsDir, options.specificFile);
       const componentType = this.getComponentType(component);

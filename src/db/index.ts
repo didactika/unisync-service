@@ -1,9 +1,10 @@
 import { Sequelize } from "sequelize-typescript";
 import { Client } from "pg";
-import config from "../config/index";
-import fs from 'fs';
-import path from 'path';
+import environment from "../config/environment/index";
+import fs from "fs";
+import path from "path";
 import ComponentLoader from "../core/components/component-loader";
+import ComponentManager from "../core/components/component-manager";
 
 /**
  * @class Database
@@ -14,20 +15,22 @@ class DB {
 
   private constructor() {
     this.sequelize = new Sequelize({
-      database: config.database.DB_NAME,
-      username: config.database.DB_USERNAME,
-      password: config.database.DB_PASSWORD,
-      host: config.database.DB_HOST,
-      port: parseInt(config.database.DB_PORT),
-      dialect: config.database.DB_DIALECT,
-      logging: Boolean(config.database.DB_LOGGING),
+      database: environment.database.DB_NAME,
+      username: environment.database.DB_USERNAME,
+      password: environment.database.DB_PASSWORD,
+      host: environment.database.DB_HOST,
+      port: parseInt(environment.database.DB_PORT),
+      dialect: environment.database.DB_DIALECT,
+      logging: Boolean(environment.database.DB_LOGGING),
       retry: {
-        max: parseInt(config.database.DB_RETRY_MAX),
-        timeout: parseInt(config.database.DB_RETRY_TIMEOUT),
+        max: parseInt(environment.database.DB_RETRY_MAX),
+        timeout: parseInt(environment.database.DB_RETRY_TIMEOUT),
       },
     });
     this.connect();
-    this.initializeModels();
+    this.initializeModels().then(() => {
+      new ComponentManager();
+    });
   }
 
   /**
@@ -35,17 +38,17 @@ class DB {
    */
   private async ensureDatabaseExists(): Promise<void> {
     const client = new Client({
-      connectionString: `${config.database.DB_DIALECT}://${config.database.DB_USERNAME}:${config.database.DB_PASSWORD}@${config.database.DB_HOST}:${config.database.DB_PORT}/${config.database.DB_DIALECT}`,
+      connectionString: `${environment.database.DB_DIALECT}://${environment.database.DB_USERNAME}:${environment.database.DB_PASSWORD}@${environment.database.DB_HOST}:${environment.database.DB_PORT}/${environment.database.DB_DIALECT}`,
     });
 
     try {
       await client.connect();
-      const res = await client.query(`SELECT 1 FROM pg_database WHERE datname = '${config.database.DB_NAME}';`);
+      const res = await client.query(`SELECT 1 FROM pg_database WHERE datname = '${environment.database.DB_NAME}';`);
       if (res.rowCount === 0) {
-        await client.query(`CREATE DATABASE ${config.database.DB_NAME};`);
-        console.log(`Database ${config.database.DB_NAME} created successfully.`);
+        await client.query(`CREATE DATABASE ${environment.database.DB_NAME};`);
+        console.log(`Database ${environment.database.DB_NAME} created successfully.`);
       } else {
-        console.log(`Database ${config.database.DB_NAME} already exists.`);
+        console.log(`Database ${environment.database.DB_NAME} already exists.`);
       }
     } catch (error: any) {
       console.error(`Error ensuring database exists: ${error.message}`);
@@ -68,18 +71,18 @@ class DB {
       console.error("Unable to connect to the database:", err);
     }
   }
-  
-    /**
-     * Inicializar modelos dinámicamente
-     */
-    private async initializeModels(): Promise<void> {
-      await ComponentLoader.loadComponents({
-        directory: 'db/models',
-        method: 'initialize',
-        params: { sequelize: this.sequelize },
-        componentTypeParam: true
-      });
-    }
+
+  /**
+   * Inicializar modelos dinámicamente
+   */
+  private async initializeModels(): Promise<void> {
+    await ComponentLoader.loadComponents({
+      directory: "db/models",
+      method: "initialize",
+      params: { sequelize: this.sequelize },
+      componentTypeParam: true,
+    });
+  }
 
   /**
    * Initialize the database
@@ -103,7 +106,7 @@ class DB {
       this.initialize();
     }
     return DB.instance;
-  };
+  }
 }
 
 export default DB;
