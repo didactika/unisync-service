@@ -1,19 +1,18 @@
 import { Sequelize } from "sequelize-typescript";
 import { Client } from "pg";
-import environment from "../config/environment/index";
-import fs from "fs";
-import path from "path";
-import ComponentLoader from "../core/components/component-loader";
-import ComponentManager from "../core/components/component-manager";
+import environment from "../../config/environment/index";
+import ComponentLoader from "../component/classes/component-loader";
+import ComponentManager from "../component/classes/component-manager";
 
 /**
  * @class Database
  */
 class DB {
-  private sequelize: Sequelize;
+  public readonly sequelize: Sequelize;
   private static instance: DB;
 
   private constructor() {
+    DB.instance = this;
     this.sequelize = new Sequelize({
       database: environment.database.DB_NAME,
       username: environment.database.DB_USERNAME,
@@ -28,9 +27,7 @@ class DB {
       },
     });
     this.connect();
-    this.initializeModels().then(() => {
-      new ComponentManager();
-    });
+    new ComponentManager();
   }
 
   /**

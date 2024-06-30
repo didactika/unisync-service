@@ -5,8 +5,8 @@
         "qtype": "question\/type"
     },
     "systemtypes": {
-        "campus": "campus",
-        "user": "user"
+        "user": "user",
+        "campus": "campus"
     },
     "subsystemtypes": {
         "course": "course",

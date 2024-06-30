@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import environment from "./config/environment";
 import cors from "cors";
-import DB from "./db";
+import DB from "./core/db";
 import ErrorResponseMiddleware from "http-response-client/lib/middlewares/error-response-middleware";
 
 class App {

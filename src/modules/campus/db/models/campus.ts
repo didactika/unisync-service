@@ -1,6 +1,6 @@
-import BaseModel from "../../../../db/models/base-model";
+import BaseModel from "../../../../core/db/models/base-model";
 import { CampusAttributes, CampusCreationAttributes } from "../../types/db/campus";
-import { InitializeParams } from "../../../../types/db/models/initialize-params";
+import { InitializeParams } from "../../../../core/db/types/models/initialize-params";
 import campusSchema from "../schemas/campus-schema";
 
 class CampusModel extends BaseModel<CampusAttributes, CampusCreationAttributes> {

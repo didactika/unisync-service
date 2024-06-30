@@ -1,6 +1,6 @@
 import { UserAttributes, UserCreationAttributes } from "../../types/db/models/user";
-import BaseModel from "../../../../db/models/base-model";
-import { InitializeParams } from "../../../../types/db/models/initialize-params";
+import BaseModel from "../../../../core/db/models/base-model";
+import { InitializeParams } from "../../../../core/db/types/models/initialize-params";
 import userSchema from "../schemas/user-schema";
 
 class UserModel extends BaseModel<UserAttributes, UserCreationAttributes> {

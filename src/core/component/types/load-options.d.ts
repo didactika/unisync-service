@@ -8,6 +8,16 @@ export interface LoadOptions {
     directory?: string;
 
     /**
+     * Path to the directory to search for components.
+     */
+    directoryPath?: string;
+
+    /**
+     * The component directories to search for.
+     */
+    componentDirectories?: string[];
+
+    /**
      * The components to search for.
      */
     componentsToSearch?: string[];

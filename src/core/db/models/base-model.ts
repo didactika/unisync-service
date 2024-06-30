@@ -1,18 +1,24 @@
 import { InitOptions, Model, ModelAttributes, ModelStatic, Sequelize } from "sequelize";
-import components from "../../config/components.json";
-import { ModelError } from "../../errors/db/model-error";
+import components from "../../../config/components.json";
+import { ModelError } from "../../../errors/db/model-error";
 import { Model as ModelType } from "sequelize-typescript";
-import { InitializeParams } from "../../types/db/models/initialize-params";
+import { InitializeParams } from "../types/models/initialize-params";
 
 abstract class BaseModel<T extends {} = any, TCreation extends {} = any> extends Model<T, TCreation> {
+  protected static isInitialized = false;
+
   static initialize(params: InitializeParams): void {
     throw new Error("Initialize method must be implemented in the child class of BaseModel");
   }
 
   static init(attributes: ModelAttributes, options: InitOptions<Model> & { componentType: string }): any {
+    if (this.isInitialized) {
+      return;
+    }
     if (!options.tableName) {
       throw new Error("Table name must be provided");
     }
+    this.isInitialized = true;
     const prefix = this.getPrefix(options.componentType);
     const finalOptions: InitOptions<Model> & { componentType: string } = {
       ...options,
@@ -28,7 +34,7 @@ abstract class BaseModel<T extends {} = any, TCreation extends {} = any> extends
     if (componentType in subsystemtypes) {
       return "core";
     }
-    if (componentType in systemtypes) {
+    if (componentType in systemtypes || componentType === "systemtypes") {
       return "system";
     }
     if (componentType in plugintypes) {

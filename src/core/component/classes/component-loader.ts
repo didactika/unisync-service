@@ -1,8 +1,9 @@
 import fs from "fs";
 import path from "path";
-import componentsJSON from "../../config/components.json";
-import { ComponentConfig } from "../../types/core/components/component-config";
-import { LoadOptions } from "../../types/core/components/load-options";
+import componentsJSON from "../../../config/components.json";
+import { ComponentConfig } from "../../../types/component-config";
+import { LoadOptions } from "../types/load-options";
+import { LoadPathEnum } from "../enums/load-path-enum";
 
 /**
  * Class responsible for dynamically loading and initializing components.
@@ -32,9 +33,11 @@ class ComponentLoader {
     if (!componentToSearch || componentToSearch.length === 0)
       return Object.values(componentsJSON as ComponentConfig).flatMap((type) => Object.values(type));
 
-    return Object.values(componentsJSON as ComponentConfig)
-      .flatMap((type) => Object.values(type))
-      .filter((type) => componentToSearch.includes(type));
+    return (
+      Object.values(componentsJSON as ComponentConfig)
+        .flatMap((type) => Object.values(type))
+        .filter((type) => componentToSearch.includes(type)) ?? componentToSearch
+    );
   }
 
   /**
@@ -98,12 +101,17 @@ class ComponentLoader {
    * @returns The loaded components or null.
    */
   public static async loadComponents(options: LoadOptions = {}) {
-    const componentDirectories = this.getComponentDirectories(options.componentsToSearch);
+    const componentDirectories = options.componentDirectories
+      ? options.componentDirectories
+      : this.getComponentDirectories(options.componentsToSearch);
     const directory = options.directory;
     const components: any[] = [];
 
     for (const component of componentDirectories) {
-      const componentsDir = path.join(__dirname, `../../modules/${component}/${directory}`);
+      const componentsDir = path.join(
+        __dirname,
+        `../../../${options.directoryPath ?? LoadPathEnum.MODULES}/${component}/${directory}`
+      );
 
       const files = this.loadFilesFromDirectory(componentsDir, options.specificFile);
       const componentType = this.getComponentType(component);
