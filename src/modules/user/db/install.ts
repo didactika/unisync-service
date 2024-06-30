@@ -1,5 +1,4 @@
 import environment from "../../../config/environment";
-import User from "../classes/user";
 import UserModel from "./models/user-model";
 
 /**

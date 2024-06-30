@@ -1,6 +1,7 @@
 import { UUIDV4 } from "sequelize";
-import CampusModel from "../db/models/campus";
-import { ICampus } from "../types/classes/campus-interface";
+import CampusModel from "../../db/models/campus";
+import { ICampus } from "../../types/classes/campus-interface";
+import { CampusFilter } from "../../types/classes/campus-filter";
 
 class Campus implements ICampus {
   public readonly id: number | undefined;
@@ -96,6 +97,19 @@ class Campus implements ICampus {
         updatedAt: this.updatedAt,
       })
     ).dataValues as ICampus;
+  }
+
+  public static async findAll(): Promise<ICampus[]> {
+    return (await CampusModel.findAll()).map((campus) => campus.dataValues as ICampus);
+  }
+
+  public static async findManyByFilter(filter: CampusFilter): Promise<ICampus[]> {
+    return (await CampusModel.findAll({ where: filter })).map((campus) => campus.dataValues as ICampus);
+  }
+
+  public static async findOneByFilter(filter: CampusFilter): Promise<ICampus | null> {
+    const campus = await CampusModel.findOne({ where: filter });
+    return campus ? (campus.dataValues as ICampus) : null;
   }
 
   public async delete(): Promise<number> {

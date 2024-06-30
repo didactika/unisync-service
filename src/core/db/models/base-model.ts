@@ -42,6 +42,10 @@ abstract class BaseModel<T extends {} = any, TCreation extends {} = any> extends
     }
     throw new ModelError(this.name, `Plugin Type '${componentType}' is invalid.`);
   }
+
+  protected static addHooks(): void {
+    // Add hooks here
+  }
 }
 
 export default BaseModel;
