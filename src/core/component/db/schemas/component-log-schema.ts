@@ -1,5 +1,4 @@
 import { DataTypes, ModelAttributes } from "sequelize";
-import UserModel from "../../../../modules/user/db/models/user-model";
 
 const componentLogSchema: ModelAttributes = {
   id: {

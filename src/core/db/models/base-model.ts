@@ -5,6 +5,12 @@ import { Model as ModelType } from "sequelize-typescript";
 import { InitializeParams } from "../types/models/initialize-params";
 
 abstract class BaseModel<T extends {} = any, TCreation extends {} = any> extends Model<T, TCreation> {
+  findAll(arg0: { where: object; }) {
+      throw new Error("Method not implemented.");
+  }
+  findOne(arg0: { where: object; }) {
+      throw new Error("Method not implemented.");
+  }
   protected static isInitialized = false;
 
   static initialize(params: InitializeParams): void {
@@ -26,6 +32,7 @@ abstract class BaseModel<T extends {} = any, TCreation extends {} = any> extends
     };
     const thisClass = this as any as ModelStatic<ModelType<any, any>>;
     Model.init.call(thisClass, attributes, finalOptions);
+    this.sequelize?.sync();
   }
 
   protected static getPrefix(componentType: string): string {

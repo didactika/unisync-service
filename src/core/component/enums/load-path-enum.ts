@@ -1,4 +1,4 @@
-export const LoadPathEnum = {
-  MODULES: "modules",
-  CORE: "core",
-};
+export enum ELoadPath {
+  "MODULES" = "modules",
+  "CORE" = "core",
+}

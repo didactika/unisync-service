@@ -3,28 +3,13 @@ import path from "path";
 import componentsJSON from "../../../config/components.json";
 import { ComponentConfig } from "../../../types/component-config";
 import { LoadOptions } from "../types/load-options";
-import { LoadPathEnum } from "../enums/load-path-enum";
+import { ELoadPath } from "../enums/load-path-enum";
+import { ComponentManager } from "./manager/component-manager";
 
 /**
  * Class responsible for dynamically loading and initializing components.
  */
 class ComponentLoader {
-  /**
-   * Get the component type based on the directory.
-   * @param directory - The directory to get the component type for.
-   * @returns The component type as a string.
-   */
-  private static getComponentType(directory: string): string {
-    for (const [type, plugins] of Object.entries(componentsJSON as ComponentConfig)) {
-      for (const [plugin, dir] of Object.entries(plugins)) {
-        if (dir === directory) {
-          return plugin;
-        }
-      }
-    }
-    return "unknown";
-  }
-
   /**
    * Get the list of component directories.
    * @returns The list of component directories.
@@ -95,6 +80,21 @@ class ComponentLoader {
     }
   }
 
+  public static getComponentPath(componentDir: string, directoryPath?: string,): string {
+    let directory = directoryPath;
+    if (!directoryPath) {
+      switch (ComponentManager.getComponentNature(componentDir)) {
+        case "systemtypes":
+          directory = ELoadPath.CORE;
+          break;
+        default:
+          directory = ELoadPath.MODULES;
+          break;
+      }
+    }
+    return path.join(__dirname, `../../../${directory}/${componentDir}`);
+  }
+
   /**
    * Load components from the specified directory and call a method on them.
    * @param options - The options for loading components.
@@ -108,13 +108,11 @@ class ComponentLoader {
     const components: any[] = [];
 
     for (const component of componentDirectories) {
-      const componentsDir = path.join(
-        __dirname,
-        `../../../${options.directoryPath ?? LoadPathEnum.MODULES}/${component}/${directory}`
-      );
+      const componentsDir = path.join(this.getComponentPath(component, options.directoryPath), `${directory}`);
+      console.log(`Loading components from ${componentsDir}`);
 
       const files = this.loadFilesFromDirectory(componentsDir, options.specificFile);
-      const componentType = this.getComponentType(component);
+      const componentType = ComponentManager.getComponentType(component);
 
       for (const file of files) {
         const filePath = path.join(componentsDir, file);

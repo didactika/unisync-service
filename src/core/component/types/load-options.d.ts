@@ -1,3 +1,5 @@
+import { LoadPathEnum } from "../enums/load-path-enum";
+
 /**
  * Interface representing the options for loading components.
  */
@@ -10,7 +12,7 @@ export interface LoadOptions {
     /**
      * Path to the directory to search for components.
      */
-    directoryPath?: string;
+    directoryPath?: LoadPathEnum;
 
     /**
      * The component directories to search for.

@@ -3,7 +3,7 @@ import environment from "./config/environment";
 import cors from "cors";
 import DB from "./core/db";
 import ErrorResponseMiddleware from "http-response-client/lib/middlewares/error-response-middleware";
-
+import InstallComponentManager from "./core/component/classes/manager/install-component-manager";
 class App {
   private app: express.Application;
 
@@ -11,8 +11,7 @@ class App {
     this.app = express();
     console.log("Setting configs...")
     this.setConfig();
-    console.log("Connecting to database...")
-    DB.initialize();
+    
     console.log("App ready!!");
   }
 
@@ -32,7 +31,14 @@ class App {
    * Run server
    * @returns server
    */
-  public run() {
+  public async run() {
+    console.log("Connecting to database...")
+    await DB.initialize();
+    const installComponentManager = InstallComponentManager.getInstance();
+    installComponentManager.installComponents(await installComponentManager.verifyPluginsForInstall({
+      includeSubsystem: true,
+      includeSystem: true,
+    }));
     return this.app.listen(environment.app.APP_PORT, async () => {
       console.log(`Server Up on port: ${environment.app.APP_PORT}!!`);
     });

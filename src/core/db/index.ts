@@ -2,7 +2,7 @@ import { Sequelize } from "sequelize-typescript";
 import { Client } from "pg";
 import environment from "../../config/environment/index";
 import ComponentLoader from "../component/classes/component-loader";
-import ComponentManager from "../component/classes/component-manager";
+import { ELoadPath } from "../component/enums/load-path-enum";
 
 /**
  * @class Database
@@ -12,7 +12,6 @@ class DB {
   private static instance: DB;
 
   private constructor() {
-    DB.instance = this;
     this.sequelize = new Sequelize({
       database: environment.database.DB_NAME,
       username: environment.database.DB_USERNAME,
@@ -26,8 +25,21 @@ class DB {
         timeout: parseInt(environment.database.DB_RETRY_TIMEOUT),
       },
     });
-    this.connect();
-    new ComponentManager();
+  }
+
+  /**
+   * Database connection
+   */
+  private async connect(): Promise<void> {
+    await this.ensureDatabaseExists();
+    try {
+      await this.sequelize.authenticate();
+      console.log("Database connection successful");
+      await this.sequelize.sync();
+      console.log("Database synchronized");
+    } catch (err) {
+      console.error("Unable to connect to the database:", err);
+    }
   }
 
   /**
@@ -55,25 +67,11 @@ class DB {
   }
 
   /**
-   * Database connection
-   */
-  private async connect(): Promise<void> {
-    await this.ensureDatabaseExists();
-    try {
-      await this.sequelize.authenticate();
-      console.log("Database connection successful");
-      await this.sequelize.sync();
-      console.log("Database synchronized");
-    } catch (err) {
-      console.error("Unable to connect to the database:", err);
-    }
-  }
-
-  /**
    * Inicializar modelos dinámicamente
    */
-  private async initializeModels(): Promise<void> {
+  public async initializeModels(component:string): Promise<void> {
     await ComponentLoader.loadComponents({
+      componentDirectories: [component],
       directory: "db/models",
       method: "initialize",
       params: { sequelize: this.sequelize },
@@ -85,13 +83,9 @@ class DB {
    * Initialize the database
    * @returns {boolean} true if the database is initialized, false if not
    */
-  public static initialize(): boolean {
-    if (!DB.instance) {
-      DB.instance = new DB();
-      return true;
-    } else {
-      return false;
-    }
+  public static async initialize(): Promise<void> {
+    DB.instance = new DB();
+    await DB.instance.connect();
   }
 
   /**
@@ -99,9 +93,6 @@ class DB {
    * @returns {DB} the database instance
    */
   public static getInstance(): DB {
-    if (!DB.instance) {
-      this.initialize();
-    }
     return DB.instance;
   }
 }
