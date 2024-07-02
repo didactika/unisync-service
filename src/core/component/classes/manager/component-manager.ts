@@ -7,12 +7,8 @@ import { EComponentNature } from "../../enums/component-nature-enum";
 
 export abstract class ComponentManager {
   protected _components: ComponentConfig = components;
-
-  constructor() {
-    this.initializeModels();
-  }
-
-  private async initializeModels(): Promise<void> {
+  
+  protected async initializeModels(): Promise<void> {
     await ComponentLoader.loadComponents({
       directoryPath: ELoadPath.CORE,
       componentDirectories: ["component"],
@@ -53,6 +49,6 @@ export abstract class ComponentManager {
         }
       }
     }
-    return "unknown";
+    return EComponentNature.SYSTEM;
   }
 }

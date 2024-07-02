@@ -34,8 +34,9 @@ class App {
   public async run() {
     console.log("Connecting to database...")
     await DB.initialize();
-    const installComponentManager = InstallComponentManager.getInstance();
-    installComponentManager.installComponents(await installComponentManager.verifyPluginsForInstall({
+    const installComponentManager = await InstallComponentManager.getInstance();
+    await installComponentManager.installBasicSystemComponents();
+    await installComponentManager.installComponents(await installComponentManager.verifyPluginsForInstall({
       includeSubsystem: true,
       includeSystem: true,
     }));

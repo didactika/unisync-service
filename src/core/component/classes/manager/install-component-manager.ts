@@ -5,6 +5,8 @@ import { ComponentManager } from "./component-manager";
 import { InstalledComponent } from "../entities/installed-component";
 import { PluginInfo, VerifyPluginsOptions } from "../../types/classes/manager/install-component-manager-types";
 import { EComponentNature } from "../../enums/component-nature-enum";
+import path from "path";
+import { ELoadPath } from "../../enums/load-path-enum";
 
 class InstallComponentManager extends ComponentManager {
   private static instance: InstallComponentManager;
@@ -13,9 +15,10 @@ class InstallComponentManager extends ComponentManager {
     super();
   }
 
-  public static getInstance(): InstallComponentManager {
+  public static async getInstance(): Promise<InstallComponentManager> {
     if (!InstallComponentManager.instance) {
       InstallComponentManager.instance = new InstallComponentManager();
+      await InstallComponentManager.instance.initializeModels();
     }
     return InstallComponentManager.instance;
   }
@@ -58,6 +61,29 @@ class InstallComponentManager extends ComponentManager {
         await this.registryComponent(dir, versionInfo);
       } catch (error) {
         console.error(`Error installing component: ${component}`, error);
+      }
+    }
+  }
+
+  public async installBasicSystemComponents() {
+    const dir = path.join(__dirname, "../../../..");
+    const versionInfo = await this.getVersionInfo('..');
+    if (!versionInfo) return;
+
+    const isInstalled = await this.isComponentInstalled(versionInfo);
+    if (!isInstalled) {
+      try {
+        await DB.getInstance().initializeBaseSystemModels();
+        await ComponentLoader.loadComponents({
+          directoryPath: ELoadPath.CORE,
+          componentDirectories: ["db"],
+          directory: "",
+          specificFile: "install.ts",
+          method: "execute",
+        });
+        await this.registryComponent(dir, versionInfo);
+      } catch (error) {
+        console.error(`Error installing component: system`, error);
       }
     }
   }

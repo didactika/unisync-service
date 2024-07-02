@@ -70,7 +70,7 @@ class DB {
   /**
    * Inicializar modelos del sistema dinámicamente
    */
-  private async initializeBaseModels(): Promise<void> {
+  public async initializeBaseSystemModels(): Promise<void> {
     await ComponentLoader.loadComponents({
       directoryPath: ELoadPath.CORE,
       componentDirectories: ["db"],
@@ -100,7 +100,6 @@ class DB {
   public static async initialize(): Promise<void> {
     DB.instance = new DB();
     await DB.instance.connect();
-    await DB.instance.initializeBaseModels();
   }
 
   /**
