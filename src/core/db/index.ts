@@ -3,6 +3,7 @@ import { Client } from "pg";
 import environment from "../../config/environment/index";
 import ComponentLoader from "../component/classes/component-loader";
 import { ELoadPath } from "../component/enums/load-path-enum";
+import { EComponentNature } from "../component/enums/component-nature-enum";
 
 /**
  * @class Database
@@ -67,9 +68,22 @@ class DB {
   }
 
   /**
+   * Inicializar modelos del sistema dinámicamente
+   */
+  private async initializeBaseModels(): Promise<void> {
+    await ComponentLoader.loadComponents({
+      directoryPath: ELoadPath.CORE,
+      componentDirectories: ["db"],
+      directory: "models",
+      method: "initialize",
+      params: { sequelize: this.sequelize, componentType: EComponentNature.SYSTEM },
+    });
+  }
+
+  /**
    * Inicializar modelos dinámicamente
    */
-  public async initializeModels(component:string): Promise<void> {
+  public async initializeModel(component: string): Promise<void> {
     await ComponentLoader.loadComponents({
       componentDirectories: [component],
       directory: "db/models",
@@ -86,6 +100,7 @@ class DB {
   public static async initialize(): Promise<void> {
     DB.instance = new DB();
     await DB.instance.connect();
+    await DB.instance.initializeBaseModels();
   }
 
   /**

@@ -1,6 +1,4 @@
-import path from "path";
 import { VersionInfo } from "../../../../types/version-info";
-import { ELoadPath } from "../../enums/load-path-enum";
 import ComponentLoader from "../component-loader";
 import DB from "../../../db";
 import { ComponentManager } from "./component-manager";
@@ -55,7 +53,7 @@ class InstallComponentManager extends ComponentManager {
     const isInstalled = await this.isComponentInstalled(versionInfo);
     if (!isInstalled) {
       try {
-        await DB.getInstance().initializeModels(component);
+        await DB.getInstance().initializeModel(component);
         await this.executeInstallFile(component);
         await this.registryComponent(dir, versionInfo);
       } catch (error) {

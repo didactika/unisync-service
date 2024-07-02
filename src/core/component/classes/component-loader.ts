@@ -77,11 +77,12 @@ class ComponentLoader {
    */
   private static initializeComponent(component: any, method: string, params: object[] | object | undefined) {
     if (component && component.default && typeof component.default[method] === "function") {
+      if (component.default.name.includes("Base")) return;
       component.default[method](params ?? {});
     }
   }
 
-  public static getComponentPath(componentDir: string, directoryPath?: string,): string {
+  public static getComponentPath(componentDir: string, directoryPath?: string): string {
     let directory = directoryPath;
     if (!directoryPath) {
       switch (ComponentManager.getComponentNature(componentDir)) {
