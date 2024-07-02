@@ -1,5 +1,5 @@
 export enum EComponentNature {
   "SYSTEM" = "systemtypes",
-  "SUBSYSTEM" = "sybsystemtypes",
+  "SUBSYSTEM" = "subsystemtypes",
   "PLUGIN" = "plugintypes",
 }

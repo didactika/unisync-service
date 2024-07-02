@@ -5,6 +5,7 @@ import { ComponentConfig } from "../../../types/component-config";
 import { LoadOptions } from "../types/load-options";
 import { ELoadPath } from "../enums/load-path-enum";
 import { ComponentManager } from "./manager/component-manager";
+import { EComponentNature } from "../enums/component-nature-enum";
 
 /**
  * Class responsible for dynamically loading and initializing components.
@@ -84,7 +85,7 @@ class ComponentLoader {
     let directory = directoryPath;
     if (!directoryPath) {
       switch (ComponentManager.getComponentNature(componentDir)) {
-        case "systemtypes":
+        case EComponentNature.SYSTEM:
           directory = ELoadPath.CORE;
           break;
         default:

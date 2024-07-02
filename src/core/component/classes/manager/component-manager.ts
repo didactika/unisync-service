@@ -3,6 +3,7 @@ import components from "../../../../config/components.json";
 import ComponentLoader from "../component-loader";
 import DB from "../../../db";
 import { ELoadPath } from "../../enums/load-path-enum";
+import { EComponentNature } from "../../enums/component-nature-enum";
 
 export abstract class ComponentManager {
   protected _components: ComponentConfig = components;
@@ -17,7 +18,7 @@ export abstract class ComponentManager {
       componentDirectories: ["component"],
       directory: "db/models",
       method: "initialize",
-      params: { sequelize: DB.getInstance().sequelize, componentType: "systemtypes" },
+      params: { sequelize: DB.getInstance().sequelize, componentType: EComponentNature.SYSTEM },
     });
   }
 

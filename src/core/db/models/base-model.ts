@@ -3,6 +3,7 @@ import components from "../../../config/components.json";
 import { ModelError } from "../../../errors/db/model-error";
 import { Model as ModelType } from "sequelize-typescript";
 import { InitializeParams } from "../types/models/initialize-params";
+import { EComponentNature } from "../../component/enums/component-nature-enum";
 
 abstract class BaseModel<T extends {} = any, TCreation extends {} = any> extends Model<T, TCreation> {
   findAll(arg0: { where: object; }) {
@@ -41,7 +42,7 @@ abstract class BaseModel<T extends {} = any, TCreation extends {} = any> extends
     if (componentType in subsystemtypes) {
       return "core";
     }
-    if (componentType in systemtypes || componentType === "systemtypes") {
+    if (componentType in systemtypes || componentType === EComponentNature.SYSTEM) {
       return "system";
     }
     if (componentType in plugintypes) {

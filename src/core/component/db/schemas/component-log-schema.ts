@@ -2,7 +2,7 @@ import { DataTypes, ModelAttributes } from "sequelize";
 
 const componentLogSchema: ModelAttributes = {
   id: {
-    type: DataTypes.INTEGER.UNSIGNED,
+    type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
   },
