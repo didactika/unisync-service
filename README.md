@@ -101,7 +101,12 @@ Thanks goes to these people:
   <tbody>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/hector-ae21"><img src="https://avatars.githubusercontent.com/u/87265357?v=4" width="100px;" alt="Hector L. Arrechea"/><br /><sub><b>Hector L. Arrechea</b></sub></a><br /><a title="Code">💻</a> <a title="Documentation">📖</a> <a title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a title="Tests">⚠️</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/E2RD0"><img src="https://avatars.githubusercontent.com/u/20119863?v=4" width="100px;" alt="Eduardo Estrada"/><br /><sub><b>Eduardo Estrada</b></sub></a><br /><a title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/eirik-rosete"><img src="https://avatars.githubusercontent.com/u/145449142?v=4" width="100px;" alt="Eirik A. Rosete"/><br /><sub><b>Eirik Rosete</b></sub></a><br /><a title="Code">💻</a></td>
     </tr>
+
+      
+
   </tbody>
 </table>
 
