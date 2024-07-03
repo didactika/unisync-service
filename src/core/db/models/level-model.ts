@@ -1,5 +1,5 @@
 import levelSchema from "../schemas/level-schema";
-import { LevelAttributes, LevelCreationAttributes } from "../types/db/models/level";
+import { LevelAttributes, LevelCreationAttributes } from "../types/models/level";
 import { InitializeParams } from "../types/models/initialize-params";
 import BaseModel from "./base-model";
 

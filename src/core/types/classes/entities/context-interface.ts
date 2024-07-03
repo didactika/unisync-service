@@ -1,4 +1,4 @@
-import { ContextCreationAttributes } from "../db/models/context";
+import { ContextCreationAttributes } from "../../../db/types/models/context";
 
 export interface IContext extends ContextCreationAttributes {
   id?: number;

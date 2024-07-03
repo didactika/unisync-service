@@ -1,5 +1,5 @@
 import contextSchema from "../schemas/context-schema";
-import { ContextAttributes, ContextCreationAttributes } from "../types/db/models/context";
+import { ContextAttributes, ContextCreationAttributes } from "../types/models/context";
 import { InitializeParams } from "../types/models/initialize-params";
 import BaseModel from "./base-model";
 

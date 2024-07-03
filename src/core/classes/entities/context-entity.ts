@@ -1,6 +1,5 @@
-import { DataTypes, UUIDV4 } from "sequelize";
 import ContextModel from "../../db/models/context-model";
-import { IContext } from "../../db/types/classes/context-interface";
+import { IContext } from "../../types/classes/entities/context-interface";
 import BaseEntity from "./base-entity";
 
 class Context extends BaseEntity<IContext> implements IContext {
