@@ -10,7 +10,6 @@ class CategoryModel extends BaseModel<CategoryAttributes, CategoryCreationAttrib
       tableName: "categories",
       ...params,
     });
-    this.associate();
   }
 
   protected static associate() {

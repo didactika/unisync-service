@@ -1,4 +1,5 @@
 import { DataTypes, ModelAttributes } from "sequelize";
+import { EMigrationStatus } from "../../enums/migration-status-enum";
 
 const levelInstanceStatusSchema: ModelAttributes = {
   id: {
@@ -25,7 +26,7 @@ const levelInstanceStatusSchema: ModelAttributes = {
     },
   },
   status: {
-    type: DataTypes.ENUM("pending", "inprogress", "migrated", "errors"),
+    type: DataTypes.ENUM(typeof EMigrationStatus),
     allowNull: false,
     validate: {
       notEmpty: {

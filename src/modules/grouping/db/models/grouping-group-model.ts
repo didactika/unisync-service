@@ -1,7 +1,9 @@
 import BaseModel from "../../../../core/db/models/base-model";
 import { InitializeParams } from "../../../../core/db/types/models/initialize-params";
+import GroupModel from "../../../group/db/models/group-model";
 import { GroupingGroupAttributes, GroupingGroupCreationAttributes } from "../../types/db/models/grouping-group";
 import groupingGroupSchema from "../schemas/grouping-group-schema";
+import GroupingModel from "./grouping-model";
 
 class GroupingGroupModel extends BaseModel<GroupingGroupAttributes, GroupingGroupCreationAttributes> {
   public static initialize(params: InitializeParams) {
