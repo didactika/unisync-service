@@ -1,4 +1,3 @@
-import { DataTypes, UUIDV4 } from "sequelize";
 import LevelModel from "../../db/models/level-model";
 import { ILevel } from "../../types/classes/entities/level-interface";
 import BaseEntity from "./base-entity";
