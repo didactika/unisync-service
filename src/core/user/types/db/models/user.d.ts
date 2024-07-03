@@ -1,5 +1,6 @@
-export type UserAttributes = {
-    id: number;
+import { BaseAttributes } from "../../../../db/types/base-attributes";
+
+export type UserAttributes = BaseAttributes & {
     uuid: string;
     username: string;
     password: string;
@@ -7,8 +8,6 @@ export type UserAttributes = {
     lastName: string;
     email: string;
     role: string;
-    createdAt?: Date;
-    updatedAt?: Date;
   };
   
   export type UserCreationAttributes = Omit<UserAttributes, 'id' | 'uuid'>;

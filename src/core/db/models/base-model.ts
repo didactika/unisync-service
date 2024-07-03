@@ -6,12 +6,6 @@ import { InitializeParams } from "../types/models/initialize-params";
 import { EComponentNature } from "../../component/enums/component-nature-enum";
 
 abstract class BaseModel<T extends {} = any, TCreation extends {} = any> extends Model<T, TCreation> {
-  findAll(arg0: { where: object; }) {
-      throw new Error("Method not implemented.");
-  }
-  findOne(arg0: { where: object; }) {
-      throw new Error("Method not implemented.");
-  }
   protected static isInitialized = false;
 
   static initialize(params: InitializeParams): void {
@@ -32,7 +26,9 @@ abstract class BaseModel<T extends {} = any, TCreation extends {} = any> extends
       tableName: `${prefix}_${options.tableName.toLowerCase()}`,
     };
     const thisClass = this as any as ModelStatic<ModelType<any, any>>;
+    this.initializeRequiredModels({sequelize: this.sequelize!, componentType: options.componentType});
     Model.init.call(thisClass, attributes, finalOptions);
+    this.associate();
     this.sequelize?.sync();
   }
 
@@ -53,6 +49,14 @@ abstract class BaseModel<T extends {} = any, TCreation extends {} = any> extends
 
   protected static addHooks(): void {
     // Add hooks here
+  }
+
+  protected static associate(): void {
+    // Add associations here
+  }
+
+  protected static initializeRequiredModels(params: InitializeParams): void {
+    // Initialize required models here
   }
 }
 

@@ -1,8 +1,7 @@
-export type LevelAttributes = {
-  id: number;
+import { BaseAttributes } from "../base-attributes";
+
+export type LevelAttributes = BaseAttributes & {
   name: string;
-  createdAt?: Date;
-  updatedAt?: Date;
 };
 
 export type LevelCreationAttributes = Omit<LevelAttributes, "id">;

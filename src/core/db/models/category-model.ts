@@ -10,12 +10,15 @@ class CategoryModel extends BaseModel<CategoryAttributes, CategoryCreationAttrib
       tableName: "categories",
       ...params,
     });
-    CampusModel.initialize(params);
     this.associate();
   }
 
-  private static associate() {
+  protected static associate() {
     CategoryModel.belongsTo(CampusModel, { foreignKey: "campusId", as: "campus" });
+  }
+
+  protected static initializeRequiredModels(params: InitializeParams) {
+    CampusModel.initialize(params);
   }
 }
 
