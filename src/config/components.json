@@ -6,8 +6,7 @@
     },
     "systemtypes": {
         "user": "user",
-        "campus": "campus",
-        "component": "component"
+        "campus": "campus"
     },
     "subsystemtypes": {
         "course": "course",
