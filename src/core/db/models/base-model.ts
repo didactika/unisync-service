@@ -26,7 +26,7 @@ abstract class BaseModel<T extends {} = any, TCreation extends {} = any> extends
       tableName: `${prefix}_${options.tableName.toLowerCase()}`,
     };
     const thisClass = this as any as ModelStatic<ModelType<any, any>>;
-    this.initializeRequiredModels({sequelize: this.sequelize!, componentType: options.componentType});
+    this.initializeRequiredModels({sequelize: options.sequelize, componentType: options.componentType});
     Model.init.call(thisClass, attributes, finalOptions);
     this.associate();
     this.sequelize?.sync();
