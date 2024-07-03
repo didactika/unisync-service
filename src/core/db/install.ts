@@ -1,5 +1,3 @@
-import environment from "../../config/environment";
-import Context from "../classes/entities/context-entity";
 import Level from "../classes/entities/level-entity";
 
 /**
@@ -8,7 +6,6 @@ import Level from "../classes/entities/level-entity";
  */
 const execute = async (): Promise<void> => {
   await levelExecute();
-  await contextExecute();
 };
 
 const levelExecute = async (): Promise<void> => {
@@ -21,7 +18,7 @@ const levelExecute = async (): Promise<void> => {
   }).create();
 
   await new Level({
-    name: "mod",
+    name: "course_module",
   }).create();
 
   await new Level({
@@ -32,19 +29,5 @@ const levelExecute = async (): Promise<void> => {
     name: "group",
   }).create();
 };
-
-const contextExecute = async (): Promise<void> => {
-  await new Context({
-    name: "course",
-  }).create();
-
-  await new Context({
-    name: "system_course",
-  }).create();
-
-  await new Context({
-    name: "template_course",
-  }).create();
-}
 
 export default { execute };
