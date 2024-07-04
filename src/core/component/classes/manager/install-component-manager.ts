@@ -28,7 +28,7 @@ class InstallComponentManager extends ComponentManager {
       await InstallComponentManager.instance.initializeModels();
       await InstallComponentManager.instance.installBasicSystemComponents();
       const { pluginsToInstall, pluginsalreadyInstalled } =
-        await InstallComponentManager.instance.verifyPluginsForInstall({
+        await InstallComponentManager.instance.findComponentsInDb({
           includeSubsystem: true,
           includeSystem: true,
         });
@@ -58,7 +58,7 @@ class InstallComponentManager extends ComponentManager {
     await component.create();
   }
 
-  protected async isComponentInstalled(versionInfo: { default: VersionInfo }): Promise<boolean> {
+  public async isComponentInstalled(versionInfo: { default: VersionInfo }): Promise<boolean> {
     const installedModule = await InstalledComponent.findOne({
       name: versionInfo.default.component,
     });
@@ -114,7 +114,7 @@ class InstallComponentManager extends ComponentManager {
     }
   }
 
-  public async verifyPluginsForInstall(options?: VerifyPluginsOptions): Promise<{
+  public async findComponentsInDb(options?: VerifyPluginsOptions): Promise<{
     pluginsToInstall: ComponentInfo[];
     pluginsalreadyInstalled: ComponentInfo[];
   }> {
