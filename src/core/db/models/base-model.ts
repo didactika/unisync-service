@@ -35,6 +35,7 @@ abstract class BaseModel<T extends {} = any, TCreation extends {} = any> extends
     this.initializeRequiredModels();
     Model.init.call(thisClass, attributes, finalOptions);
     this.associate();
+    this.addHooks();
     this.sequelize?.sync();
   }
 
