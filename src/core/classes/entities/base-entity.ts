@@ -1,11 +1,10 @@
-import { Model, ModelStatic, WhereOptions } from "sequelize";
-
 abstract class BaseEntity<T> {
   public readonly id?: number;
   private _createdAt?: Date;
   private _updatedAt?: Date;
 
   constructor(data: Partial<T> & { id?: number; createdAt?: Date; updatedAt?: Date }) {
+    this.id = data.id;
     this._createdAt = data.createdAt || new Date();
     this._updatedAt = data.updatedAt || new Date();
   }

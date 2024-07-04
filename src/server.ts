@@ -31,8 +31,9 @@ class App {
    * @returns server
    */
   public async run() {
-    console.log("Connecting to database...")
+    console.log("Connecting to database...");
     await DB.initialize();
+    console.log("Installing components...");
     await InstallComponentManager.firstInitialize();
     return this.app.listen(environment.app.APP_PORT, async () => {
       console.log(`Server Up on port: ${environment.app.APP_PORT}!!`);

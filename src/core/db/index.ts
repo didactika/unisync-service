@@ -3,7 +3,7 @@ import { Client } from "pg";
 import environment from "../../config/environment/index";
 import ComponentLoader from "../component/classes/component-loader";
 import { ELoadPath } from "../component/enums/load-path-enum";
-import { EComponentNature } from "../component/enums/component-nature-enum";
+import InstalledComponent from "../component/classes/entities/installed-component";
 
 /**
  * @class Database
@@ -20,7 +20,7 @@ class DB {
       host: environment.database.DB_HOST,
       port: parseInt(environment.database.DB_PORT),
       dialect: environment.database.DB_DIALECT,
-      // logging: Boolean(environment.database.DB_LOGGING),
+      logging: Boolean(environment.database.DB_LOGGING),
       retry: {
         max: parseInt(environment.database.DB_RETRY_MAX),
         timeout: parseInt(environment.database.DB_RETRY_TIMEOUT),
@@ -82,7 +82,7 @@ class DB {
   /**
    * Inicializar modelos dinámicamente
    */
-  public async initializeModel(component: string): Promise<void> {
+  public static async initializeModel(component: string): Promise<void> {
     await ComponentLoader.loadComponents({
       componentDirectories: [component],
       directory: "db/models",
@@ -109,6 +109,7 @@ class DB {
     }
     return DB.instance;
   }
+    
 }
 
 export default DB;

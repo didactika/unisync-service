@@ -3,7 +3,7 @@ export type VerifyPluginsOptions = {
   includeSubsystem?: boolean;
 };
 
-export type PluginInfo = {
+export type ComponentInfo = {
   component: string;
   dir: string;
 };

@@ -77,7 +77,6 @@ abstract class BaseModel<T extends {} = any, TCreation extends {} = any> extends
       const isCore = derivedClassDir.includes("core");
       if (isCore) return EComponentNature.SYSTEM;
       const versionPath = path.resolve(derivedClassDir, "../../version");
-
       const versionInfo = require(versionPath) as { default: VersionInfo };
       return versionInfo.default.component.split("_").pop() as string;
     } catch (error) {

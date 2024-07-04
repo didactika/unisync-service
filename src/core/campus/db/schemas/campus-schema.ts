@@ -1,6 +1,6 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, ModelAttributes } from "sequelize";
 
-const campusSchema = {
+const campusSchema: ModelAttributes = {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,

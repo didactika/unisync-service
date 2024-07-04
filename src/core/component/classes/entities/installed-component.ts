@@ -3,7 +3,7 @@ import InstalledComponentModel from "../../db/models/installed-component-model";
 import { InstalledComponentFilter } from "../../types/classes/entities/installed-component-filter";
 import { IInstalledComponent } from "../../types/classes/entities/installed-component-interface";
 
-export class InstalledComponent extends BaseEntity<IInstalledComponent> implements IInstalledComponent {
+export default class InstalledComponent extends BaseEntity<IInstalledComponent> implements IInstalledComponent {
   private _name: string;
   private _version: string;
   private _versionFilePath: string;
@@ -87,7 +87,7 @@ export class InstalledComponent extends BaseEntity<IInstalledComponent> implemen
     filter?: InstalledComponentFilter
   ): Promise<IInstalledComponent | null> {
     const installedComponent = await InstalledComponentModel.findOne(filter ? { where: filter } : {});
-    return installedComponent ? (installedComponent.dataValues as IInstalledComponent) : null;
+    return installedComponent ? (installedComponent as IInstalledComponent) : null;
   }
 
   public static async findMany<IInstalledComponent>(filter?: InstalledComponentFilter): Promise<IInstalledComponent[]> {

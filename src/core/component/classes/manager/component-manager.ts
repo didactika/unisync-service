@@ -2,20 +2,11 @@ import { ComponentConfig } from "../../../../types/component-config";
 import components from "../../../../config/components.json";
 import ComponentLoader from "../component-loader";
 import DB from "../../../db";
-import { ELoadPath } from "../../enums/load-path-enum";
 import { EComponentNature } from "../../enums/component-nature-enum";
+import { ComponentInfo } from "../../types/classes/manager/install-component-manager-types";
 
 export abstract class ComponentManager {
   protected _components: ComponentConfig = components;
-
-  protected async initializeModels(): Promise<void> {
-    await ComponentLoader.loadComponents({
-      directoryPath: ELoadPath.CORE,
-      componentDirectories: ["component"],
-      directory: "db/models",
-      method: "initialize",
-    });
-  }
 
   protected async getVersionInfo(dir: string): Promise<any | undefined> {
     const versionPath = `${ComponentLoader.getComponentPath(dir)}/version.ts`;
@@ -49,5 +40,11 @@ export abstract class ComponentManager {
       }
     }
     return EComponentNature.SYSTEM;
+  }
+
+  protected static async initializeExistingComponentsModels(componentsData: ComponentInfo[]): Promise<void> {
+    for (const data of componentsData) {
+      await DB.initializeModel(data.component);
+    }
   }
 }

@@ -1,8 +1,7 @@
-import { DataTypes, UUIDV4 } from "sequelize";
 import CampusModel from "../../db/models/campus";
 import { ICampus } from "../../types/classes/entities/campus-interface";
-import { CampusFilter } from "../../types/classes/entities/campus-filter";
 import BaseEntity from "../../../classes/entities/base-entity";
+import { CampusFilter } from "../../types/classes/entities/campus-filter";
 
 class Campus extends BaseEntity<ICampus> implements ICampus {
   public readonly id: number | undefined;
@@ -70,7 +69,7 @@ class Campus extends BaseEntity<ICampus> implements ICampus {
   public async create(): Promise<ICampus> {
     return (
       await CampusModel.create({
-        uuid: this.uuid || UUIDV4().toString({ type: DataTypes.UUIDV4 }),
+        uuid: this.uuid || undefined,
         name: this.name,
         url: this.url,
         token: this.token,
@@ -108,7 +107,7 @@ class Campus extends BaseEntity<ICampus> implements ICampus {
 
   public static async findOne<ICampus>(filter?: CampusFilter): Promise<ICampus | null> {
     const campus = await CampusModel.findOne(filter ? { where: filter } : {});
-    return campus ? (campus.dataValues as ICampus) : null;
+    return campus ? (campus as ICampus) : null;
   }
 
   public static async findMany<ICampus>(filter?: CampusFilter): Promise<ICampus[]> {

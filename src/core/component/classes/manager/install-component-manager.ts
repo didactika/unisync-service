@@ -2,8 +2,8 @@ import { VersionInfo } from "../../../../types/version-info";
 import ComponentLoader from "../component-loader";
 import DB from "../../../db";
 import { ComponentManager } from "./component-manager";
-import { InstalledComponent } from "../entities/installed-component";
-import { PluginInfo, VerifyPluginsOptions } from "../../types/classes/manager/install-component-manager-types";
+import InstalledComponent from "../entities/installed-component";
+import { ComponentInfo, VerifyPluginsOptions } from "../../types/classes/manager/install-component-manager-types";
 import { EComponentNature } from "../../enums/component-nature-enum";
 import path from "path";
 import { ELoadPath } from "../../enums/load-path-enum";
@@ -27,14 +27,25 @@ class InstallComponentManager extends ComponentManager {
       InstallComponentManager.instance = this.getInstance();
       await InstallComponentManager.instance.initializeModels();
       await InstallComponentManager.instance.installBasicSystemComponents();
-      const pluginsToInstall = await InstallComponentManager.instance.verifyPluginsForInstall({
-        includeSubsystem: true,
-        includeSystem: true,
-      });
+      const { pluginsToInstall, pluginsalreadyInstalled } =
+        await InstallComponentManager.instance.verifyPluginsForInstall({
+          includeSubsystem: true,
+          includeSystem: true,
+        });
       await InstallComponentManager.instance.installComponents(pluginsToInstall);
+      await InstallComponentManager.initializeExistingComponentsModels(pluginsalreadyInstalled);
       return true;
     }
     return false;
+  }
+
+  private async initializeModels() {
+    await ComponentLoader.loadComponents({
+      directoryPath: ELoadPath.CORE,
+      componentDirectories: ["component"],
+      directory: "db/models",
+      method: "initialize",
+    });
   }
 
   protected async registryComponent(dir: string, versionInfo: { default: VersionInfo }): Promise<void> {
@@ -70,7 +81,7 @@ class InstallComponentManager extends ComponentManager {
     const isInstalled = await this.isComponentInstalled(versionInfo);
     if (!isInstalled) {
       try {
-        await DB.getInstance().initializeModel(component);
+        await DB.initializeModel(component);
         await this.executeInstallFile(component);
         await this.registryComponent(dir, versionInfo);
       } catch (error) {
@@ -84,10 +95,11 @@ class InstallComponentManager extends ComponentManager {
     const versionInfo = await this.getVersionInfo("..");
     if (!versionInfo) return;
 
+    await DB.getInstance().initializeBaseSystemModels();
+
     const isInstalled = await this.isComponentInstalled(versionInfo);
     if (!isInstalled) {
       try {
-        await DB.getInstance().initializeBaseSystemModels();
         await ComponentLoader.loadComponents({
           directoryPath: ELoadPath.CORE,
           componentDirectories: ["db"],
@@ -102,8 +114,12 @@ class InstallComponentManager extends ComponentManager {
     }
   }
 
-  public async verifyPluginsForInstall(options?: VerifyPluginsOptions): Promise<PluginInfo[]> {
-    const pluginsToInstall: PluginInfo[] = [];
+  public async verifyPluginsForInstall(options?: VerifyPluginsOptions): Promise<{
+    pluginsToInstall: ComponentInfo[];
+    pluginsalreadyInstalled: ComponentInfo[];
+  }> {
+    const pluginsToInstall: ComponentInfo[] = [];
+    const pluginsalreadyInstalled: ComponentInfo[] = [];
 
     for (const plugin of Object.entries(this._components)) {
       for (const dir of Object.entries(this._components[plugin[0]])) {
@@ -125,13 +141,18 @@ class InstallComponentManager extends ComponentManager {
             component: dir[0],
             dir: dir[1],
           });
+        } else {
+          pluginsalreadyInstalled.push({
+            component: dir[0],
+            dir: dir[1],
+          });
         }
       }
     }
-    return pluginsToInstall;
+    return { pluginsToInstall, pluginsalreadyInstalled };
   }
 
-  public async installComponents(plugins: PluginInfo[]): Promise<void> {
+  public async installComponents(plugins: ComponentInfo[]): Promise<void> {
     for (const plugin of plugins) {
       const { component, dir } = plugin;
       await this.installComponent(component, dir);

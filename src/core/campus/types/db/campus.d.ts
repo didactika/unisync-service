@@ -13,7 +13,7 @@
  */
 export type CampusAttributes = {
   id?: number;
-  uuid: string;
+  uuid?: string;
   token: string;
   url: string;
   name: string;
