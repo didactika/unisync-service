@@ -39,9 +39,6 @@ abstract class BaseModel<T extends {} = any, TCreation extends {} = any> extends
   }
 
   private static initializeRequiredModels(): void {
-    console.log("Initializing required models");
-    console.log(this.requiredModels);
-
     for (const model of this.requiredModels) {
       model.initialize();
     }
