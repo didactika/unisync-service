@@ -1,4 +1,5 @@
 import { BaseAttributes } from "../../../../../core/db/types/base-attributes";
+import { ECourseType } from "../../../enums/course-type-enum";
 
 export type CourseAttributes = BaseAttributes & {
   uuid?: string;
@@ -6,7 +7,6 @@ export type CourseAttributes = BaseAttributes & {
   fullname: string;
   shortname: string;
   idnumber?: string;
-  availability?: string;
 };
 
 export type CourseCreationAttributes = Omit<CourseAttributes, "id">;

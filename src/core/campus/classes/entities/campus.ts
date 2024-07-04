@@ -18,6 +18,7 @@ class Campus extends BaseEntity<ICampus> implements ICampus {
     this._name = campus.name;
     this._url = campus.url;
     this._token = campus.token;
+    this._version = campus.version;
   }
 
   // Getters and setters

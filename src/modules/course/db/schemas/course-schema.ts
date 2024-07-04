@@ -33,11 +33,6 @@ const courseSchema: ModelAttributes = {
     allowNull: true,
     unique: false,
   },
-  availability: {
-    type: DataTypes.JSON,
-    allowNull: true,
-    unique: false,
-  }
 };
 
 export default courseSchema;
