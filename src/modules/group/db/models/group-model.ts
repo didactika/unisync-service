@@ -1,14 +1,15 @@
+import { Sequelize } from "sequelize";
 import BaseModel from "../../../../core/db/models/base-model";
-import { InitializeParams } from "../../../../core/db/types/models/initialize-params";
 import CourseModel from "../../../course/db/models/course-model";
 import { GroupAttributes, GroupCreationAttributes } from "../../types/db/models/group";
 import groupSchema from "../schemas/group-schema";
 
 class GroupModel extends BaseModel<GroupAttributes, GroupCreationAttributes> {
-  public static initialize(params: InitializeParams) {
+  protected static requiredModels = [CourseModel];
+  public static initialize() {
     GroupModel.init(groupSchema, {
+      sequelize: this._sequelize,
       tableName: "group",
-      ...params,
     });
   }
 
@@ -17,10 +18,6 @@ class GroupModel extends BaseModel<GroupAttributes, GroupCreationAttributes> {
       foreignKey: "courseId",
       as: "course",
     });
-  }
-
-  protected static initializeRequiredModels(params: InitializeParams) {
-    CourseModel.initialize(params);
   }
 }
 

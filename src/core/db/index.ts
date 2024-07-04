@@ -20,7 +20,7 @@ class DB {
       host: environment.database.DB_HOST,
       port: parseInt(environment.database.DB_PORT),
       dialect: environment.database.DB_DIALECT,
-      logging: Boolean(environment.database.DB_LOGGING),
+      // logging: Boolean(environment.database.DB_LOGGING),
       retry: {
         max: parseInt(environment.database.DB_RETRY_MAX),
         timeout: parseInt(environment.database.DB_RETRY_TIMEOUT),
@@ -76,7 +76,6 @@ class DB {
       componentDirectories: ["db"],
       directory: "models",
       method: "initialize",
-      params: { sequelize: this.sequelize, componentType: EComponentNature.SYSTEM },
     });
   }
 
@@ -88,8 +87,6 @@ class DB {
       componentDirectories: [component],
       directory: "db/models",
       method: "initialize",
-      params: { sequelize: this.sequelize },
-      componentTypeParam: true,
     });
   }
 
@@ -107,6 +104,9 @@ class DB {
    * @returns {DB} the database instance
    */
   public static getInstance(): DB {
+    if (!DB.instance) {
+      this.initialize();
+    }
     return DB.instance;
   }
 }

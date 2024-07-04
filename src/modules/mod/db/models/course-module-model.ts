@@ -1,15 +1,16 @@
 import BaseModel from "../../../../core/db/models/base-model";
-import { InitializeParams } from "../../../../core/db/types/models/initialize-params";
 import CourseModel from "../../../course/db/models/course-model";
+import SectionModel from "../../../course/db/models/section.model";
 import { CourseModuleAttributes, CourseModuleCreationAttributes } from "../../types/db/models/course-module";
 import courseModuleSchema from "../schemas/course-module-schema";
 import ModuleModel from "./module-model";
 
 class CourseModuleModel extends BaseModel<CourseModuleAttributes, CourseModuleCreationAttributes> {
-  public static initialize(params: InitializeParams) {
+  protected static requiredModels = [CourseModel, ModuleModel, SectionModel];
+  public static initialize() {
     CourseModuleModel.init(courseModuleSchema, {
+      sequelize: this._sequelize,
       tableName: "course_module",
-      ...params,
     });
   }
 
@@ -22,11 +23,10 @@ class CourseModuleModel extends BaseModel<CourseModuleAttributes, CourseModuleCr
       foreignKey: "moduleId",
       as: "module",
     });
-  }
-
-  protected static initializeRequiredModels(params: InitializeParams) {
-    CourseModel.initialize(params);
-    ModuleModel.initialize(params);
+    CourseModuleModel.belongsTo(SectionModel, {
+      foreignKey: "sectionId",
+      as: "section",
+    });
   }
 }
 

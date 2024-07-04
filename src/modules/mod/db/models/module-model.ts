@@ -1,13 +1,12 @@
 import BaseModel from "../../../../core/db/models/base-model";
-import { InitializeParams } from "../../../../core/db/types/models/initialize-params";
 import { ModuleAttributes, ModuleCreationAttributes } from "../../types/db/models/module";
 import moduleSchema from "../schemas/module-schema";
 
 class ModuleModel extends BaseModel<ModuleAttributes, ModuleCreationAttributes> {
-  public static initialize(params: InitializeParams) {
+  public static initialize() {
     ModuleModel.init(moduleSchema, {
+      sequelize: this._sequelize,
       tableName: "module",
-      ...params,
     });
   }
 }

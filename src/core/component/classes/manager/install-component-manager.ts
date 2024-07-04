@@ -15,12 +15,26 @@ class InstallComponentManager extends ComponentManager {
     super();
   }
 
-  public static async getInstance(): Promise<InstallComponentManager> {
+  public static getInstance(): InstallComponentManager {
     if (!InstallComponentManager.instance) {
       InstallComponentManager.instance = new InstallComponentManager();
-      await InstallComponentManager.instance.initializeModels();
     }
     return InstallComponentManager.instance;
+  }
+
+  public static async firstInitialize(): Promise<boolean> {
+    if (!InstallComponentManager.instance) {
+      InstallComponentManager.instance = this.getInstance();
+      await InstallComponentManager.instance.initializeModels();
+      await InstallComponentManager.instance.installBasicSystemComponents();
+      const pluginsToInstall = await InstallComponentManager.instance.verifyPluginsForInstall({
+        includeSubsystem: true,
+        includeSystem: true,
+      });
+      await InstallComponentManager.instance.installComponents(pluginsToInstall);
+      return true;
+    }
+    return false;
   }
 
   protected async registryComponent(dir: string, versionInfo: { default: VersionInfo }): Promise<void> {
@@ -67,7 +81,7 @@ class InstallComponentManager extends ComponentManager {
 
   public async installBasicSystemComponents() {
     const dir = path.join(__dirname, "../../../..");
-    const versionInfo = await this.getVersionInfo('..');
+    const versionInfo = await this.getVersionInfo("..");
     if (!versionInfo) return;
 
     const isInstalled = await this.isComponentInstalled(versionInfo);
@@ -93,7 +107,6 @@ class InstallComponentManager extends ComponentManager {
 
     for (const plugin of Object.entries(this._components)) {
       for (const dir of Object.entries(this._components[plugin[0]])) {
-        // Check options for system or subsystem inclusion
         if (!options?.includeSystem && plugin.includes(EComponentNature.SYSTEM)) {
           console.log(`Skipping non-system component: ${dir[0]}`);
           continue;

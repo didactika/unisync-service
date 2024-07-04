@@ -1,13 +1,12 @@
 import BaseModel from "../../../db/models/base-model";
 import { CampusAttributes, CampusCreationAttributes } from "../../types/db/campus";
-import { InitializeParams } from "../../../db/types/models/initialize-params";
 import campusSchema from "../schemas/campus-schema";
 
 class CampusModel extends BaseModel<CampusAttributes, CampusCreationAttributes> {
-  static initialize(params: InitializeParams): void {
+  static initialize(): void {
     CampusModel.init(campusSchema, {
+      sequelize: this._sequelize,
       tableName: "campus",
-      ...params,
     });
   }
 }

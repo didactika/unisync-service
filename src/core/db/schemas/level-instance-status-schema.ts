@@ -26,7 +26,7 @@ const levelInstanceStatusSchema: ModelAttributes = {
     },
   },
   status: {
-    type: DataTypes.ENUM(typeof EMigrationStatus),
+    type: DataTypes.ENUM(...Object.values(EMigrationStatus)),
     allowNull: false,
     validate: {
       notEmpty: {

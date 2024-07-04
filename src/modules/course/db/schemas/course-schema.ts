@@ -14,7 +14,7 @@ const courseSchema: ModelAttributes = {
     unique: true,
   },
   type: {
-    type: DataTypes.ENUM(typeof ECourseType),
+    type: DataTypes.ENUM(...Object.values(ECourseType)),
     allowNull: false,
     defaultValue: ECourseType.BASE,
   },

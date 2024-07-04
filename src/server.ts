@@ -11,7 +11,6 @@ class App {
     this.app = express();
     console.log("Setting configs...")
     this.setConfig();
-    
     console.log("App ready!!");
   }
 
@@ -34,12 +33,7 @@ class App {
   public async run() {
     console.log("Connecting to database...")
     await DB.initialize();
-    const installComponentManager = await InstallComponentManager.getInstance();
-    await installComponentManager.installBasicSystemComponents();
-    await installComponentManager.installComponents(await installComponentManager.verifyPluginsForInstall({
-      includeSubsystem: true,
-      includeSystem: true,
-    }));
+    await InstallComponentManager.firstInitialize();
     return this.app.listen(environment.app.APP_PORT, async () => {
       console.log(`Server Up on port: ${environment.app.APP_PORT}!!`);
     });

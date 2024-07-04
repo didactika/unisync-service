@@ -7,21 +7,20 @@ import { EComponentNature } from "../../enums/component-nature-enum";
 
 export abstract class ComponentManager {
   protected _components: ComponentConfig = components;
-  
+
   protected async initializeModels(): Promise<void> {
     await ComponentLoader.loadComponents({
       directoryPath: ELoadPath.CORE,
       componentDirectories: ["component"],
       directory: "db/models",
       method: "initialize",
-      params: { sequelize: DB.getInstance().sequelize, componentType: EComponentNature.SYSTEM },
     });
   }
 
   protected async getVersionInfo(dir: string): Promise<any | undefined> {
     const versionPath = `${ComponentLoader.getComponentPath(dir)}/version.ts`;
     console.log(`Loading version info for component: ${versionPath}`);
-    
+
     try {
       const versionInfo = await import(versionPath);
       return versionInfo;
