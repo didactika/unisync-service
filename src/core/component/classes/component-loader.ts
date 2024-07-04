@@ -32,7 +32,7 @@ class ComponentLoader {
    * @param specificFile - A specific file to load, if any.
    * @returns The list of files to process.
    */
-  private static loadFilesFromDirectory(componentsDir: string, specificFile?: string): string[] {
+  public static loadFilesFromDirectory(componentsDir: string, specificFile?: string): string[] {
     if (!fs.existsSync(componentsDir)) {
       return [];
     }

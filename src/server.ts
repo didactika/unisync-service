@@ -4,6 +4,7 @@ import cors from "cors";
 import DB from "./core/db";
 import ErrorResponseMiddleware from "http-response-client/lib/middlewares/error-response-middleware";
 import InstallComponentManager from "./core/component/classes/manager/install-component-manager";
+import { loadControllersAndRegisterRoutes } from "./core/api/routes";
 class App {
   private app: express.Application;
 
@@ -35,6 +36,8 @@ class App {
     await DB.initialize();
     console.log("Installing components...");
     await InstallComponentManager.firstInitialize();
+    console.log("Loading controllers...");
+    await loadControllersAndRegisterRoutes(this.app);
     return this.app.listen(environment.app.APP_PORT, async () => {
       console.log(`Server Up on port: ${environment.app.APP_PORT}!!`);
     });
