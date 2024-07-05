@@ -7,7 +7,7 @@ import { ICampus } from "../../types/classes/entities/campus-interface";
 import Campus from "../entities/campus";
 
 export default class CampusController {
-  public static async validateAndCreateCampus(campusData: CampusCreationData): Promise<boolean> {
+  public static async validateAndCreate(campusData: CampusCreationData): Promise<ICampus | undefined> {
     const campusBaseActions = new CampusConnectorBase(campusData);
     const siteInfo = await campusBaseActions.getSiteInfo();
     if (siteInfo && siteInfo.sitename && (siteInfo.release || siteInfo.version)) {
@@ -21,13 +21,12 @@ export default class CampusController {
         token: campusData.token,
         version: siteInfo.release ?? siteInfo.version,
       });
-      await campus.create();
-      return true;
+      return await campus.create();
     }
-    return false;
+    return undefined;
   }
 
-  public static async getAllCampus(): Promise<ICampus[]> {
+  public static async getAll(): Promise<ICampus[]> {
     return (await Campus.findMany<ICampus>({})).map((campus) => ({
       ...campus,
       id: undefined,
