@@ -6,15 +6,15 @@ export function Controller(basePath: string): ClassDecorator {
     target.prototype.router = Router();
 
     // Register middlewares defined in the class
-    if (target.constructormiddlewares) {
-      target.constructormiddlewares.forEach((middleware: any) => {
+    if (target.middlewares) {
+      target.middlewares.forEach((middleware: any) => {
         target.prototype.router.use(middleware.path, middleware.handler.bind(target));
       });
     }
 
     // Register routes defined in the class
-    if (target.constructor.routes) {
-      target.constructor.routes.forEach((route: any) => {
+    if (target.routes) {   
+      target.routes.forEach((route: any) => {     
         target.prototype.router[route.method](route.path, route.handler.bind(target));
       });
     }

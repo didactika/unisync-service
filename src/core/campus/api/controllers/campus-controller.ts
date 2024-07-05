@@ -11,16 +11,14 @@ class CampusController extends BaseController {
   @Route("get", "/")
   private async getAllCampus(req: Request, res: Response, next: NextFunction) {
     try {
-      const campus = (await Campus.findMany<ICampus>()).map((campus) => {
-        uuid: campus.uuid;
-        name: campus.name;
-        url: campus.url;
-        token: campus.token;
-        version: campus.version;
-      });
-      if (!campus.length) {
-        throw new NotFound({ msg: "No campus found" });
-      }
+      const campus = (await Campus.findMany<Campus>({})).map((campus) => ({
+        uuid: campus.uuid,
+        name: campus.name,
+        url: campus.url,
+        token: campus.token,
+        version: campus.version,
+      }));
+      if (!campus.length) throw new NotFound({ msg: "No campus found" });
       res.json(campus).status(200);
     } catch (error) {
       next(error);
