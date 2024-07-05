@@ -22,6 +22,10 @@ class App {
     this.app.use(express.json({ limit: '1mb' }));
     this.app.use(express.urlencoded({ limit: '1mb', extended: true }));
     this.app.use(cors());
+  }
+
+  private async setRoutes() {
+    await loadControllersAndRegisterRoutes(this.app);
     this.app.use((err: Error, req: Request, res: Response, next: NextFunction): void => {
       ErrorResponseMiddleware.errorCatcher(err, res);
     });
@@ -37,7 +41,7 @@ class App {
     console.log("Installing components...");
     await InstallComponentManager.firstInitialize();
     console.log("Loading controllers...");
-    await loadControllersAndRegisterRoutes(this.app);
+    this.setRoutes();
     return this.app.listen(environment.app.APP_PORT, async () => {
       console.log(`Server Up on port: ${environment.app.APP_PORT}!!`);
     });

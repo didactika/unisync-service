@@ -3,8 +3,10 @@ import CampusConnectorBase from "../campus-connector/campus-connector-base";
 import CampusEntity from "../entities/campus";
 import CampusJSON from "../../statics/campus-brands.json";
 import environment from "../../../../config/environment";
+import { ICampus } from "../../types/classes/entities/campus-interface";
+import Campus from "../entities/campus";
 
-export class CampusController {
+export default class CampusController {
   public static async validateAndCreateCampus(campusData: CampusCreationData): Promise<boolean> {
     const campusBaseActions = new CampusConnectorBase(campusData);
     const siteInfo = await campusBaseActions.getSiteInfo();
@@ -23,5 +25,12 @@ export class CampusController {
       return true;
     }
     return false;
+  }
+
+  public static async getAllCampus(): Promise<ICampus[]> {
+    return (await Campus.findMany<ICampus>({})).map((campus) => ({
+      ...campus,
+      id: undefined,
+    }));
   }
 }
