@@ -1,6 +1,11 @@
+import CampusModel from "../../../../core/campus/db/models/campus";
 import BaseEntity from "../../../../core/classes/entities/base-entity";
+import CategoryModel from "../../../../core/db/models/category-model";
 import CourseCampusModel from "../../db/models/course-campus-model";
+import CourseModel from "../../db/models/course-model";
 import { ICourseCampus } from "../../types/classes/entities/course-campus-interface";
+import { CampusFilter } from "../../../../core/campus/types/classes/entities/campus-filter";
+import { CourseFilter } from "../../types/classes/entities/course-filter";
 
 class CourseCampus extends BaseEntity<ICourseCampus> implements ICourseCampus {
   public readonly id: number | undefined;
@@ -55,6 +60,59 @@ class CourseCampus extends BaseEntity<ICourseCampus> implements ICourseCampus {
         idOnCampus: this._idOnCampus,
       })
     ).dataValues as ICourseCampus;
+  }
+
+  public static async findOne<ICourseCampus>(filters?: {
+    campus?: CampusFilter;
+    course?: CourseFilter;
+    category?: any;
+    base?: {
+      id?: number;
+      idOnCampus?: number;
+      createdAt?: Date;
+      updatedAt?: Date;
+    };
+  }): Promise<ICourseCampus | null> {
+    const include = this.getIncludeForFind(filters!);
+    const course = await CourseCampusModel.findOne(filters?.base ? { where: filters.base, include } : { include });
+    return course ? (course as ICourseCampus) : null;
+  }
+
+  public static async findMany<ICourseCampus>(filters?: {
+    campus?: CampusFilter;
+    course?: CourseFilter;
+    category?: any;
+    base?: {
+      id?: number;
+      idOnCampus?: number;
+      createdAt?: Date;
+      updatedAt?: Date;
+    };
+  }): Promise<ICourseCampus[]> {
+    const include = this.getIncludeForFind(filters!);
+    return (await CourseCampusModel.findAll(filters?.base ? { where: filters.base, include } : { include })).map(
+      (course) => course.dataValues as ICourseCampus
+    );
+  }
+
+  private static getIncludeForFind(filters: { campus?: CampusFilter; course?: CourseFilter; category?: any }) {
+    return [
+      {
+        model: CourseModel,
+        as: "course",
+        where: filters.course ? filters.course : {},
+      },
+      {
+        model: CampusModel,
+        as: "campus",
+        where: filters.campus ? filters.campus : {},
+      },
+      {
+        model: CategoryModel,
+        as: "category",
+        where: filters.category ? filters.category : {},
+      },
+    ];
   }
 
   public async update(): Promise<ICourseCampus> {

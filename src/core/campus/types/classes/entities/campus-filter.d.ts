@@ -16,6 +16,6 @@ export type CampusFilter = {
   version?: string;
   createdAt?: string;
   updatedAt?: string;
-  id?: string;
+  id?: number;
   uuid?: string;
 };

@@ -16,6 +16,7 @@ class CampusModel extends BaseModel<CampusAttributes, CampusCreationAttributes> 
     CampusModel.afterCreate((campus, options) => {
       BaseEventEmitter.emitEvent(
         new Events.CampusCreated({
+          id: campus.dataValues.id,
           name: campus.dataValues.name,
           url: campus.dataValues.url,
           token: campus.dataValues.token,
