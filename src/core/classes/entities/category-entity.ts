@@ -6,7 +6,7 @@ import Level from "./level-entity";
 class Category extends BaseEntity<ICategory> implements ICategory {
   public readonly id: number | undefined;
   private _name: string;
-  private _idnumber: string;
+  private _idnumber?: string;
   private _idOnCampus: number;
   private _campusId: number;
 
@@ -24,7 +24,7 @@ class Category extends BaseEntity<ICategory> implements ICategory {
     return this._name;
   }
 
-  get idnumber(): string {
+  get idnumber(): string | undefined {
     return this._idnumber;
   }
 
@@ -42,7 +42,7 @@ class Category extends BaseEntity<ICategory> implements ICategory {
     this._name = value;
   }
 
-  set idnumber(value: string) {
+  set idnumber(value: string | undefined) {
     this._idnumber = value;
   }
 
@@ -103,6 +103,15 @@ class Category extends BaseEntity<ICategory> implements ICategory {
     return affectedRows[0].get({ plain: true }) as ICategory;
   }
 
+  public static async findOne<ICategory>(filter?: Partial<ICategory>): Promise<ICategory | null> {
+    const category = await CategoryModel.findOne(filter ? { where: filter } : {});
+    return category ? (category as ICategory) : null;
+  }
+
+  public static async findMany<ICategory>(filter?: Partial<ICategory>): Promise<ICategory[]> {
+    return (await CategoryModel.findAll(filter ? { where: filter } : {})).map((category) => category.dataValues as ICategory);
+  }
+
   public async delete(): Promise<number> {
     const numberOfAffectedRows = await CategoryModel.destroy({
       where: {
@@ -118,4 +127,4 @@ class Category extends BaseEntity<ICategory> implements ICategory {
   }
 }
 
-export default Level;
+export default Category;

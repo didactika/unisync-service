@@ -5,6 +5,7 @@ import DB from "./core/db";
 import ErrorResponseMiddleware from "http-response-client/lib/middlewares/error-response-middleware";
 import InstallComponentManager from "./core/component/classes/manager/install-component-manager";
 import { loadControllersAndRegisterRoutes } from "./core/api/routes";
+import initializeObservers from "./observers/initialize-observers";
 class App {
   private app: express.Application;
 
@@ -40,6 +41,8 @@ class App {
     await DB.initialize();
     console.log("Installing components...");
     await InstallComponentManager.firstInitialize();
+    console.log("Initialize observers");
+    await initializeObservers();
     console.log("Loading controllers...");
     this.setRoutes();
     return this.app.listen(environment.app.APP_PORT, async () => {

@@ -1,7 +1,7 @@
 import { ECourseType } from "../../../enums/course-type-enum";
 
 export type CourseFilter = {
-  id?: string;
+  id?: number;
   uuid?: string;
   type?: ECourseType;
   fullname?: string;

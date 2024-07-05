@@ -5,8 +5,12 @@ import CourseController from "../controllers/course-controller";
 
 export function observer() {
   BaseEventEmitter.onEvent(CampusEvents.CampusCreated, async (event: CampusCreated) => {
-    const campusData = event.data;
-    if (!campusData.id) return;
-    await CourseController.syncCoursesFromCampus(campusData.id);
+    try {
+      const campusData = event.data;
+      if (!campusData.id) return;
+      await CourseController.syncCoursesFromCampus(campusData.id);
+    } catch (err) {
+      console.log(err);
+    }
   });
 }

@@ -6,6 +6,5 @@ import CourseCampusController from "../controllers/course-campus-controller";
 export function observer() {
   BaseEventEmitter.onEvent(CourseEvents.CourseCreated, async (data: CourseCreated) => {
     const courseData = data.data;
-    await CourseCampusController.importCourseCampusData(courseData);
   });
 }

@@ -1,8 +1,11 @@
 import CampusConnectorCourse from "../../../../core/campus/classes/campus-connector/campus-connector-course";
 import Campus from "../../../../core/campus/classes/entities/campus";
+import { NCampusConnectorCourse } from "../../../../core/campus/types/classes/campus-connector/campus-connector-course";
 import { ICampus } from "../../../../core/campus/types/classes/entities/campus-interface";
-import CourseModel from "../../db/models/course-model";
+import CategoryController from "../../../../core/classes/controllers/category-controller";
+import { ICategory } from "../../../../core/types/classes/entities/category-interface";
 import { ECourseType } from "../../enums/course-type-enum";
+import { ICourseCampus } from "../../types/classes/entities/course-campus-interface";
 import { ICourse } from "../../types/classes/entities/course-interface";
 import Course from "../entities/course";
 import CourseCampus from "../entities/course-campus";
@@ -13,27 +16,76 @@ export default class CourseController {
     if (!campus) return [];
     const campusCourseActions = new CampusConnectorCourse(campus);
     const courses = await campusCourseActions.getCourses();
-    const coursesPromises: Promise<ICourse>[] = [];
-    //TODO: I THINK THAT THE BEST METHOD IS THAT THE PROMISES WAS ALL IN THE FOR LOOP AND THEN RETURN THE PROMISE.ALL
+    const syncedCourses: Promise<ICourse>[] = [];
+
     for (const course of courses) {
-      const courseCampus = await CourseCampus.findOne({
+      const courseCategoryFound = await CategoryController.syncCategoryFromCampus(campusId, course.categoryid);
+
+      if (!courseCategoryFound) {
+        continue;
+      }
+
+      const courseCampusFound = (await CourseCampus.findOne({
         campus: {
           id: campusId,
         },
-        course: { shortname: course.shortname },
-      });
-      if (!courseCampus) continue; // TODO: VERIFY IF COURSE HAVE CHANGES AND UPDATE COURSE TABLE IF NECESSARY THIS IS ANOTHER FUNCTION
-      const courseDB = new Course({
-        idnumber: course.idnumber,
-        fullname: course.fullname,
-        shortname: course.shortname,
-        type: ECourseType.BASE,
-      });
-      //TODO: ADD COURSE TO CAMPUS AND CATEGORY (IF CATEGORY NOT FOUND, SYNC CATEGORIES FIRST IN ANOTHER FUNCTION THAT WILL BE CALLED HERE FROM CATEGORY CONTROLLER);
-      coursesPromises.push(courseDB.create());
+        course: { shortname: course.shortname, type: ECourseType.BASE },
+      })) as ICourseCampus;
+
+      courseCampusFound
+        ? syncedCourses.push(this.updateFromCampus(course, courseCampusFound, courseCategoryFound, campusId))
+        : syncedCourses.push(this.createFromCampus(course, courseCategoryFound, campusId));
     }
 
-    const coursesDB = await Promise.all(coursesPromises);
-    return coursesDB;
+    const createdCourses = await Promise.all(syncedCourses);
+
+    return createdCourses;
+  }
+
+  private static async createFromCampus(
+    courseOnCampus: NCampusConnectorCourse.GetCourseResponse,
+    category: ICategory,
+    campusId: number
+  ): Promise<ICourse> {
+    const courseOnDB = new Course({
+      idnumber: courseOnCampus.idnumber,
+      fullname: courseOnCampus.fullname,
+      shortname: courseOnCampus.shortname,
+      type: ECourseType.BASE,
+    });
+
+    const createdCourse = await courseOnDB.create();
+
+    const courseCampusToCreate = new CourseCampus({
+      campusId: campusId,
+      categoryId: category.id!,
+      idOnCampus: courseOnCampus.id,
+      courseId: createdCourse.id!,
+    });
+
+    await courseCampusToCreate.create();
+
+    return createdCourse;
+  }
+
+  private static async updateFromCampus(
+    courseOnCampus: NCampusConnectorCourse.GetCourseResponse,
+    courseCampusFound: ICourseCampus,
+    category: ICategory,
+    campusId: number
+  ): Promise<ICourse> {
+    const courseCampusOnDB = new CourseCampus(courseCampusFound);
+    courseCampusOnDB.categoryId = category.id!;
+    courseCampusOnDB.idOnCampus = courseOnCampus.id;
+
+    await courseCampusOnDB.update();
+
+    const courseFound = (await Course.findOne({ id: courseCampusFound.courseId })) as ICourse;
+    const courseOnDB = new Course(courseFound);
+    courseOnDB.fullname = courseOnCampus.fullname;
+    courseOnDB.shortname = courseOnCampus.shortname;
+    courseOnDB.idnumber = courseOnCampus.idnumber;
+
+    return courseOnDB.update();
   }
 }
