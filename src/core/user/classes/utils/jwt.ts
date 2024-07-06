@@ -1,4 +1,5 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
+import environment from "../../../../config/environment";
 
 export default class JWT {
   /**
@@ -10,10 +11,10 @@ export default class JWT {
    * @returns {string} token
    * @memberof JWT
    */
-  public static GenerateAccessToken(
+  public static generateAccessToken(
     payload: object,
-    secret: string,
-    expiresIn: string | number | undefined = undefined
+    secret: string = environment.jwt.JWT_SECRET,
+    expiresIn: string | number | undefined = environment.jwt.JWT_EXPIRES_IN
   ): string {
     return expiresIn
       ? jwt.sign(payload, secret, { expiresIn: expiresIn })
@@ -28,7 +29,11 @@ export default class JWT {
    * @returns {JwtPayload} JwtPayload
    * @memberof JWT
    */
-  public static VerifyToken(token: string, secret: string): JwtPayload {
-    return jwt.verify(token, secret) as JwtPayload;
+  public static verifyToken(token: string, secret: string = environment.jwt.JWT_SECRET): JwtPayload | undefined {
+    try {
+      return jwt.verify(token, secret) as JwtPayload;
+    } catch (error) {
+      return undefined;
+    }
   }
 }

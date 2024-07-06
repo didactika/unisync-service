@@ -1,9 +1,9 @@
-export function Middleware(middleware: any): MethodDecorator {
-    return function (target: any, propertyKey: string | symbol) {
-      if (!target.constructor.middlewares) {
-        target.constructor.middlewares = [];
-      }
-      target.constructor.middlewares.push({ handler: target[propertyKey] });
-    };
-  }
-  
+export function Middleware(method?: string, path?: string,) {
+  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+    if (!target.constructor.configs) {
+      target.constructor.configs = [];
+    }
+    target.constructor.configs.push({ type: 'middleware', method, path, handler: descriptor.value });
+    console.log(`Middleware added: [${method || 'ALL'}] ${path || 'ALL PATHS'} -> ${descriptor.value.name}`);
+  };
+}

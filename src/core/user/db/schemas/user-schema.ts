@@ -1,4 +1,5 @@
 import { DataTypes, ModelAttributes } from "sequelize";
+import { EUserRole } from "../../enums/user-role-enum";
 
 const userSchema: ModelAttributes = {
   id: {
@@ -76,15 +77,11 @@ const userSchema: ModelAttributes = {
     },
   },
   role: {
-    type: DataTypes.STRING(128),
+    type: DataTypes.ENUM(...Object.values(EUserRole)),
     allowNull: false,
     validate: {
       notEmpty: {
         msg: "Role cannot be empty",
-      },
-      isIn: {
-        args: [["admin", "user", "moderator"]],
-        msg: "Role must be one of admin, user, or moderator",
       },
     },
   },

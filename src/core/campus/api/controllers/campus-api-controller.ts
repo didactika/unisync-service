@@ -4,9 +4,22 @@ import { Controller } from "../../../api/decorators/controller";
 import { Route } from "../../../api/decorators/route";
 import { NotFound, BadRequest } from "http-response-client/lib/errors/client";
 import Campus from "../../classes/controllers/campus-controller";
+import { Middleware } from "../../../api/decorators/middleware";
+import verifySessionMiddleware from "../../../user/api/middlewares/session/verify-session";
+import isAdminMiddleware from "../../../user/api/middlewares/token/is-admin-middleware";
 
 @Controller("/campus")
 class CampusController extends BaseController {
+  @Middleware()
+  private verifySession(req: Request, res: Response, next: NextFunction) {
+    verifySessionMiddleware.execute(req, res, next);
+  }
+
+  @Middleware()
+  private isAdmin(req: Request, res: Response, next: NextFunction) {
+    isAdminMiddleware.execute(req, res, next);
+  }
+
   @Route("get", "/")
   private async getAll(req: Request, res: Response, next: NextFunction) {
     try {
@@ -26,6 +39,7 @@ class CampusController extends BaseController {
         throw new BadRequest({ msg: "Url and token are required" });
 
       const campusCreated = await Campus.validateAndCreate({ url, token });
+      if (!campusCreated) throw new BadRequest({ msg: "Campus cannot be created" });
       res.json(campusCreated).status(201);
     } catch (error) {
       next(error);

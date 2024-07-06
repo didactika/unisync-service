@@ -1,20 +1,20 @@
+import BaseEntity from "../../../classes/entities/base-entity";
 import UserModel from "../../db/models/user-model";
-import { IUser } from "../../types/classes/user-interface";
+import { EUserRole } from "../../enums/user-role-enum";
+import { UserFilter } from "../../types/classes/entities/user-filter";
+import { IUser } from "../../types/classes/entities/user-interface";
 
-class User implements IUser {
-  public readonly id: number | undefined;
+class User extends BaseEntity<IUser> implements IUser {
   public readonly uuid: string | undefined;
   private _username: string;
   private _password: string;
   private _firstName: string;
   private _lastName: string;
   private _email: string;
-  private _role: string;
-  public readonly createdAt: Date;
-  public readonly updatedAt: Date;
+  private _role: EUserRole;
 
   constructor(user: IUser) {
-    this.id = user.id;
+    super(user);
     this.uuid = user.uuid;
     this._username = user.username;
     this._password = user.password;
@@ -22,8 +22,6 @@ class User implements IUser {
     this._lastName = user.lastName;
     this._email = user.email;
     this._role = user.role;
-    this.createdAt = user.createdAt || new Date();
-    this.updatedAt = user.updatedAt || new Date();
   }
 
   // Getters and setters
@@ -67,15 +65,28 @@ class User implements IUser {
     this._email = value;
   }
 
-  get role(): string {
+  get role(): EUserRole {
     return this._role;
   }
 
-  set role(value: string) {
+  set role(value: EUserRole) {
     this._role = value;
   }
 
-  // Methods
+  public toJSON(): IUser {
+    return {
+      id: this.id,
+      uuid: this.uuid,
+      username: this.username,
+      password: this.password,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      email: this.email,
+      role: this.role,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+    };
+  }
 
   /**
    * Create a new user
@@ -83,6 +94,7 @@ class User implements IUser {
   public async create(): Promise<IUser> {
     return (
       await UserModel.create({
+        uuid: this.uuid || undefined,
         username: this.username,
         password: this.password,
         firstName: this.firstName,
@@ -91,6 +103,15 @@ class User implements IUser {
         role: this.role,
       })
     ).dataValues as IUser;
+  }
+
+  public static async findMany<IUser>(filter?: UserFilter): Promise<IUser[]> {
+    return (await UserModel.findAll(filter ? { where: filter } : {})).map((user) => user.dataValues as IUser);
+  }
+
+  public static async findOne<IUser>(filter?: UserFilter): Promise<IUser | null> {
+    const user = await UserModel.findOne(filter ? { where: filter } : {});
+    return user ? (user.dataValues as IUser) : null;
   }
 
   /**
@@ -110,7 +131,7 @@ class User implements IUser {
         where: {
           id: this.id,
         },
-        returning: true, // This will return the updated object
+        returning: true,
       }
     );
 
@@ -124,18 +145,12 @@ class User implements IUser {
   /**
    * Delete an existing user
    */
-  public async delete(): Promise<boolean> {
-    const numberOfAffectedRows = await UserModel.destroy({
+  public async delete(): Promise<number> {
+    return await UserModel.destroy({
       where: {
         id: this.id,
       },
     });
-
-    if (numberOfAffectedRows === 0) {
-      throw new Error("User not found");
-    }
-
-    return true;
   }
 
   /**

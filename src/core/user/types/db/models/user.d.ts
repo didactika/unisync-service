@@ -1,14 +1,15 @@
 import { BaseAttributes } from "../../../../db/types/base-attributes";
+import { EUserRole } from "../../../enums/user-role-enum";
 
 export type UserAttributes = BaseAttributes & {
-    uuid: string;
+    uuid?: string;
     username: string;
     password: string;
     firstName: string;
     lastName: string;
     email: string;
-    role: string;
+    role: EUserRole;
   };
   
-  export type UserCreationAttributes = Omit<UserAttributes, 'id' | 'uuid'>;
+  export type UserCreationAttributes = Omit<UserAttributes, 'id'>;
   
