@@ -1,5 +1,5 @@
-import ComponentLoader from "../core/component/classes/component-loader";
-import { ELoadPath } from "../core/component/enums/load-path-enum";
+import ComponentLoader from "../../component/classes/component-loader";
+import { ELoadPath } from "../../component/enums/load-path-enum";
 
 
 export default async function initializeObservers() {

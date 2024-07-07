@@ -5,7 +5,7 @@ import DB from "./core/db";
 import ErrorResponseMiddleware from "http-response-client/lib/middlewares/error-response-middleware";
 import InstallComponentManager from "./core/component/classes/manager/install-component-manager";
 import { loadControllersAndRegisterRoutes } from "./core/api/routes";
-import initializeObservers from "./observers/initialize-observers";
+import initializeObservers from "./core/classes/observers/initialize-observers";
 class App {
   private app: express.Application;
 
