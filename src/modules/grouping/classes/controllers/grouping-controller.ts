@@ -6,7 +6,6 @@ import CourseCampus from "../../../course/classes/entities/course-campus";
 import { ICourseCampus } from "../../../course/types/classes/entities/course-campus-interface";
 import { IGrouping } from "../../types/classes/entities/grouping-interface";
 import Grouping from "../entities/grouping";
-import GroupingGroup from "../entities/grouping-groups";
 import GroupingGroupController from "./grouping-group-controller";
 
 export default class GroupingController {
