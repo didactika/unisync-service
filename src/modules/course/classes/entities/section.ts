@@ -109,13 +109,13 @@ export default class Section extends BaseEntity<ISection> implements ISection {
     return affectedRows[0].get({ plain: true }) as ISection;
   }
 
-  public static async findOne<ICourse>(filter?: SectionFilter): Promise<ICourse | null> {
-    const course = await SectionModel.findOne(filter ? { where: filter } : {});
-    return course ? (course as ICourse) : null;
+  public static async findOne<ISection>(filter?: SectionFilter): Promise<ISection | null> {
+    const section = await SectionModel.findOne(filter ? { where: filter } : {});
+    return section ? (section as ISection) : null;
   }
 
-  public static async findMany<ICourse>(filter?: SectionFilter): Promise<ICourse[]> {
-    return (await SectionModel.findAll(filter ? { where: filter } : {})).map((course) => course.dataValues as ICourse);
+  public static async findMany<ISection>(filter?: SectionFilter): Promise<ISection[]> {
+    return (await SectionModel.findAll(filter ? { where: filter } : {})).map((course) => course.dataValues as ISection);
   }
 
   public async delete(): Promise<number> {

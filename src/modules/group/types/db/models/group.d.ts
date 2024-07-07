@@ -2,8 +2,8 @@ import { BaseAttributes } from "../../../../../core/db/types/base-attributes";
 
 export type GroupAttributes = BaseAttributes & {
     name: string;
-    idnumber: string;
-    description: string;
+    idnumber?: string;
+    description?: string;
     idOnCampus: number;
     courseId: number;
   };

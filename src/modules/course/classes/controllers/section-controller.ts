@@ -18,9 +18,8 @@ export default class SectionController {
     const campusCourseActions = new CampusConnectorCourse(campus);
     const courseContent = await campusCourseActions.getCourseInformation({
       courseid: courseCampus.idOnCampus,
-      includes: { header: 1, content: 1, groups: 1, groupings: 1 },
+      includes: { header: 0, content: 1, groups: 0, groupings: 0 },
     });
-    console.log(courseContent);
 
     if (!courseContent.content) return [];
 
@@ -32,16 +31,9 @@ export default class SectionController {
         position: section.section,
       })) as ISection;
 
-      if (sectionFound) {
-        return this.update(sectionFound, section);
-      } else {
-        return this.create(courseId, section);
-      }
+      return sectionFound ? this.update(sectionFound, section) : this.create(courseId, section);
     });
-    const syncedSections = [] as (ISection | null)[];
-    for (const sectionPromise of sectionPromises) {
-      syncedSections.push(await sectionPromise);
-    }
+    const syncedSections = await Promise.all(sectionPromises);
     return syncedSections.filter((section) => section !== null) as ISection[];
   }
 
