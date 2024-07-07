@@ -1,4 +1,4 @@
-import BaseEvent from "../../events/classes/base-event";
+import BaseEvent from "../../events/base-event";
 import { CampusCreatedEventData } from "../types/events/campus-created";
 
 export default class CampusCreated extends BaseEvent<CampusCreatedEventData> {

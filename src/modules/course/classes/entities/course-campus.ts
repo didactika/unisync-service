@@ -60,6 +60,7 @@ class CourseCampus extends BaseEntity<ICourseCampus> implements ICourseCampus {
     ).dataValues as ICourseCampus;
   }
 
+  //TODO: CHange Filter to type and create a new type of response
   public static async findOne<ICourseCampus>(filters?: {
     campus?: CampusFilter;
     course?: CourseFilter;
@@ -76,6 +77,7 @@ class CourseCampus extends BaseEntity<ICourseCampus> implements ICourseCampus {
     return course ? (course as ICourseCampus) : null;
   }
 
+  //TODO: Change Filter to type and create a new type of response
   public static async findMany<ICourseCampus>(filters?: {
     campus?: CampusFilter;
     course?: CourseFilter;

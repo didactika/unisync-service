@@ -1,9 +1,9 @@
 import CampusModel from "../../../../core/campus/db/models/campus";
 import BaseModel from "../../../../core/db/models/base-model";
 import CategoryModel from "../../../../core/db/models/category-model";
-import BaseEventEmitter from "../../../../core/events/classes/base-event-emiter";
+import BaseEventEmitter from "../../../../core/events/base-event-emiter";
 import { CourseCampusAttributes, CourseCampusCreationAttributes } from "../../types/db/models/course-campus";
-import { Events } from "../events";
+import { CourseEvents } from "../events";
 import courseCampusSchema from "../schemas/course-campus-schema";
 import CourseModel from "./course-model";
 
@@ -34,7 +34,7 @@ class CourseCampusModel extends BaseModel<CourseCampusAttributes, CourseCampusCr
   protected static addHooks(): void {
     CourseCampusModel.afterCreate((courseCampus, options) => {
       BaseEventEmitter.emitEvent(
-        new Events.CourseCampusCreated({
+        new CourseEvents.CourseCampusCreated({
           id: courseCampus.dataValues.id,
           campusId: courseCampus.dataValues.campusId,
           courseId: courseCampus.dataValues.courseId,

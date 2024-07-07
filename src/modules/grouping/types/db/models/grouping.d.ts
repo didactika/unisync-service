@@ -2,7 +2,7 @@ import { BaseAttributes } from "../../../../../core/db/types/base-attributes";
 
 export type GroupingAttributes = BaseAttributes & {
     name: string;
-    idnumber: string;
+    idnumber?: string;
     idOnCampus: number;
     courseId: number;
   };

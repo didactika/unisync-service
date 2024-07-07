@@ -112,7 +112,7 @@ class Group extends BaseEntity<IGroup> implements IGroup {
   }
 
   public static async findMany<IGroup>(filter?: GroupFilter): Promise<IGroup[]> {
-    return (await GroupModel.findAll(filter ? { where: filter } : {})).map((course) => course.dataValues as IGroup);
+    return (await GroupModel.findAll(filter ? { where: filter } : {})).map((group) => group.dataValues as IGroup);
   }
 
   public async delete(): Promise<number> {

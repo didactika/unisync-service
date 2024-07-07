@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { IBaseEvent } from "../types/classes/base-event";
+import { IBaseEvent } from "../types/events/base-event";
 
 export default abstract class BaseEvent<T extends {}> implements IBaseEvent<T> {
   private _eventName: string;

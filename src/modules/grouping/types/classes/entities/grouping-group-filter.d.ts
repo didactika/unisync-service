@@ -1,0 +1,1 @@
+export type GroupingGroupFilter = Partial<IGroupingGroup>;

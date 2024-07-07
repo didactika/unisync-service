@@ -1,9 +1,8 @@
-import { Sequelize } from "sequelize";
 import BaseModel from "../../../../core/db/models/base-model";
 import { CourseAttributes, CourseCreationAttributes } from "../../types/db/models/course";
 import courseSchema from "../schemas/course-schema";
-import BaseEventEmitter from "../../../../core/events/classes/base-event-emiter";
-import { Events } from "../events";
+import BaseEventEmitter from "../../../../core/events/base-event-emiter";
+import { CourseEvents } from "../events";
 
 class CourseModel extends BaseModel<CourseAttributes, CourseCreationAttributes> {
   public static initialize() {
@@ -15,7 +14,7 @@ class CourseModel extends BaseModel<CourseAttributes, CourseCreationAttributes> 
   protected static addHooks(): void {
     CourseModel.afterCreate((course, options) => {
       BaseEventEmitter.emitEvent(
-        new Events.CourseCreated({
+        new CourseEvents.CourseCreated({
           id: course.dataValues.id,
           uuid: course.dataValues.uuid,
           type: course.dataValues.type,

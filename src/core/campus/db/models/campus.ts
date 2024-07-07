@@ -1,7 +1,7 @@
 import BaseModel from "../../../db/models/base-model";
-import BaseEventEmitter from "../../../events/classes/base-event-emiter";
+import BaseEventEmitter from "../../../events/base-event-emiter";
 import { CampusAttributes, CampusCreationAttributes } from "../../types/db/campus";
-import { Events } from "../events";
+import { CampusEvents } from "../events";
 import campusSchema from "../schemas/campus-schema";
 
 class CampusModel extends BaseModel<CampusAttributes, CampusCreationAttributes> {
@@ -15,7 +15,7 @@ class CampusModel extends BaseModel<CampusAttributes, CampusCreationAttributes> 
   protected static addHooks(): void {
     CampusModel.afterCreate((campus, options) => {
       BaseEventEmitter.emitEvent(
-        new Events.CampusCreated({
+        new CampusEvents.CampusCreated({
           id: campus.dataValues.id,
           name: campus.dataValues.name,
           url: campus.dataValues.url,

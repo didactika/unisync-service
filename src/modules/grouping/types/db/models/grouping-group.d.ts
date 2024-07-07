@@ -1,6 +1,6 @@
 export type GroupingGroupAttributes = BaseAttributes & {
-  idGroup: number;
-  idGrouping: number;
+  groupId: number;
+  groupingId: number;
 };
 
 export type GroupingGroupCreationAttributes = Omit<GroupingGroupAttributes, "id">;

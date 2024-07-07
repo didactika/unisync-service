@@ -4,6 +4,6 @@ const events = {
     CampusCreated,
 }
 
-export namespace Events {
+export namespace CampusEvents {
     export const CampusCreated = events.CampusCreated;
 }

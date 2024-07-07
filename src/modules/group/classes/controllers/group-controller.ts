@@ -2,10 +2,12 @@ import CampusConnectorCourse from "../../../../core/campus/classes/campus-connec
 import Campus from "../../../../core/campus/classes/entities/campus";
 import { NCampusConnectorCourse } from "../../../../core/campus/types/classes/campus-connector/campus-connector-course";
 import { ICampus } from "../../../../core/campus/types/classes/entities/campus-interface";
+import BaseEventEmitter from "../../../../core/events/base-event-emiter";
 import CourseCampus from "../../../course/classes/entities/course-campus";
 import { ICourseCampus } from "../../../course/types/classes/entities/course-campus-interface";
 import { IGroup } from "../../types/classes/entities/group-interface";
 import Group from "../entities/group";
+import GroupsCourseSynced from "../../events/groups-course-synced";
 
 export default class GroupController {
   public static async syncFromCampus(courseId: number): Promise<IGroup[]> {
@@ -34,7 +36,9 @@ export default class GroupController {
       return groupFound ? this.update(groupFound, group) : this.create(courseId, group);
     });
     const syncedGroups = await Promise.all(groupPromises);
-    return syncedGroups.filter((group) => group !== null) as IGroup[];
+    const filteredGroups = syncedGroups.filter((group) => group !== null) as IGroup[];
+    BaseEventEmitter.emitEvent(new GroupsCourseSynced({ courseId, groups: filteredGroups }));
+    return filteredGroups;
   }
 
   private static async create(courseId: number, group: NCampusConnectorCourse.Group): Promise<IGroup> {

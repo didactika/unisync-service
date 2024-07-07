@@ -6,12 +6,12 @@ const groupingGroupSchema: ModelAttributes = {
     autoIncrement: true,
     primaryKey: true,
   },
-  idGroup: {
+  groupId: {
     type: DataTypes.INTEGER,
     allowNull: false,
     unique: false,
   },
-  idGrouping: {
+  groupingId: {
     type: DataTypes.INTEGER,
     allowNull: false,
     unique: false,

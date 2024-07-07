@@ -7,7 +7,7 @@ const events = {
     CourseCampusCreated
 }
 
-export namespace Events {
+export namespace CourseEvents {
     export const CourseCreated = events.CourseCreated;
     export const CourseCampusCreated = events.CourseCampusCreated;
 }
