@@ -1,10 +1,9 @@
 import { Events as CampusEvents } from "../../../../core/campus/db/events";
 import CampusCreated from "../../../../core/campus/events/campus-created-event";
-import CategoryController from "../../../../core/classes/controllers/category-controller";
 import BaseEventEmitter from "../../../../core/events/classes/base-event-emiter";
 import CourseController from "../controllers/course-controller";
 
-export function observer() {
+const observer = () => {
   BaseEventEmitter.onEvent(CampusEvents.CampusCreated, async (event: CampusCreated) => {
     try {
       const campusData = event.data;
@@ -15,3 +14,5 @@ export function observer() {
     }
   });
 }
+
+export default { observer};

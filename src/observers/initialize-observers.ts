@@ -1,9 +1,16 @@
-import { observer as CampusObserverCore } from "../core/classes/observers/campus-created-observer";
-import { observer as CampusObserverCourse } from "../modules/course/classes/observers/campus-created-observer";
-import { observer as CourseObserver } from "../modules/course/classes/observers/course-created-observer";
+import ComponentLoader from "../core/component/classes/component-loader";
+import { ELoadPath } from "../core/component/enums/load-path-enum";
 
-export default function initializeObservers() {
-  CampusObserverCore();
-  CampusObserverCourse();
-  CourseObserver();
+
+export default async function initializeObservers() {
+  await ComponentLoader.loadComponents({
+    directory: "classes/observers",
+    method: "observer",
+  });
+  await ComponentLoader.loadComponents({
+    directoryPath: ELoadPath.CORE,
+    componentDirectories: ["classes/observers"],
+    directory: "",
+    method: "observer",
+  });
 }
