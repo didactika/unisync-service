@@ -6,7 +6,7 @@ class InstalledComponentModel extends BaseModel<InstalledComponentAttributes> {
   public static initialize() {
     InstalledComponentModel.init(installedComponentSchema, {
       sequelize: this._sequelize,
-      tableName: "installed_components",
+      tableName: "installed_component",
     });
   }
 }

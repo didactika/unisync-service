@@ -1,6 +1,6 @@
 import BaseModel from "../../../../core/db/models/base-model";
 import CourseModel from "../../../course/db/models/course-model";
-import SectionModel from "../../../course/db/models/section.model";
+import SectionModel from "../../../course/db/models/section-model";
 import { CourseModuleAttributes, CourseModuleCreationAttributes } from "../../types/db/models/course-module";
 import courseModuleSchema from "../schemas/course-module-schema";
 import ModuleModel from "./module-model";

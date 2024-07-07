@@ -1,9 +1,9 @@
 export namespace NCampusConnectorCourse {
   type IncludesInformation = {
-    header?: boolean;
-    content?: boolean;
-    groups?: boolean;
-    groupings?: boolean;
+    header: number = 0;
+    content: number = 0;
+    groups: number = 0;
+    groupings: number = 0;
   };
 
   export type GetCourseInformationRequest = {
@@ -60,7 +60,7 @@ export namespace NCampusConnectorCourse {
     name: string; // course format option name
     value: string; // course format option value
   };
-  
+
   export type CustomField = {
     name: string; // The name of the custom field
     shortname: string; // The shortname of the custom field
@@ -68,7 +68,7 @@ export namespace NCampusConnectorCourse {
     valueraw: string; // The raw value of the custom field
     value: string; // The value of the custom field
   };
-  
+
   export type GetCourseResponse = {
     id: number; // course id
     shortname: string; // course short name

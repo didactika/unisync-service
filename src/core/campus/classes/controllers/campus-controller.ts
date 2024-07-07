@@ -8,6 +8,7 @@ import Campus from "../entities/campus";
 
 export default class CampusController {
   public static async validateAndCreate(campusData: CampusCreationData): Promise<ICampus | undefined> {
+    if (await this.campusExists(campusData.url)) return undefined;
     const campusBaseActions = new CampusConnectorBase(campusData);
     const siteInfo = await campusBaseActions.getSiteInfo();
     if (siteInfo && siteInfo.sitename && (siteInfo.release || siteInfo.version)) {
@@ -24,6 +25,10 @@ export default class CampusController {
       return await campus.create();
     }
     return undefined;
+  }
+
+  public static async campusExists(url: string): Promise<boolean> {
+    return (await Campus.findOne<ICampus>({ url })) !== null;
   }
 
   public static async getAll(): Promise<ICampus[]> {

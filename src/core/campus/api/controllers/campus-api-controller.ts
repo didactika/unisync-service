@@ -2,7 +2,7 @@ import { NextFunction, Response, Request } from "express";
 import BaseController from "../../../api/controllers/base-controller";
 import { Controller } from "../../../api/decorators/controller";
 import { Route } from "../../../api/decorators/route";
-import { NotFound, BadRequest } from "http-response-client/lib/errors/client";
+import { NotFound, BadRequest, Conflict } from "http-response-client/lib/errors/client";
 import Campus from "../../classes/controllers/campus-controller";
 import { Middleware } from "../../../api/decorators/middleware";
 import verifySessionMiddleware from "../../../user/api/middlewares/session/verify-session";
@@ -38,6 +38,7 @@ class CampusController extends BaseController {
       if (!url || url.trim() === "" || !token || token.trim() === "")
         throw new BadRequest({ msg: "Url and token are required" });
 
+      if (await Campus.campusExists(url)) throw new Conflict({ msg: "Campus already exists" });
       const campusCreated = await Campus.validateAndCreate({ url, token });
       if (!campusCreated) throw new BadRequest({ msg: "Campus cannot be created" });
       res.json(campusCreated).status(201);

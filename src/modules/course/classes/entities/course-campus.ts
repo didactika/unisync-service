@@ -8,7 +8,6 @@ import { CampusFilter } from "../../../../core/campus/types/classes/entities/cam
 import { CourseFilter } from "../../types/classes/entities/course-filter";
 
 class CourseCampus extends BaseEntity<ICourseCampus> implements ICourseCampus {
-  public readonly id: number | undefined;
   public readonly campusId: number;
   public readonly courseId: number;
   private _categoryId: number;
@@ -16,7 +15,6 @@ class CourseCampus extends BaseEntity<ICourseCampus> implements ICourseCampus {
 
   constructor(courseCampus: ICourseCampus) {
     super(courseCampus);
-    this.id = courseCampus.id;
     this.campusId = courseCampus.campusId;
     this.courseId = courseCampus.courseId;
     this._categoryId = courseCampus.categoryId;

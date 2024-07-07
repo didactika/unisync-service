@@ -1,4 +1,4 @@
-abstract class BaseEntity<T> {
+export default abstract class BaseEntity<T> {
   public readonly id?: number;
   private _createdAt?: Date;
   private _updatedAt?: Date;
@@ -42,5 +42,3 @@ abstract class BaseEntity<T> {
 
   abstract delete(): Promise<number>;
 }
-
-export default BaseEntity;

@@ -8,7 +8,7 @@ import path from "path";
 import { InitializableModel } from "../types/models/base-model";
 import DB from "..";
 
-abstract class BaseModel<T extends {} = any, TCreation extends {} = any> extends Model<T, TCreation> {
+export default abstract class BaseModel<T extends {} = any, TCreation extends {} = any> extends Model<T, TCreation> {
   private static isInitialized = false;
   protected static requiredModels: (InitializableModel | any)[] = [];
   protected static _sequelize: Sequelize = DB.getInstance().sequelize;
@@ -92,5 +92,3 @@ abstract class BaseModel<T extends {} = any, TCreation extends {} = any> extends
     // Add associations here
   }
 }
-
-export default BaseModel;

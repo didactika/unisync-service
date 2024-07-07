@@ -9,7 +9,7 @@ import verifySessionMiddleware from "../middlewares/session/verify-session";
 import isAdminMiddleware from "../middlewares/token/is-admin-middleware";
 
 @Controller("/users")
-class UserController extends BaseController {
+export default class UserController extends BaseController {
   @Middleware()
   private verifySession(req: Request, res: Response, next: NextFunction) {
     verifySessionMiddleware.execute(req, res, next);
@@ -63,5 +63,3 @@ class UserController extends BaseController {
     }
   }
 }
-
-export default UserController;

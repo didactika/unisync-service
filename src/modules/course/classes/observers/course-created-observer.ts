@@ -1,10 +1,12 @@
-import { Events as CourseEvents } from "../../../../core/campus/db/events";
+import { Events as CourseEvents } from "../../db/events";
 import BaseEventEmitter from "../../../../core/events/classes/base-event-emiter";
-import CourseCreated from "../../events/course-created-event";
-import CourseCampusController from "../controllers/course-campus-controller";
+import SectionController from "../controllers/section-controller";
+import CourseCampusCreated from "../../events/course-campus-created-event";
 
 export function observer() {
-  BaseEventEmitter.onEvent(CourseEvents.CourseCreated, async (data: CourseCreated) => {
+  BaseEventEmitter.onEvent(CourseEvents.CourseCampusCreated, async (data: CourseCampusCreated) => {
     const courseData = data.data;
+    if (!courseData.id) return;
+    SectionController.syncFromCampus(courseData.courseId);
   });
 }

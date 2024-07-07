@@ -3,7 +3,7 @@ import BaseModel from "../../../../core/db/models/base-model";
 import { CourseAttributes, CourseCreationAttributes } from "../../types/db/models/course";
 import courseSchema from "../schemas/course-schema";
 import BaseEventEmitter from "../../../../core/events/classes/base-event-emiter";
-import { Events } from "../../../../core/campus/db/events";
+import { Events } from "../events";
 
 class CourseModel extends BaseModel<CourseAttributes, CourseCreationAttributes> {
   public static initialize() {
@@ -16,6 +16,7 @@ class CourseModel extends BaseModel<CourseAttributes, CourseCreationAttributes> 
     CourseModel.afterCreate((course, options) => {
       BaseEventEmitter.emitEvent(
         new Events.CourseCreated({
+          id: course.dataValues.id,
           uuid: course.dataValues.uuid,
           type: course.dataValues.type,
           fullname: course.dataValues.fullname,

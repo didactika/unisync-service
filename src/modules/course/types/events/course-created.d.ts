@@ -1,4 +1,5 @@
 export type CourseCreatedEventData = {
+  id?: number;
   uuid?: string;
   type: ECourseType;
   fullname: string;

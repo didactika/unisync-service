@@ -5,7 +5,6 @@ import { CourseFilter } from "../../types/classes/entities/course-filter";
 import { ICourse } from "../../types/classes/entities/course-interface";
 
 class Course extends BaseEntity<ICourse> implements ICourse {
-  public readonly id: number | undefined;
   public readonly uuid: string | undefined;
   private _type: ECourseType;
   private _fullname: string;
@@ -14,7 +13,6 @@ class Course extends BaseEntity<ICourse> implements ICourse {
 
   constructor(course: ICourse) {
     super(course);
-    this.id = course.id;
     this.uuid = course.uuid;
     this._type = course.type;
     this._fullname = course.fullname;
