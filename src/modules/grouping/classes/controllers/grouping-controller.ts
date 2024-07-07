@@ -7,6 +7,7 @@ import { ICourseCampus } from "../../../course/types/classes/entities/course-cam
 import { IGrouping } from "../../types/classes/entities/grouping-interface";
 import Grouping from "../entities/grouping";
 import GroupingGroup from "../entities/grouping-groups";
+import GroupingGroupController from "./grouping-group-controller";
 
 export default class GroupingController {
   static async syncFromCampus(courseId: number): Promise<IGrouping[]> {
@@ -32,7 +33,9 @@ export default class GroupingController {
         idOnCampus: grouping.id,
       })) as IGrouping;
 
-      return groupingFound ? this.update(groupingFound, grouping) : this.create(courseId, grouping);
+      const groupingSynced = groupingFound ? await this.update(groupingFound, grouping) : await this.create(courseId, grouping);
+      GroupingGroupController.createFromCampus(groupingSynced, grouping.groups);
+      return groupingSynced;
     });
     const syncedGroupings = await Promise.all(gropingPromises);
     const filteredGroups = syncedGroupings.filter((group) => group !== null) as IGrouping[];
@@ -42,32 +45,17 @@ export default class GroupingController {
   private static async create(courseId: number, grouping: NCampusConnectorCourse.Grouping): Promise<IGrouping> {
     const groupingOnDB = new Grouping({
       courseId: courseId,
-      idnumber: undefined, // TODO: Change this
+      idnumber: "test", // TODO: Change this
       name: grouping.name,
       idOnCampus: grouping.id,
     });
 
-    const groupingCreated = await groupingOnDB.create();
-
-    const groupingGroupFound = (await GroupingGroup.findOne({
-      courseId: courseId,
-      idOnCampus: grouping.id,
-    })) as IGrouping;
-
-    if (!groupingGroupFound) {
-      const groupingGroup = new GroupingGroup({
-        groupId: grouping.id,
-        groupingId: groupingCreated.id!,
-      });
-
-      await groupingGroup.create();
-    }
-    return groupingCreated;
+    return await groupingOnDB.create();
   }
 
   private static async update(groupingFound: IGrouping, newGrouping: NCampusConnectorCourse.Grouping): Promise<IGrouping> {
     const groupingOnDB = new Grouping(groupingFound);
-    groupingOnDB.idnumber = undefined;    // TODO: Change this
+    groupingOnDB.idnumber = "test";    // TODO: Change this
     groupingOnDB.name = newGrouping.name;
     groupingOnDB.idOnCampus = newGrouping.id;
 

@@ -1,6 +1,6 @@
 import BaseEntity from "../../../../core/classes/entities/base-entity";
 import GroupingGroupModel from "../../db/models/grouping-group-model";
-import { GroupingFilter } from "../../types/classes/entities/grouping-filter";
+import { GroupingGroupFilter } from "../../types/classes/entities/grouping-group-filter";
 import { IGroupingGroup } from "../../types/classes/entities/grouping-group-interface";
 
 export default class GroupingGroup extends BaseEntity<IGroupingGroup> implements IGroupingGroup {
@@ -67,12 +67,12 @@ export default class GroupingGroup extends BaseEntity<IGroupingGroup> implements
     return affectedRows[0].get({ plain: true }) as IGroupingGroup;
   }
 
-  public static async findOne<IGroupingGroup>(filter?: GroupingFilter): Promise<IGroupingGroup | null> {
+  public static async findOne<IGroupingGroup>(filter?: GroupingGroupFilter): Promise<IGroupingGroup | null> {
     const groupingGroup = await GroupingGroupModel.findOne(filter ? { where: filter } : {});
     return groupingGroup ? (groupingGroup as IGroupingGroup) : null;
   }
 
-  public static async findMany<IGroupingGroup>(filter?: GroupingFilter): Promise<IGroupingGroup[]> {
+  public static async findMany<IGroupingGroup>(filter?: GroupingGroupFilter): Promise<IGroupingGroup[]> {
     return (await GroupingGroupModel.findAll(filter ? { where: filter } : {})).map(
       (groupingGroup) => groupingGroup.dataValues as IGroupingGroup
     );
