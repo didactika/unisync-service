@@ -60,11 +60,11 @@ export default class RabbitMQPublisher {
       timestamp: new Date().getTime(),
       deliveryMode: 2,
       appId: environment.messageBroker.MESSAGE_BROKER_PUBLISH_APP_ID,
-      type: eventType,
+      type: `${environment.messageBroker.MESSAGE_BROKER_PUBLISH_APP_ID}.${eventType}`,
       messageId: uuid,
       headers: {
         content_type: "application/json",
-        type: eventType,
+        type: `${environment.messageBroker.MESSAGE_BROKER_PUBLISH_APP_ID}.${eventType}`,
       },
       contentType: "aplication/json",
     };
