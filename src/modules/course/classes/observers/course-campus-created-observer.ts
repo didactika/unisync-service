@@ -1,7 +1,7 @@
 import { CourseEvents } from "../../db/events";
 import SectionController from "../controllers/section-controller";
 import CourseCampusCreated from "../../events/course-campus-created-event";
-import BaseEventEmitter from "../../../../core/events/base-event-emiter";
+import BaseEventEmitter from "../../../../core/events/internal/base-event-emiter";
 
 const observer = () => {
   BaseEventEmitter.onEvent(CourseEvents.CourseCampusCreated, async (data: CourseCampusCreated) => {

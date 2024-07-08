@@ -1,5 +1,5 @@
-import BaseEvent from "./base-event";
 import EventEmitter from "node:events";
+import BaseEvent from "./base-event";
 
 export default abstract class BaseEventEmitter {
   private static eventEmitter: EventEmitter = new EventEmitter();

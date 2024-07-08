@@ -1,8 +1,8 @@
 import BaseModel from "../../../../core/db/models/base-model";
 import { CourseAttributes, CourseCreationAttributes } from "../../types/db/models/course";
 import courseSchema from "../schemas/course-schema";
-import BaseEventEmitter from "../../../../core/events/base-event-emiter";
 import { CourseEvents } from "../events";
+import BaseEventEmitter from "../../../../core/events/internal/base-event-emiter";
 
 class CourseModel extends BaseModel<CourseAttributes, CourseCreationAttributes> {
   public static initialize() {

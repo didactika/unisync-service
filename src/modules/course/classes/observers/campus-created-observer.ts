@@ -1,6 +1,6 @@
 import {CampusEvents } from "../../../../core/campus/db/events";
 import CampusCreated from "../../../../core/campus/events/campus-created-event";
-import BaseEventEmitter from "../../../../core/events/base-event-emiter";
+import BaseEventEmitter from "../../../../core/events/internal/base-event-emiter";
 import CourseController from "../controllers/course-controller";
 
 const observer = () => {

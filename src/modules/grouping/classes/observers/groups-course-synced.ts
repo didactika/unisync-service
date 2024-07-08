@@ -1,4 +1,4 @@
-import BaseEventEmitter from "../../../../core/events/base-event-emiter";
+import BaseEventEmitter from "../../../../core/events/internal/base-event-emiter";
 import GroupsCourseSynced from "../../../group/events/groups-course-synced";
 import GroupingController from "../controllers/grouping-controller";
 

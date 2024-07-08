@@ -1,6 +1,6 @@
 import { Channel, connect } from "amqplib/callback_api";
 import { v4 as uuidv4 } from "uuid";
-import environment from "../../../../../config/environment";
+import environment from "../../../../../../config/environment";
 
 //TODO: CREATE EVENT TYPES DINAMICALLY WITH A VRIABLE THAT LOAD THE EVENT TYPE FROM A FILE
 export default class RabbitMQPublisher {

@@ -1,4 +1,4 @@
-import BaseEventEmitter from "../../../../core/events/base-event-emiter";
+import BaseEventEmitter from "../../../../core/events/internal/base-event-emiter";
 import { CourseEvents } from "../../../../modules/course/db/events";
 import CourseCampusCreated from "../../../course/events/course-campus-created-event";
 import GroupController from "../controllers/group-controller";

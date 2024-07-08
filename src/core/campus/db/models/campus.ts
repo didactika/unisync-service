@@ -1,5 +1,5 @@
 import BaseModel from "../../../db/models/base-model";
-import BaseEventEmitter from "../../../events/base-event-emiter";
+import BaseEventEmitter from "../../../events/internal/base-event-emiter";
 import { CampusAttributes, CampusCreationAttributes } from "../../types/db/campus";
 import { CampusEvents } from "../events";
 import campusSchema from "../schemas/campus-schema";

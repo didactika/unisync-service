@@ -1,7 +1,7 @@
 import CampusModel from "../../../../core/campus/db/models/campus";
 import BaseModel from "../../../../core/db/models/base-model";
 import CategoryModel from "../../../../core/db/models/category-model";
-import BaseEventEmitter from "../../../../core/events/base-event-emiter";
+import BaseEventEmitter from "../../../../core/events/internal/base-event-emiter";
 import { CourseCampusAttributes, CourseCampusCreationAttributes } from "../../types/db/models/course-campus";
 import { CourseEvents } from "../events";
 import courseCampusSchema from "../schemas/course-campus-schema";
