@@ -9,6 +9,7 @@ import { ICourseCampus } from "../../types/classes/entities/course-campus-types"
 import { ICourse } from "../../types/classes/entities/course-types";
 import Course from "../entities/course";
 import CourseCampus from "../entities/course-campus";
+import CourseCampusController from "./course-campus-controller";
 
 export default class CourseController {
   public static async syncFromCampus(campusId: number): Promise<ICourse[]> {
@@ -26,18 +27,14 @@ export default class CourseController {
 
       if (!courseCategoryFound) return null;
 
-      const courseCampusFound = (await CourseCampus.findOne({
-        campus: {
-          id: campusId,
-        },
+      const courseCampusFound = (await CourseCampusController.findByCourseTypeAndShortname({
+        campusId,
         course: { shortname: course.shortname, type: ECourseType.BASE },
       })) as ICourseCampus;
 
-      if (courseCampusFound) {
-        return this.updateFromCampus(course, courseCampusFound, courseCategoryFound, campusId);
-      } else {
-        return this.createFromCampus(course, courseCategoryFound, campusId);
-      }
+      return courseCampusFound
+        ? this.updateFromCampus(course, courseCampusFound, courseCategoryFound)
+        : this.createFromCampus(course, courseCategoryFound, campusId);
     });
 
     const syncedCourses = await Promise.all(coursePromises);
@@ -58,14 +55,12 @@ export default class CourseController {
 
     const createdCourse = await courseOnDB.create();
 
-    const courseCampusToCreate = new CourseCampus({
+    await CourseCampusController.create({
       campusId: campusId,
+      courseId: createdCourse.id!,
       categoryId: category.id!,
       idOnCampus: courseOnCampus.id,
-      courseId: createdCourse.id!,
     });
-
-    await courseCampusToCreate.create();
 
     return createdCourse;
   }
@@ -73,14 +68,12 @@ export default class CourseController {
   private static async updateFromCampus(
     courseOnCampus: NCampusConnectorCourse.GetCourseResponse,
     courseCampusFound: ICourseCampus,
-    category: ICategory,
-    campusId: number
+    category: ICategory
   ): Promise<ICourse> {
-    const courseCampusOnDB = new CourseCampus(courseCampusFound);
-    courseCampusOnDB.categoryId = category.id!;
-    courseCampusOnDB.idOnCampus = courseOnCampus.id;
-
-    await courseCampusOnDB.update();
+    await CourseCampusController.update(courseCampusFound, {
+      categoryId: category.id!,
+      idOnCampus: courseOnCampus.id,
+    });
 
     const courseFound = (await Course.findOne({ id: courseCampusFound.courseId })) as ICourse;
     const courseOnDB = new Course(courseFound);
@@ -89,5 +82,12 @@ export default class CourseController {
     courseOnDB.idnumber = courseOnCampus.idnumber;
 
     return courseOnDB.update();
+  }
+
+  public static async getCourses(type?: ECourseType): Promise<ICourse[]> {
+    return await Course.findMany(type ? { type } : {});
+  }
+  public static async getCourse(courseId: number): Promise<ICourse | null> {
+    return await Course.findOne({ id: courseId });
   }
 }

@@ -106,12 +106,12 @@ class User extends BaseEntity<IUser> implements IUser {
   }
 
   public static async findMany<IUser>(filter?: UserFilter): Promise<IUser[]> {
-    return (await UserModel.findAll(filter ? { where: filter } : {})).map((user) => user.dataValues as IUser);
+    return (await UserModel.findAll(filter ? { where: filter } : {})).map((user) => user.get({ plain: true }) as IUser);
   }
 
   public static async findOne<IUser>(filter?: UserFilter): Promise<IUser | null> {
     const user = await UserModel.findOne(filter ? { where: filter } : {});
-    return user ? (user.dataValues as IUser) : null;
+    return user ? (user.get({ plain: true }) as IUser) : null;
   }
 
   /**

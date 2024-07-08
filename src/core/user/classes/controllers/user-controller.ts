@@ -5,10 +5,7 @@ import PasswordHandler from "../utils/password-handler";
 
 export default class UserController {
   public static async getAll(): Promise<IUser[]> {
-    return (await User.findMany<IUser>()).map((user) => ({
-      ...user,
-      id: undefined,
-    }));
+    return (await User.findMany());
   }
 
   public static async create(user: IUser): Promise<Partial<IUser> | undefined> {

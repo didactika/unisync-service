@@ -108,11 +108,13 @@ class Campus extends BaseEntity<ICampus> implements ICampus {
 
   public static async findOne<ICampus>(filter?: CampusFilter): Promise<ICampus | null> {
     const campus = await CampusModel.findOne(filter ? { where: filter } : {});
-    return campus ? (campus as ICampus) : null;
+    return campus ? (campus.get({ plain: true }) as ICampus) : null;
   }
 
   public static async findMany<ICampus>(filter?: CampusFilter): Promise<ICampus[]> {
-    return (await CampusModel.findAll(filter ? { where: filter } : {})).map((campus) => campus.dataValues as ICampus);
+    return (await CampusModel.findAll(filter ? { where: filter } : {})).map(
+      (campus) => campus.get({ plain: true }) as ICampus
+    );
   }
 
   public async delete(): Promise<number> {

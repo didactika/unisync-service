@@ -11,12 +11,12 @@ import isAdminMiddleware from "../../../user/api/middlewares/token/is-admin-midd
 @Controller("/campus")
 class CampusController extends BaseController {
   @Middleware()
-  private verifySession(req: Request, res: Response, next: NextFunction) {
+  private async verifySession(req: Request, res: Response, next: NextFunction) {
     verifySessionMiddleware.execute(req, res, next);
   }
 
   @Middleware()
-  private isAdmin(req: Request, res: Response, next: NextFunction) {
+  private async isAdmin(req: Request, res: Response, next: NextFunction) {
     isAdminMiddleware.execute(req, res, next);
   }
 

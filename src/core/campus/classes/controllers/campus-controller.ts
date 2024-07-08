@@ -32,9 +32,6 @@ export default class CampusController {
   }
 
   public static async getAll(): Promise<ICampus[]> {
-    return (await Campus.findMany<ICampus>({})).map((campus) => ({
-      ...campus,
-      id: undefined,
-    }));
+    return (await Campus.findMany<ICampus>());
   }
 }
