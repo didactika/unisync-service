@@ -26,8 +26,15 @@ export default class GroupingController {
         courseId: courseCampus.courseId,
         idOnCampus: grouping.id,
       })) as IGrouping;
-
-      const groupingSynced = groupingFound ? await this.update(groupingFound, grouping) : await this.create(courseId, grouping);
+      const groupinginfo = {
+        ...grouping,
+        idOnCampus: grouping.id,
+        courseId: courseCampus.courseId,
+        id: undefined,
+      };
+      const groupingSynced = groupingFound
+        ? await this.update(groupingFound, groupinginfo)
+        : await this.create(courseId, groupinginfo);
       GroupingGroupController.createFromCampus(groupingSynced, grouping.groups);
       return groupingSynced;
     });
@@ -36,23 +43,27 @@ export default class GroupingController {
     return filteredGroups;
   }
 
-  private static async create(courseId: number, grouping: NCampusConnectorCourse.Grouping): Promise<IGrouping> {
+  public static async create(courseId: number, grouping: IGrouping): Promise<IGrouping> {
     const groupingOnDB = new Grouping({
       courseId: courseId,
-      idnumber: "test", // TODO: Change this
+      idnumber: grouping.idnumber,
       name: grouping.name,
-      idOnCampus: grouping.id,
+      idOnCampus: grouping.idOnCampus,
     });
 
     return await groupingOnDB.create();
   }
 
-  private static async update(groupingFound: IGrouping, newGrouping: NCampusConnectorCourse.Grouping): Promise<IGrouping> {
+  public static async update(groupingFound: IGrouping, newGrouping: IGrouping): Promise<IGrouping> {
     const groupingOnDB = new Grouping(groupingFound);
-    groupingOnDB.idnumber = "test";    // TODO: Change this
+    groupingOnDB.idnumber = newGrouping.idnumber;
     groupingOnDB.name = newGrouping.name;
-    groupingOnDB.idOnCampus = newGrouping.id;
+    groupingOnDB.idOnCampus = newGrouping.idOnCampus;
 
     return await groupingOnDB.update();
+  }
+
+  public static async getByCourse(courseId: number): Promise<IGrouping[]> {
+    return await Grouping.findMany({ courseId });
   }
 }

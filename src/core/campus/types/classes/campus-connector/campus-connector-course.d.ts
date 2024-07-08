@@ -43,6 +43,7 @@ export namespace NCampusConnectorCourse {
 
   export type Grouping = {
     id: number; // grouping ID
+    idnumber: string; // grouping idnumber
     name: string; // grouping name
     description: string; // grouping description
     groups: number[]; // group ID

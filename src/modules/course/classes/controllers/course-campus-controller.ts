@@ -61,4 +61,8 @@ export default class CourseCampusController {
     );
     return response.length === 1 ? response[0] : response;
   }
+
+  public static async courseCampusExists(courseId: number, campusId: number): Promise<boolean> {
+    return (await CourseCampus.findOne({ course: {id:courseId}, campus: {id: campusId} })) !== null;
+  }
 }

@@ -3,10 +3,10 @@ import { EMigrationStatus } from "../../../../../core/enums/migration-status-enu
 
 export type CourseMigrationInformationAttributes = BaseAttributes & {
   uuid?: string;
-  courseId: number;
+  courseId?: number;
   courseOriginId: number;
-  courseTargetId: number;
-  courseTemplateId: number;
+  courseTargetId?: number;
+  courseTemplateId?: number;
   campusOriginId: number;
   campusTargetId: number;
   status: EMigrationStatus;

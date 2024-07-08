@@ -102,11 +102,11 @@ class Course extends BaseEntity<ICourse> implements ICourse {
 
   public static async findOne<ICourse>(filter?: CourseFilter): Promise<ICourse | null> {
     const course = await CourseModel.findOne(filter ? { where: filter } : {});
-    return course ? (course as ICourse) : null;
+    return course ? (course.get({plain:true}) as ICourse) : null;
   }
 
   public static async findMany<ICourse>(filter?: CourseFilter): Promise<ICourse[]> {
-    return (await CourseModel.findAll(filter ? { where: filter } : {})).map((course) => course.dataValues as ICourse);
+    return (await CourseModel.findAll(filter ? { where: filter } : {})).map((course) => course.get({plain:true}) as ICourse);
   }
 
   public async delete(): Promise<number> {

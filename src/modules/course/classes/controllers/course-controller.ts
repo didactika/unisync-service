@@ -6,7 +6,7 @@ import Category from "../../../../core/classes/entities/category-entity";
 import { ICategory } from "../../../../core/types/classes/entities/category-interface";
 import { ECourseType } from "../../enums/course-type-enum";
 import { ICourseCampus } from "../../types/classes/entities/course-campus-types";
-import { ICourse } from "../../types/classes/entities/course-types";
+import { CourseFilter, ICourse } from "../../types/classes/entities/course-types";
 import Course from "../entities/course";
 import CourseCampus from "../entities/course-campus";
 import CourseCampusController from "./course-campus-controller";
@@ -84,10 +84,19 @@ export default class CourseController {
     return courseOnDB.update();
   }
 
+  public static async create(course: ICourse): Promise<ICourse> {
+    const newCourse = new Course(course);
+    return await newCourse.create();
+  }
+
   public static async getCourses(type?: ECourseType): Promise<ICourse[]> {
     return await Course.findMany(type ? { type } : {});
   }
   public static async getCourse(courseId: number): Promise<ICourse | null> {
     return await Course.findOne({ id: courseId });
+  }
+
+  public static async courseExists(courseId: number): Promise<boolean> {
+    return (await Course.findOne({id: courseId})) !== null;
   }
 }

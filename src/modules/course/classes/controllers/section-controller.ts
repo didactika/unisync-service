@@ -25,32 +25,41 @@ export default class SectionController {
         courseId: courseCampus.courseId,
         position: section.section,
       })) as ISection;
-
-      return sectionFound ? this.update(sectionFound, section) : this.create(courseId, section);
+      const sectionData: ISection = {
+        ...section,
+        position: section.section,
+        courseId: courseCampus.courseId,
+        visible: section.visible === 1 ? true : false,
+      }
+      return sectionFound ? this.update(sectionFound, sectionData) : this.create(courseId, sectionData);
     });
     const syncedSections = await Promise.all(sectionPromises);
     return syncedSections.filter((section) => section !== null) as ISection[];
   }
 
-  private static async create(courseId: number, section: NCampusConnectorCourse.Section): Promise<ISection> {
+  public static async create(courseId: number, section: ISection): Promise<ISection> {
     const sectionOnDB = new Section({
       courseId: courseId,
       name: section.name,
-      position: section.section,
-      visible: section.visible === 1 ? true : false,
+      position: section.position,
+      visible: section.visible,
       availability: section.availability,
     });
 
     return await sectionOnDB.create();
   }
 
-  private static async update(sectionFound: ISection, newSection: NCampusConnectorCourse.Section): Promise<ISection> {
+  public static async update(sectionFound: ISection, newSection: ISection): Promise<ISection> {
     const sectionOnDB = new Section(sectionFound);
     sectionOnDB.name = newSection.name;
-    sectionOnDB.position = newSection.section;
-    sectionOnDB.visible = newSection.visible === 1 ? true : false;
+    sectionOnDB.position = newSection.position;
+    sectionOnDB.visible = newSection.visible;
     sectionOnDB.availability = newSection.availability;
 
     return await sectionOnDB.update();
+  }
+
+  public static async getSectionsByCourse(courseId: number): Promise<ISection[]> {
+    return await Section.findMany({ courseId });
   }
 }

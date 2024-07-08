@@ -29,8 +29,13 @@ export default class GroupController {
         courseId: courseCampus.courseId,
         idOnCampus: group.id,
       })) as IGroup;
+      const groupinfo = {
+        ...group,
+        idOnCampus: group.id,
+        courseId: courseCampus.courseId,
+      };
 
-      return groupFound ? this.update(groupFound, group) : this.create(courseId, group);
+      return groupFound ? this.update(groupFound, groupinfo) : this.create(courseId, groupinfo);
     });
     const syncedGroups = await Promise.all(groupPromises);
     const filteredGroups = syncedGroups.filter((group) => group !== null) as IGroup[];
@@ -38,25 +43,29 @@ export default class GroupController {
     return filteredGroups;
   }
 
-  private static async create(courseId: number, group: NCampusConnectorCourse.Group): Promise<IGroup> {
+  public static async create(courseId: number, group: IGroup): Promise<IGroup> {
     const groupOnDB = new Group({
       courseId: courseId,
       idnumber: group.idnumber,
       name: group.name,
-      idOnCampus: group.id,
+      idOnCampus: group.idOnCampus,
       description: group.description,
     });
 
     return await groupOnDB.create();
   }
 
-  private static async update(groupFound: IGroup, newGroup: NCampusConnectorCourse.Group): Promise<IGroup> {
+  public static async update(groupFound: IGroup, newGroup: IGroup): Promise<IGroup> {
     const groupOnDB = new Group(groupFound);
     groupOnDB.idnumber = newGroup.idnumber;
     groupOnDB.name = newGroup.name;
-    groupOnDB.idOnCampus = newGroup.id;
+    groupOnDB.idOnCampus = newGroup.idOnCampus;
     groupOnDB.description = newGroup.description;
 
     return await groupOnDB.update();
+  }
+
+  public static async getByCourse(courseId: number): Promise<IGroup[]> {
+    return await Group.findMany({ courseId });
   }
 }

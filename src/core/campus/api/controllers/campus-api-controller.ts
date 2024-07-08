@@ -38,7 +38,7 @@ class CampusController extends BaseController {
       if (!url || url.trim() === "" || !token || token.trim() === "")
         throw new BadRequest({ msg: "Url and token are required" });
 
-      if (await Campus.campusExists(url)) throw new Conflict({ msg: "Campus already exists" });
+      if (await Campus.campusExists({url})) throw new Conflict({ msg: "Campus already exists" });
       const campusCreated = await Campus.validateAndCreate({ url, token });
       if (!campusCreated) throw new BadRequest({ msg: "Campus cannot be created" });
       res.json(campusCreated).status(201);

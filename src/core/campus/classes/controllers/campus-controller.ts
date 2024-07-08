@@ -5,10 +5,11 @@ import CampusJSON from "../../statics/campus-brands.json";
 import environment from "../../../../config/environment";
 import { ICampus } from "../../types/classes/entities/campus-interface";
 import Campus from "../entities/campus";
+import { CampusFilter } from "../../types/classes/entities/campus-filter";
 
 export default class CampusController {
   public static async validateAndCreate(campusData: CampusCreationData): Promise<ICampus | undefined> {
-    if (await this.campusExists(campusData.url)) return undefined;
+    if (await this.campusExists({url:campusData.url})) return undefined;
     const campusBaseActions = new CampusConnectorBase(campusData);
     const siteInfo = await campusBaseActions.getSiteInfo();
     if (siteInfo && siteInfo.sitename && (siteInfo.release || siteInfo.version)) {
@@ -27,8 +28,8 @@ export default class CampusController {
     return undefined;
   }
 
-  public static async campusExists(url: string): Promise<boolean> {
-    return (await Campus.findOne<ICampus>({ url })) !== null;
+  public static async campusExists(filter: CampusFilter): Promise<boolean> {
+    return (await Campus.findOne<ICampus>(filter)) !== null;
   }
 
   public static async getAll(): Promise<ICampus[]> {

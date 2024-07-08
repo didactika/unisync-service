@@ -24,8 +24,8 @@ const categorySchema: ModelAttributes = {
     allowNull: true,
     validate: {
       len: {
-        args: [1, 100],
-        msg: "ID number must be between 1 and 100 characters",
+        args: [0, 100],
+        msg: "ID number must be between 0 and 100 characters",
       },
     },
   },

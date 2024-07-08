@@ -14,7 +14,7 @@ const courseMigrationInformationSchema: ModelAttributes = {
   },
   courseId: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   courseOriginId: {
     type: DataTypes.INTEGER,
@@ -22,11 +22,11 @@ const courseMigrationInformationSchema: ModelAttributes = {
   },
   courseTargetId: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   courseTemplateId: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   campusOriginId: {
     type: DataTypes.INTEGER,
@@ -38,6 +38,7 @@ const courseMigrationInformationSchema: ModelAttributes = {
   },
   status: {
     type: DataTypes.ENUM(...Object.values(EMigrationStatus)),
+    defaultValue: EMigrationStatus.PENDING,
     allowNull: false,
   },
 };
