@@ -5,8 +5,8 @@ import { ICampus } from "../../../../core/campus/types/classes/entities/campus-i
 import Category from "../../../../core/classes/entities/category-entity";
 import { ICategory } from "../../../../core/types/classes/entities/category-interface";
 import { ECourseType } from "../../enums/course-type-enum";
-import { ICourseCampus } from "../../types/classes/entities/course-campus-interface";
-import { ICourse } from "../../types/classes/entities/course-interface";
+import { ICourseCampus } from "../../types/classes/entities/course-campus-types";
+import { ICourse } from "../../types/classes/entities/course-types";
 import Course from "../entities/course";
 import CourseCampus from "../entities/course-campus";
 

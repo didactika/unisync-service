@@ -1,7 +1,6 @@
 import BaseEntity from "../../../../core/classes/entities/base-entity";
 import SectionModel from "../../db/models/section-model";
-import { SectionFilter } from "../../types/classes/entities/section-filter";
-import { ISection } from "../../types/classes/entities/section-interface";
+import { ISection, SectionFilter } from "../../types/classes/entities/section-types";
 
 export default class Section extends BaseEntity<ISection> implements ISection {
   private _courseId: number;

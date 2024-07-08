@@ -4,6 +4,7 @@ import { Controller } from "../../../../core/api/decorators/controller";
 import { Middleware } from "../../../../core/api/decorators/middleware";
 import verifySessionMiddleware from "../../../../core/user/api/middlewares/session/verify-session";
 
+//TODO: Add route dinamically with component type from decorator
 @Controller("/course")
 export default class CourseController extends BaseController {
     @Middleware()
@@ -11,5 +12,6 @@ export default class CourseController extends BaseController {
       verifySessionMiddleware.execute(req, res, next);
     }
 
-    
+    private getCourses(req: Request, res: Response, next: NextFunction) {
+    }
 }

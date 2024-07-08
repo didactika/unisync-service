@@ -1,8 +1,7 @@
 import BaseEntity from "../../../../core/classes/entities/base-entity";
 import CourseModel from "../../db/models/course-model";
 import { ECourseType } from "../../enums/course-type-enum";
-import { CourseFilter } from "../../types/classes/entities/course-filter";
-import { ICourse } from "../../types/classes/entities/course-interface";
+import { CourseFilter, ICourse } from "../../types/classes/entities/course-types";
 
 class Course extends BaseEntity<ICourse> implements ICourse {
   public readonly uuid: string | undefined;

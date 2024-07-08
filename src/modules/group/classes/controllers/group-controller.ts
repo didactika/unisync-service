@@ -3,7 +3,7 @@ import Campus from "../../../../core/campus/classes/entities/campus";
 import { NCampusConnectorCourse } from "../../../../core/campus/types/classes/campus-connector/campus-connector-course";
 import { ICampus } from "../../../../core/campus/types/classes/entities/campus-interface";
 import CourseCampus from "../../../course/classes/entities/course-campus";
-import { ICourseCampus } from "../../../course/types/classes/entities/course-campus-interface";
+import { CourseCampusFindResponse } from "../../../course/types/classes/entities/course-campus-types";
 import { IGroup } from "../../types/classes/entities/group-interface";
 import Group from "../entities/group";
 import GroupsCourseSynced from "../../events/groups-course-synced";
@@ -11,13 +11,10 @@ import BaseEventEmitter from "../../../../core/events/internal/base-event-emiter
 
 export default class GroupController {
   public static async syncFromCampus(courseId: number): Promise<IGroup[]> {
-    const courseCampus = (await CourseCampus.findOne({ course: { id: courseId } })) as ICourseCampus;
+    const courseCampus = (await CourseCampus.findOne({ course: { id: courseId } })) as CourseCampusFindResponse;
     if (!courseCampus) return [];
-    //TODO: Implement Type for courseCampus find response aand not use campus find.
-    const campus = (await Campus.findOne({ id: courseCampus.campusId })) as ICampus;
-    if (!campus) return [];
 
-    const campusCourseActions = new CampusConnectorCourse(campus);
+    const campusCourseActions = new CampusConnectorCourse(courseCampus.campus);
     const courseContent = await campusCourseActions.getCourseInformation({
       courseid: courseCampus.idOnCampus,
       includes: { header: 0, content: 0, groups: 1, groupings: 0 },

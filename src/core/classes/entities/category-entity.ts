@@ -1,4 +1,5 @@
 import CategoryModel from "../../db/models/category-model";
+import { CategoryFilter } from "../../types/classes/entities/category-filter";
 import { ICategory } from "../../types/classes/entities/category-interface";
 import BaseEntity from "./base-entity";
 import Level from "./level-entity";
@@ -103,12 +104,12 @@ class Category extends BaseEntity<ICategory> implements ICategory {
     return affectedRows[0].get({ plain: true }) as ICategory;
   }
 
-  public static async findOne<ICategory>(filter?: Partial<ICategory>): Promise<ICategory | null> {
+  public static async findOne<ICategory>(filter?: CategoryFilter): Promise<ICategory | null> {
     const category = await CategoryModel.findOne(filter ? { where: filter } : {});
     return category ? (category as ICategory) : null;
   }
 
-  public static async findMany<ICategory>(filter?: Partial<ICategory>): Promise<ICategory[]> {
+  public static async findMany<ICategory>(filter?: CategoryFilter): Promise<ICategory[]> {
     return (await CategoryModel.findAll(filter ? { where: filter } : {})).map((category) => category.dataValues as ICategory);
   }
 

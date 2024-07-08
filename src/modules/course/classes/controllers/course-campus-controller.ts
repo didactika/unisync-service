@@ -1,5 +1,5 @@
 import CourseCampus from "../entities/course-campus";
-import { ICourseCampus } from "../../types/classes/entities/course-campus-interface";
+import { ICourseCampus } from "../../types/classes/entities/course-campus-types";
 import { ECourseType } from "../../enums/course-type-enum";
 
 export default class CourseCampusController {
