@@ -3,7 +3,7 @@ import { RouteOrMiddlewareConfig } from "../../types/api/decorators/controller";
 
 export function Controller(basePath: string): ClassDecorator {
   return function (target: any) {
-    target.prototype.basePath = basePath;
+    !target.prototype.basePath ? (target.prototype.basePath = basePath) : (target.prototype.basePath += basePath);
     target.prototype.router = Router();
 
     if (target.configs) {
