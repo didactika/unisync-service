@@ -66,7 +66,7 @@ export default class RabbitMQPublisher {
         content_type: "application/json",
         type: `${environment.messageBroker.MESSAGE_BROKER_PUBLISH_APP_ID}.${eventType}`,
       },
-      contentType: "aplication/json",
+      contentType: "application/json",
     };
   }
 

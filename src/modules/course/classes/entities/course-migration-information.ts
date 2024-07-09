@@ -58,6 +58,10 @@ class CourseMigrationInformation
     return this._campusTargetId;
   }
 
+  get status(): EMigrationStatus {
+    return this._status;
+  }
+
   // Setters
   set courseId(value: number | undefined) {
     this._courseId = value;
@@ -81,6 +85,10 @@ class CourseMigrationInformation
 
   set campusTargetId(value: number) {
     this._campusTargetId = value;
+  }
+
+  set status(value: EMigrationStatus) {
+    this._status = value;
   }
 
   public toJSON(): ICourseMigrationInformation {

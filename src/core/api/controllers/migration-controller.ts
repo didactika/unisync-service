@@ -6,8 +6,4 @@ import verifySessionMiddleware from "../../user/api/middlewares/session/verify-s
 
 @Controller("/migration")
 export default class MigrationController extends BaseController {
-  @Middleware()
-  private async verifySession(req: Request, res: Response, next: NextFunction) {
-    verifySessionMiddleware.execute(req, res, next);
-  }
 }
