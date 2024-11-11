@@ -1,7 +1,7 @@
 export type CourseModCreatedEvent = {
   data: {
     uuid: string;
-    modtype: "url";
+    modtype: string;
     name: string;
     externalurl: string;
     section: number;
