@@ -93,9 +93,10 @@ class DB {
    * Initialize the database
    * @returns {boolean} true if the database is initialized, false if not
    */
-  public static async initialize(): Promise<void> {
+  public static initialize(): DB {
     DB.instance = new DB();
-    await DB.instance.connect();
+    DB.instance.connect();
+    return DB.instance;
   }
 
   /**
@@ -104,7 +105,7 @@ class DB {
    */
   public static getInstance(): DB {
     if (!DB.instance) {
-      this.initialize();
+      return this.initialize();
     }
     return DB.instance;
   }

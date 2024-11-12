@@ -6,7 +6,13 @@ import InstallComponentManager from "../../component/classes/manager/install-com
 import { ComponentManager } from "../../component/classes/manager/component-manager";
 import { EComponentNature } from "../../component/enums/component-nature-enum";
 import { ELoadPath } from "../../component/enums/load-path-enum";
+import version from "../../../version";
 
+
+const coreComponentInfo = {
+  component: version.component,
+  dir: ''
+}
 /**
  * Load controllers from all modules and register their routes.
  * @param app - The Express application.
@@ -17,7 +23,7 @@ export async function loadControllersAndRegisterRoutes(app: Application) {
     includeSystem: true,
   });
 
-  for (const componentInfo of pluginsalreadyInstalled) {
+  for (const componentInfo of [coreComponentInfo, ...pluginsalreadyInstalled]) {
     const componentNature = ComponentManager.getComponentNature(componentInfo.dir);
     const componentPath = path.join(
       __dirname,

@@ -5,6 +5,7 @@ import CourseCampus from "../../classes/controllers/course-campus-controller";
 import { NotFound } from "http-response-client/lib/errors/client";
 import CampusController from "../../../../core/campus/api/controllers/campus-api-controller";
 import { GetCoursesByCampusResponse } from "../../types/classes/controllers/course-campus-controller-types";
+import CategoryController from "../../../../core/classes/controllers/category-controller";
 
 //TODO: Add route dinamically with component type from decorator
 @Controller("/")
