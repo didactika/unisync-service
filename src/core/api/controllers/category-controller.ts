@@ -20,16 +20,29 @@ export default class CategoryController extends BaseController {
     isAdminMiddleware.execute(req, res, next);
   }
 
-   @Route("post", "/") 
-   private async getAll(req: Request, res: Response, next: NextFunction)  {
-       try {
-        const { campusId } = req.body;
-        if(!campusId || campusId === undefined) throw new BadRequest({ msg: "campusId not provided"});
-        const response = await Category.syncCategoriesFromCampus(campusId);
-        if(!response || (response && !response.length)) throw new NotFound({ msg: "No categories found on campus" });
-        res.json(response);
-       } catch(error) {
-        next(error);
-       }
-   }
+  @Route("get", "/")
+  private async getAll(req: Request, res: Response, next: NextFunction) {
+    try {
+      const response = await Category.getAllCategories();
+      if (!response || (response && !response.length))
+        throw new NotFound({ msg: "No categories found on campus" });
+      res.json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  @Route("get", "/:campusId")
+  private async getCategoriesFromCampus(req: Request, res: Response, next: NextFunction) {
+    try {
+      const campusId = parseInt(req.params.campusId);
+      if (!campusId) throw new BadRequest({ msg: "CampusId not provided!" });
+      const response = await Category.getCategoriesFromCampus(campusId);
+      if (!response || (response && !response.length))
+        throw new NotFound({ msg: "No categories found on campus" });
+      res.json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
