@@ -25,7 +25,7 @@ export default class CategoryController extends BaseController {
     try {
       const response = await Category.getAllCategories();
       if (!response || (response && !response.length))
-        throw new NotFound({ msg: "No categories found on campus" });
+        throw new NotFound({ msg: "No categories found" });
       res.json(response);
     } catch (error) {
       next(error);
