@@ -8,7 +8,9 @@ import GroupingGroupController from "./grouping-group-controller";
 
 export default class GroupingController {
   static async syncFromCampus(courseId: number): Promise<IGrouping[]> {
-    const courseCampus = (await CourseCampus.findOne({ course: { id: courseId } })) as CourseCampusFindResponse;
+    const courseCampus = (await CourseCampus.findOne({
+      course: { id: courseId },
+    })) as CourseCampusFindResponse;
     if (!courseCampus) return [];
 
     const campusCourseActions = new CampusConnectorCourse(courseCampus.campus);
@@ -19,39 +21,45 @@ export default class GroupingController {
 
     if (!courseContent.groupings || courseContent.groupings.length == 0) return [];
 
-    const gropingPromises: Promise<IGrouping | null>[] = courseContent.groupings.map(async (grouping) => {
-      if (!grouping) return null;
+    const gropingPromises: Promise<IGrouping | null>[] = courseContent.groupings.map(
+      async (grouping) => {
+        if (!grouping) return null;
 
-      const groupingFound = (await Grouping.findOne({
-        courseId: courseCampus.courseId,
-        idOnCampus: grouping.id,
-      })) as IGrouping;
-      const groupinginfo = {
-        ...grouping,
-        idOnCampus: grouping.id,
-        courseId: courseCampus.courseId,
-        id: undefined,
-      };
-      const groupingSynced = groupingFound
-        ? await this.update(groupingFound, groupinginfo)
-        : await this.create(courseId, groupinginfo);
-      GroupingGroupController.createFromCampus(groupingSynced, grouping.groups);
-      return groupingSynced;
-    });
+        const groupingFound = (await Grouping.findOne({
+          courseId: courseCampus.courseId,
+          idOnCampus: grouping.id,
+        })) as IGrouping;
+        const groupinginfo = {
+          ...grouping,
+          idOnCampus: grouping.id,
+          courseId: courseCampus.courseId,
+          id: undefined,
+        };
+        const groupingSynced = groupingFound
+          ? await this.update(groupingFound, groupinginfo)
+          : await this.create(courseId, groupinginfo);
+        GroupingGroupController.createFromCampus(groupingSynced, grouping.groups);
+        return groupingSynced;
+      }
+    );
     const syncedGroupings = await Promise.all(gropingPromises);
     const filteredGroups = syncedGroupings.filter((group) => group !== null) as IGrouping[];
     return filteredGroups;
   }
 
   public static async create(courseId: number, grouping: IGrouping): Promise<IGrouping> {
-    const groupingOnDB = new Grouping({
-      courseId: courseId,
-      idnumber: grouping.idnumber,
-      name: grouping.name,
-      idOnCampus: grouping.idOnCampus,
-    });
+    try {
+      const groupingOnDB = new Grouping({
+        courseId: courseId,
+        idnumber: grouping.idnumber,
+        name: grouping.name,
+        idOnCampus: grouping.idOnCampus,
+      });
 
-    return await groupingOnDB.create();
+      return await groupingOnDB.create();
+    } catch (error) {
+      throw error;
+    }
   }
 
   public static async update(groupingFound: IGrouping, newGrouping: IGrouping): Promise<IGrouping> {
