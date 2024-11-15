@@ -11,7 +11,9 @@ import BaseEventEmitter from "../../../../core/events/internal/base-event-emiter
 
 export default class GroupController {
   public static async syncFromCampus(courseId: number): Promise<IGroup[]> {
-    const courseCampus = (await CourseCampus.findOne({ course: { id: courseId } })) as CourseCampusFindResponse;
+    const courseCampus = (await CourseCampus.findOne({
+      course: { id: courseId },
+    })) as CourseCampusFindResponse;
     if (!courseCampus) return [];
 
     const campusCourseActions = new CampusConnectorCourse(courseCampus.campus);
@@ -67,5 +69,9 @@ export default class GroupController {
 
   public static async getByCourse(courseId: number): Promise<IGroup[]> {
     return await Group.findMany({ courseId });
+  }
+
+  public static async getAllGroups(): Promise<IGroup[]> {
+    return await Group.findMany({});
   }
 }
