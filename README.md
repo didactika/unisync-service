@@ -43,9 +43,26 @@ All types of mod elements that are within a course can be included
 
 ## Installation
 
-This service is built with [node][node] and express. And to run it you only need to configure the following environment variables in the path `/.env`:
-```
-```
+This service is built with node and express. And to run it you only need to configure the following environment variables in the path `/.env`:
+
+<div align="center">
+
+Name              | Default           | Description
+------------------|-------------------|------------
+APP_PORT          | 4000              | The port the app will run on
+SERVICE_APP_NAME  | 'unisync-service' | The name of the service
+DB_HOST           | 'localhost'       | MongoDB host
+DB_PORT           | 27017             | MongoDB port
+DB_NAME           | 'unisync-service' | MongoDB name of the database
+DB_USERNAME       | ''                | MongoDB username
+DB_PASSWORD       | ''                | MongoDB password
+DOMAIN_ALLOW      | 'localhost'       | Domain that will be allowed to make requests to the service
+CRYPTO_KEY        | ''                | The key to encrypt the passwords
+JWT_EXPIRES_IN    | '3h'              | The time that the JWT will be valid
+JWT_SECRET        | ''                | The secret to sign the JWT
+
+</div>
+
 Then run the following command:
 ```
 npm start
@@ -84,7 +101,12 @@ Thanks goes to these people:
   <tbody>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/hector-ae21"><img src="https://avatars.githubusercontent.com/u/87265357?v=4" width="100px;" alt="Hector L. Arrechea"/><br /><sub><b>Hector L. Arrechea</b></sub></a><br /><a title="Code">💻</a> <a title="Documentation">📖</a> <a title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a title="Tests">⚠️</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/E2RD0"><img src="https://avatars.githubusercontent.com/u/20119863?v=4" width="100px;" alt="Eduardo Estrada"/><br /><sub><b>Eduardo Estrada</b></sub></a><br /><a title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/eirik-rosete"><img src="https://avatars.githubusercontent.com/u/145449142?v=4" width="100px;" alt="Eirik A. Rosete"/><br /><sub><b>Eirik Rosete</b></sub></a><br /><a title="Code">💻</a></td>
     </tr>
+
+      
+
   </tbody>
 </table>
 

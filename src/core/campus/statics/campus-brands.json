@@ -1,0 +1,146 @@
+[
+    {
+        "uuid": "b634f634-947b-49fe-b966-54f69803519a",
+        "name": "EVA - Universidad Internacional Iberoamericana",
+        "abbreviation": "EVA_UNIB",
+        "modality": "virtual",
+        "domain": "betacampus.unib.org",
+        "website": "https://betacampus.unib.org",
+        "environment": "beta"
+    },
+    {
+        "uuid": "fb817598-0dbc-4128-bda3-302ed091852c",
+        "name": "EVA - Universidad Europea del Atlántico",
+        "abbreviation": "EVA_UEA",
+        "domain": "",
+        "website": "",
+        "environment": "beta",
+        "modality": "presential"
+    },
+    {
+        "uuid": "e2ba2d59-fe0b-456a-9e9e-7fe8108b3c9f",
+        "name": "EVA - Fundación Universitaria Internacional de Colombia",
+        "abbreviation": "EVA_UNINCOL",
+        "domain": "betacampus.unincol.edu.co",
+        "website": "https://betacampus.unincol.edu.co",
+        "environment": "beta",
+        "modality": "virtual"
+    },
+    {
+        "uuid": "1ee387e8-0ea1-4bf4-b54d-5e6da18f7f3e",
+        "name": "EVA - Universidad Internacional Iberoamericana {MX}",
+        "abbreviation": "EVA_UNINIMX",
+        "domain": "",
+        "website": "",
+        "environment": "beta",
+        "modality": "virtual"
+    },
+    {
+        "uuid": "e7e00bdd-9a85-40cd-8fd4-1122bd544336",
+        "name": "EVA - Fundación Universitaria Iberoamericana",
+        "abbreviation": "EVA_FBR",
+        "domain": "betacampus.funiber.org",
+        "website": "https://betacampus.funiber.org",
+        "environment": "beta",
+        "modality": "virtual"
+    },
+    {
+        "uuid": "a2b1390e-2ea1-4271-aa3f-85bb78551cb1",
+        "name": "EVA - Universidad de la Romana",
+        "abbreviation": "EVA_UNIROMANA",
+        "domain": "betacampus.uniromana.do",
+        "website": "https://betacampus.uniromana.do",
+        "environment": "beta",
+        "modality": "virtual"
+    },
+    {
+        "uuid": "35425104-8824-41ae-aa7c-4c6f6f63a4c2",
+        "name": "EVA - Universidad del Atlántico Sur",
+        "abbreviation": "EVA_UDAS",
+        "domain": "betacampus.udas.edu.uy",
+        "website": "https://betacampus.udas.edu.uy",
+        "environment": "beta",
+        "modality": "virtual"
+    },
+    {
+        "uuid": "52fa1e2f-5407-4f7e-81da-ff0d73600e59",
+        "name": "EVA - Universidade Internacional do Cuanza",
+        "abbreviation": "EVA_UNIC",
+        "domain": "betacampus.unic.co.ao",
+        "website": "https://betacampus.unic.co.ao",
+        "environment": "beta",
+        "modality": "presential"
+    },
+    {
+        "uuid": "b634f634-947b-49fe-b966-54f69803519a",
+        "name": "EVA - Universidad Internacional Iberoamericana",
+        "abbreviation": "EVA_UNIB",
+        "modality": "virtual",
+        "domain": "campus.unib.org",
+        "website": "https://campus.unib.org",
+        "environment": "production"
+    },
+    {
+        "uuid": "fb817598-0dbc-4128-bda3-302ed091852c",
+        "name": "EVA - Universidad Europea del Atlántico",
+        "abbreviation": "EVA_UEA",
+        "domain": "campus.uneatlantico.es",
+        "website": "https://campus.uneatlantico.es",
+        "environment": "production",
+        "modality": "presential"
+    },
+    {
+        "uuid": "e2ba2d59-fe0b-456a-9e9e-7fe8108b3c9f",
+        "name": "EVA - Fundación Universitaria Internacional de Colombia",
+        "abbreviation": "EVA_UNINCOL",
+        "domain": "campus.unincol.edu.co",
+        "website": "https://campus.unincol.edu.co",
+        "environment": "production",
+        "modality": "virtual"
+    },
+    {
+        "uuid": "1ee387e8-0ea1-4bf4-b54d-5e6da18f7f3e",
+        "name": "EVA - Universidad Internacional Iberoamericana {MX}",
+        "abbreviation": "EVA_UNINIMX",
+        "domain": "",
+        "website": "",
+        "environment": "production",
+        "modality": "virtual"
+    },
+    {
+        "uuid": "e7e00bdd-9a85-40cd-8fd4-1122bd544336",
+        "name": "EVA - Fundación Universitaria Iberoamericana",
+        "abbreviation": "EVA_FBR",
+        "domain": "campus.funiber.org",
+        "website": "https://campus.funiber.org",
+        "environment": "production",
+        "modality": "virtual"
+    },
+    {
+        "uuid": "a2b1390e-2ea1-4271-aa3f-85bb78551cb1",
+        "name": "EVA - Universidad de la Romana",
+        "abbreviation": "EVA_UNIROMANA",
+        "domain": "campus.uniromana.do",
+        "website": "https://campus.uniromana.do",
+        "environment": "production",
+        "modality": "virtual"
+    },
+    {
+        "uuid": "35425104-8824-41ae-aa7c-4c6f6f63a4c2",
+        "name": "EVA - Universidad del Atlántico Sur",
+        "abbreviation": "EVA_UDAS",
+        "domain": "campus.udas.edu.uy",
+        "website": "https://campus.udas.edu.uy",
+        "environment": "production",
+        "modality": "virtual"
+    },
+    {
+        "uuid": "52fa1e2f-5407-4f7e-81da-ff0d73600e59",
+        "name": "EVA - Universidade Internacional do Cuanza",
+        "abbreviation": "EVA_UNIC",
+        "domain": "campus.unic.co.ao",
+        "website": "https://campus.unic.co.ao",
+        "environment": "production",
+        "modality": "presential"
+    }
+]

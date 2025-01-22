@@ -1,0 +1,19 @@
+{
+    "plugintypes": {
+        "availability": "availability",
+        "mod": "mod\/plugins",
+        "qtype": "question\/qtype"
+    },
+    "systemtypes": {
+        "user": "user",
+        "campus": "campus"
+    },
+    "subsystemtypes": {
+        "course": "course",
+        "group": "group",
+        "mod": "mod",
+        "grouping": "grouping",
+        "question": "question",
+        "qbank": "question\/bank"
+    }
+}
