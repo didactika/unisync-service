@@ -9,16 +9,22 @@ export abstract class ComponentManager {
   protected _components: ComponentConfig = components;
 
   protected async getVersionInfo(dir: string): Promise<any | undefined> {
-    const versionPath = `${ComponentLoader.getComponentPath(dir)}/version.ts`;
-    console.log(`Loading version info for component: ${versionPath}`);
-
-    try {
-      const versionInfo = await import(versionPath);
-      return versionInfo;
-    } catch (error) {
-      console.error(`Error loading version info for component: ${dir}`);
+    const basePath = ComponentLoader.getComponentPath(dir);
+    const paths = [`${basePath}/version.ts`, `${basePath}/version.js`];
+  
+    for (const path of paths) {
+      try {
+        console.log(`Trying to load version info from: ${path}`);
+        return await import(path);
+      } catch (error) {
+        console.warn(`Failed to load version info from: ${path} - ${(error as Error).message}`);
+      }
     }
+  
+    console.error(`Unable to load version info for component: ${dir}`);
+    return undefined;
   }
+  
 
   public static getComponentType(directory: string): string {
     for (const [type, plugins] of Object.entries(components as ComponentConfig)) {
