@@ -1,0 +1,9 @@
+services:
+  dominos-service:
+    build:
+      context: .
+    container_name: dominos-service
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    env_file:
+      - .env 

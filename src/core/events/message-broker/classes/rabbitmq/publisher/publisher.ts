@@ -12,7 +12,7 @@ export default class RabbitMQPublisher {
         {
           protocol: environment.messageBroker.MESSAGE_BROKER_PROTOCOL,
           hostname: environment.messageBroker.MESSAGE_BROKER_HOST,
-          port: environment.messageBroker.PORT,
+          port: environment.messageBroker.MESSAGE_BROKER_PORT,
           username: environment.messageBroker.MESSAGE_BROKER_USERNAME,
           password: environment.messageBroker.MESSAGE_BROKER_PASSWORD,
           vhost: environment.messageBroker.MESSAGE_BROKER_VHOST,
