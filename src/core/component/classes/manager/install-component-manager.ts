@@ -27,13 +27,13 @@ class InstallComponentManager extends ComponentManager {
       InstallComponentManager.instance = this.getInstance();
       await InstallComponentManager.instance.initializeModels();
       await InstallComponentManager.instance.installBasicSystemComponents();
-      const { pluginsToInstall, pluginsalreadyInstalled } =
+      const { pluginsToInstall, pluginsAlreadyInstalled } =
         await InstallComponentManager.instance.findComponentsInDb({
           includeSubsystem: true,
           includeSystem: true,
         });
       await InstallComponentManager.instance.installComponents(pluginsToInstall);
-      await InstallComponentManager.initializeExistingComponentsModels(pluginsalreadyInstalled);
+      await InstallComponentManager.initializeExistingComponentsModels(pluginsAlreadyInstalled);
       return true;
     }
     return false;
@@ -116,10 +116,10 @@ class InstallComponentManager extends ComponentManager {
 
   public async findComponentsInDb(options?: VerifyPluginsOptions): Promise<{
     pluginsToInstall: ComponentInfo[];
-    pluginsalreadyInstalled: ComponentInfo[];
+    pluginsAlreadyInstalled: ComponentInfo[];
   }> {
     const pluginsToInstall: ComponentInfo[] = [];
-    const pluginsalreadyInstalled: ComponentInfo[] = [];
+    const pluginsAlreadyInstalled: ComponentInfo[] = [];
 
     for (const plugin of Object.entries(this._components)) {
       for (const dir of Object.entries(this._components[plugin[0]])) {
@@ -142,14 +142,14 @@ class InstallComponentManager extends ComponentManager {
             dir: dir[1],
           });
         } else {
-          pluginsalreadyInstalled.push({
+          pluginsAlreadyInstalled.push({
             component: dir[0],
             dir: dir[1],
           });
         }
       }
     }
-    return { pluginsToInstall, pluginsalreadyInstalled };
+    return { pluginsToInstall, pluginsAlreadyInstalled };
   }
 
   public async installComponents(plugins: ComponentInfo[]): Promise<void> {

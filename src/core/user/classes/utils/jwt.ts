@@ -3,7 +3,7 @@ import environment from "../../../../config/environment";
 
 export default class JWT {
   /**
-   * @method GenerateAccessToken
+   * @method generateAccessToken
    * @description Generate access token
    * @param {object} payload The data of the token
    * @param {string} secret The secret of the token
@@ -17,13 +17,13 @@ export default class JWT {
     expiresIn: string | number | undefined = environment.jwt.JWT_EXPIRES_IN
   ): string {
     return expiresIn
-      ? jwt.sign(payload, secret, { expiresIn: expiresIn })
-      : jwt.sign(payload, secret);
+      ? jwt.sign(payload, secret, { expiresIn: Number(expiresIn) })
+      : jwt.sign(payload, secret, undefined);
   }
 
   /**
-   * @method VerifyToken
-   * @description Veryfy token 
+   * @method verifyToken
+   * @description Verify token
    * @param {string} token Token of the user
    * @param {string} secret Secret of the token
    * @returns {JwtPayload} JwtPayload

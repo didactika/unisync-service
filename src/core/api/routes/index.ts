@@ -18,12 +18,12 @@ const coreComponentInfo = {
  * @param app - The Express application.
  */
 export async function loadControllersAndRegisterRoutes(app: Application) {
-  const { pluginsalreadyInstalled } = await InstallComponentManager.getInstance().findComponentsInDb({
+  const { pluginsAlreadyInstalled } = await InstallComponentManager.getInstance().findComponentsInDb({
     includeSubsystem: true,
     includeSystem: true,
   });
 
-  for (const componentInfo of [coreComponentInfo, ...pluginsalreadyInstalled]) {
+  for (const componentInfo of [coreComponentInfo, ...pluginsAlreadyInstalled]) {
     const componentNature = ComponentManager.getComponentNature(componentInfo.dir);
     const componentPath = path.join(
       __dirname,
