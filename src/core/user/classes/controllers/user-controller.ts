@@ -8,6 +8,10 @@ export default class UserController {
     return (await User.findMany());
   }
 
+  public static async getById(id: number): Promise<IUser | null> {
+    return (await User.findById(id));
+  }
+
   public static async create(user: IUser): Promise<Partial<IUser> | undefined> {
     if (await this.userExists(user.email, user.username)) return undefined;
     if (!this.validateRole(user.role)) return undefined;

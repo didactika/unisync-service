@@ -10,9 +10,23 @@ import isAdminMiddleware from "../middlewares/token/is-admin-middleware";
 
 @Controller("/users")
 export default class UserController extends BaseController {
+
   @Middleware()
   private verifySession(req: Request, res: Response, next: NextFunction) {
     verifySessionMiddleware.execute(req, res, next);
+  }
+
+  @Route("get", "/:id")
+  private async getById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const {id} = req.params;
+      if (!Number.isInteger(id)) throw new BadRequest({msg: "Invalid id"});
+      const userFound = await User.getById(Number(id));
+      if (!userFound) throw new NotFound({ msg: `User with id ${id} not found` });
+      res.json(userFound).status(200);
+    } catch (error) {
+      next(error);
+    }
   }
 
   @Middleware()
@@ -23,7 +37,6 @@ export default class UserController extends BaseController {
   @Route("get", "/")
   private async getAll(req: Request, res: Response, next: NextFunction) {
     try {
-      console.log("Create called");
       const usersFound = await User.getAll();
       if (!usersFound.length) throw new NotFound({ msg: "No users Found" });
       res.json(usersFound).status(200);
@@ -31,6 +44,7 @@ export default class UserController extends BaseController {
       next(error);
     }
   }
+
 
   @Route("post", "/")
   private async create(req: Request, res: Response, next: NextFunction) {
