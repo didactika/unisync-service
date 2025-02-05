@@ -30,6 +30,7 @@ export default class UserController extends BaseController {
     }
   }
 
+
   @Middleware()
   private isAdmin(req: Request, res: Response, next: NextFunction) {
     isAdminMiddleware.execute(req, res, next);

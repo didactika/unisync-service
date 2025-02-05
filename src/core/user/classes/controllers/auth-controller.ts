@@ -15,7 +15,6 @@ export default class AuthController {
       user: {
         ...userFound,
         password: undefined,
-        id: undefined,
       },
       sessionToken: await this.createSession(userFound),
     };
