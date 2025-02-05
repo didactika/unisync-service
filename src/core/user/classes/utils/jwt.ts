@@ -17,7 +17,7 @@ export default class JWT {
     expiresIn: string | number | undefined = environment.jwt.JWT_EXPIRES_IN
   ): string {
     return expiresIn
-      ? jwt.sign(payload, secret, { expiresIn: expiresIn })
+      ? jwt.sign(payload, secret, { expiresIn: expiresIn as any })
       : jwt.sign(payload, secret, undefined);
   }
 
