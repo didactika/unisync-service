@@ -9,7 +9,7 @@ import Group from "../../classes/controllers/group-controller";
 import { IGroup } from "../../types/classes/entities/group-interface";
 
 @Controller("/groups")
-export default class CourseController extends BaseController {
+export default class GroupController extends BaseController {
   @Middleware()
   private async verifySession(req: Request, res: Response, next: NextFunction) {
     verifySessionMiddleware.execute(req, res, next);
@@ -17,7 +17,6 @@ export default class CourseController extends BaseController {
 
   @Route("get", "/")
   private async getAll(req: Request, res: Response, next: NextFunction) {
-    this._req = req;
     try {
       const response = await Group.getAllGroups();
       if (!response || (response && !response.length))

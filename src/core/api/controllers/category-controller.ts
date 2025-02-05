@@ -22,7 +22,6 @@ export default class CategoryController extends BaseController {
 
   @Route("get", "/")
   private async getAll(req: Request, res: Response, next: NextFunction) {
-    this._req = req;
     try {
       const response = await Category.getAllCategories();
       if (!response || (response && !response.length))

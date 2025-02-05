@@ -31,12 +31,10 @@ export default abstract class BaseEntity<T> {
   abstract create(): Promise<T>;
 
   static async findOne<T>(filter?: Partial<T>): Promise<T | null> {
-    BaseEntity._filter = filter;
     throw new Error("The method not implemented in the child class of BaseEntity");
   }
 
   static async findMany<T>(filter?: Partial<T>): Promise<T[]> {
-    BaseEntity._filter = filter;
     throw new Error("Method not implemented in the child class of BaseEntity");
   }
 

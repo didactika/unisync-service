@@ -11,7 +11,6 @@ import { GetCoursesByCampusResponse } from "../../types/classes/controllers/cour
 export default class CourseController extends CampusController {
   @Route("get", "/courses")
   private async getAllCoursesByCampus(req: Request, res: Response, next: NextFunction) {
-    this._req = req;
     try {
       const campusCourses = await CourseCampus.getCoursesByCampus();
       if (!campusCourses) throw new NotFound({ msg: "Not found courses by campus" });

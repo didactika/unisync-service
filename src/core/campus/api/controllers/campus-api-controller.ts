@@ -10,7 +10,6 @@ import isAdminMiddleware from "../../../user/api/middlewares/token/is-admin-midd
 
 @Controller("/campus")
 class CampusController extends BaseController {
-  private _req: e.Request;
   @Middleware()
   private async verifySession(req: Request, res: Response, next: NextFunction) {
     verifySessionMiddleware.execute(req, res, next);
@@ -23,7 +22,6 @@ class CampusController extends BaseController {
 
   @Route("get", "/")
   private async getAll(req: Request, res: Response, next: NextFunction) {
-    this._req = req;
     try {
       const campusFound = await Campus.getAll();
       if (!campusFound.length) throw new NotFound({ msg: "No campus found" });
