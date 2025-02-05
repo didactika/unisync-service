@@ -1,4 +1,3 @@
-import { Sequelize } from "sequelize";
 import BaseModel from "../../../../core/db/models/base-model";
 import CourseModel from "../../../course/db/models/course-model";
 import { GroupAttributes, GroupCreationAttributes } from "../../types/db/models/group";

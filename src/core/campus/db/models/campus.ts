@@ -13,7 +13,7 @@ class CampusModel extends BaseModel<CampusAttributes, CampusCreationAttributes> 
   }
 
   protected static addHooks(): void {
-    CampusModel.afterCreate((campus, options) => {
+    CampusModel.afterCreate((campus: CampusModel) => {
       BaseEventEmitter.emitEvent(
         new CampusEvents.CampusCreated({
           id: campus.dataValues.id,

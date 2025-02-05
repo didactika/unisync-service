@@ -32,7 +32,7 @@ class CourseCampusModel extends BaseModel<CourseCampusAttributes, CourseCampusCr
   }
 
   protected static addHooks(): void {
-    CourseCampusModel.afterCreate((courseCampus, options) => {
+    CourseCampusModel.afterCreate((courseCampus) => {
       BaseEventEmitter.emitEvent(
         new CourseEvents.CourseCampusCreated({
           id: courseCampus.dataValues.id,

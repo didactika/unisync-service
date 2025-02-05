@@ -42,7 +42,7 @@ export default class CourseMigrationController {
     const academicConfigData = AcademicConfigJSON.find(
       (config) => config.name.toLowerCase() === courseOrigin.shortname.toLowerCase()
     );
-    let idnumber: string = "";
+    let idnumber: string;
     if (!academicConfigData) {
       idnumber = courseOrigin.idnumber!;
     } else {

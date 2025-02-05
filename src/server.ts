@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response } from "express";
+import express, { Request, Response } from "express";
 import environment from "./config/environment";
 import cors from "cors";
 import DB from "./core/db";
@@ -7,7 +7,7 @@ import InstallComponentManager from "./core/component/classes/manager/install-co
 import { loadControllersAndRegisterRoutes } from "./core/api/routes";
 import initializeObservers from "./core/classes/observers/initialize-observers";
 class App {
-  private app: express.Application;
+  private readonly app: express.Application;
 
   constructor() {
     this.app = express();
@@ -27,7 +27,7 @@ class App {
 
   private async setRoutes() {
     await loadControllersAndRegisterRoutes(this.app);
-    this.app.use((err: Error, req: Request, res: Response, next: NextFunction): void => {
+    this.app.use((err: Error, req: Request, res: Response): void => {
       ErrorResponseMiddleware.errorCatcher(err, res);
     });
   }
@@ -38,13 +38,13 @@ class App {
    */
   public async run() {
     console.log("Connecting to database...");
-    await DB.initialize();
+    DB.initialize();
     console.log("Installing components...");
     await InstallComponentManager.firstInitialize();
     console.log("Initialize observers");
     await initializeObservers();
     console.log("Loading controllers...");
-    this.setRoutes();
+    await this.setRoutes();
     return this.app.listen(environment.app.APP_PORT, async () => {
       console.log(`Server Up on port: ${environment.app.APP_PORT}!!`);
     });

@@ -6,7 +6,7 @@ export abstract class BaseError extends Error {
   public message: string;
   public details: any;
 
-  constructor(statusCode: number, message: string, details?: any) {
+  protected constructor(statusCode: number, message: string, details?: any) {
     super(message);
     this.name = this.constructor.name;
     this.statusCode = statusCode;

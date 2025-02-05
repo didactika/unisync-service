@@ -17,7 +17,7 @@ export default abstract class BaseModel<T extends {} = any, TCreation extends {}
     throw new Error("Initialize method must be implemented in the child class of BaseModel");
   }
 
-  static init(attributes: ModelAttributes, options: InitOptions<Model>): any {
+  static init(attributes: ModelAttributes, options: InitOptions): any {
     if (this.isInitialized) {
       return;
     }
@@ -26,7 +26,7 @@ export default abstract class BaseModel<T extends {} = any, TCreation extends {}
     }
     this.isInitialized = true;
     const prefix = this.getPrefix(this.getComponentType());
-    const finalOptions: InitOptions<Model> = {
+    const finalOptions: InitOptions = {
       ...options,
       sequelize: options.sequelize,
       tableName: `${prefix}_${options.tableName.toLowerCase()}`,

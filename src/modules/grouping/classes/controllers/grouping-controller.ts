@@ -1,5 +1,4 @@
 import CampusConnectorCourse from "../../../../core/campus/classes/campus-connector/campus-connector-course";
-import { NCampusConnectorCourse } from "../../../../core/campus/types/classes/campus-connector/campus-connector-course";
 import CourseCampus from "../../../course/classes/entities/course-campus";
 import { CourseCampusFindResponse } from "../../../course/types/classes/entities/course-campus-types";
 import { IGrouping } from "../../types/classes/entities/grouping-interface";
@@ -38,13 +37,12 @@ export default class GroupingController {
         const groupingSynced = groupingFound
           ? await this.update(groupingFound, groupinginfo)
           : await this.create(courseId, groupinginfo);
-        GroupingGroupController.createFromCampus(groupingSynced, grouping.groups);
+        await GroupingGroupController.createFromCampus(groupingSynced, grouping.groups);
         return groupingSynced;
       }
     );
     const syncedGroupings = await Promise.all(gropingPromises);
-    const filteredGroups = syncedGroupings.filter((group) => group !== null) as IGrouping[];
-    return filteredGroups;
+    return syncedGroupings.filter((group) => group !== null) as IGrouping[];
   }
 
   public static async create(courseId: number, grouping: IGrouping): Promise<IGrouping> {

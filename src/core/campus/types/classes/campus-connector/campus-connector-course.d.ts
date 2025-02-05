@@ -1,9 +1,9 @@
 export namespace NCampusConnectorCourse {
   type IncludesInformation = {
-    header: number = 0;
-    content: number = 0;
-    groups: number = 0;
-    groupings: number = 0;
+    header: number;
+    content: number;
+    groups: number;
+    groupings: number;
   };
 
   export type GetCourseInformationRequest = {

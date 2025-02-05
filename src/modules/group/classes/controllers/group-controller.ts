@@ -1,7 +1,4 @@
 import CampusConnectorCourse from "../../../../core/campus/classes/campus-connector/campus-connector-course";
-import Campus from "../../../../core/campus/classes/entities/campus";
-import { NCampusConnectorCourse } from "../../../../core/campus/types/classes/campus-connector/campus-connector-course";
-import { ICampus } from "../../../../core/campus/types/classes/entities/campus-interface";
 import CourseCampus from "../../../course/classes/entities/course-campus";
 import { CourseCampusFindResponse } from "../../../course/types/classes/entities/course-campus-types";
 import { IGroup } from "../../types/classes/entities/group-interface";

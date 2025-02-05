@@ -2,12 +2,12 @@ import { v4 as uuidv4 } from "uuid";
 import { IBaseEvent } from "../../types/events/base-event";
 
 export default abstract class BaseEvent<T extends {}> implements IBaseEvent<T> {
-  private _eventName: string;
-  private _uuid: string;
-  private _timestamp: Date;
-  private _data: T;
+  private readonly _eventName: string;
+  private readonly _uuid: string;
+  private readonly _timestamp: Date;
+  private readonly _data: T;
 
-  constructor(data: object = {}) {
+  protected constructor(data: object = {}) {
     this._eventName = this.constructor.name;
     this._uuid = uuidv4();
     this._timestamp = new Date();

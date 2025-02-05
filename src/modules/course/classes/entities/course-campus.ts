@@ -5,7 +5,6 @@ import CourseCampusModel from "../../db/models/course-campus-model";
 import CourseModel from "../../db/models/course-model";
 import {
   CourseCampusFilter,
-  CourseCampusFindResponse,
   ICourseCampus,
 } from "../../types/classes/entities/course-campus-types";
 

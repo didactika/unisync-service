@@ -3,7 +3,7 @@ export default abstract class BaseEntity<T> {
   private _createdAt?: Date;
   private _updatedAt?: Date;
 
-  constructor(data: Partial<T> & { id?: number; createdAt?: Date; updatedAt?: Date }) {
+  protected constructor(data: Partial<T> & { id?: number; createdAt?: Date; updatedAt?: Date }) {
     this.id = data.id;
     this._createdAt = data.createdAt || new Date();
     this._updatedAt = data.updatedAt || new Date();
@@ -31,10 +31,12 @@ export default abstract class BaseEntity<T> {
   abstract create(): Promise<T>;
 
   static async findOne<T>(filter?: Partial<T>): Promise<T | null> {
+    BaseEntity._filter = filter;
     throw new Error("The method not implemented in the child class of BaseEntity");
   }
 
   static async findMany<T>(filter?: Partial<T>): Promise<T[]> {
+    BaseEntity._filter = filter;
     throw new Error("Method not implemented in the child class of BaseEntity");
   }
 

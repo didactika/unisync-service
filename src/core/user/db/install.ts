@@ -7,7 +7,7 @@ import { EUserRole } from "../enums/user-role-enum";
  * @returns {void}
  */
 const execute = async (): Promise<void> => {
-  User.create({
+  await User.create({
     firstName: environment.admin.ADMIN_FIRSTNAME,
     lastName: environment.admin.ADMIN_LASTNAME,
     username: environment.admin.ADMIN_USERNAME,

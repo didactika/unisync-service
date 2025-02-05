@@ -1,4 +1,4 @@
-import { CampusEvents } from "../../../core/campus/db/events";
+import { CampusEvents } from "../../campus/db/events";
 import CampusCreated from "../../../core/campus/events/campus-created-event";
 import BaseEventEmitter from "../../events/internal/base-event-emiter";
 import CategoryController from "../controllers/category-controller";

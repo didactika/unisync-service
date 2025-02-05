@@ -2,7 +2,6 @@ import CategoryModel from "../../db/models/category-model";
 import { CategoryFilter } from "../../types/classes/entities/category-filter";
 import { ICategory } from "../../types/classes/entities/category-interface";
 import BaseEntity from "./base-entity";
-import Level from "./level-entity";
 
 class Category extends BaseEntity<ICategory> implements ICategory {
   public readonly id: number | undefined;

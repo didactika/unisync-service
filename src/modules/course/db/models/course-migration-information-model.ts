@@ -1,11 +1,9 @@
 import CampusModel from "../../../../core/campus/db/models/campus";
 import BaseModel from "../../../../core/db/models/base-model";
-import BaseEventEmitter from "../../../../core/events/internal/base-event-emiter";
 import {
   CourseMigrationInformationAttributes,
   CourseMigrationInformationCreationAttributes,
 } from "../../types/db/models/course-migration-information";
-import { CourseEvents } from "../events";
 import courseMigrationInformationSchema from "../schemas/course-migration-information-schema";
 import CourseModel from "./course-model";
 

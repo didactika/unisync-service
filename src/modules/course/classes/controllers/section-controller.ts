@@ -1,5 +1,4 @@
 import CampusConnectorCourse from "../../../../core/campus/classes/campus-connector/campus-connector-course";
-import { NCampusConnectorCourse } from "../../../../core/campus/types/classes/campus-connector/campus-connector-course";
 import { CourseCampusFindResponse } from "../../types/classes/entities/course-campus-types";
 import { ISection } from "../../types/classes/entities/section-types";
 import CourseCampus from "../entities/course-campus";

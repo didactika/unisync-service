@@ -12,7 +12,7 @@ class CourseModel extends BaseModel<CourseAttributes, CourseCreationAttributes> 
     });
   }
   protected static addHooks(): void {
-    CourseModel.afterCreate((course, options) => {
+    CourseModel.afterCreate((course) => {
       BaseEventEmitter.emitEvent(
         new CourseEvents.CourseCreated({
           id: course.dataValues.id,

@@ -1,4 +1,3 @@
-import { Sequelize } from "sequelize";
 import BaseModel from "../../../../core/db/models/base-model";
 import { SectionAttributes, SectionCreationAttributes } from "../../types/db/models/section";
 import sectionSchema from "../schemas/section-schema";

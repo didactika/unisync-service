@@ -6,9 +6,8 @@ import Category from "../../../../core/classes/entities/category-entity";
 import { ICategory } from "../../../../core/types/classes/entities/category-interface";
 import { ECourseType } from "../../enums/course-type-enum";
 import { ICourseCampus } from "../../types/classes/entities/course-campus-types";
-import { CourseFilter, ICourse } from "../../types/classes/entities/course-types";
+import { ICourse } from "../../types/classes/entities/course-types";
 import Course from "../entities/course";
-import CourseCampus from "../entities/course-campus";
 import CourseCampusController from "./course-campus-controller";
 
 export default class CourseController {

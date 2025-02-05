@@ -4,7 +4,7 @@ import { Controller } from "../../../../core/api/decorators/controller";
 import { Middleware } from "../../../../core/api/decorators/middleware";
 import verifySessionMiddleware from "../../../../core/user/api/middlewares/session/verify-session";
 import { Route } from "../../../../core/api/decorators/route";
-import { BadRequest, NotAcceptable, NotFound } from "http-response-client/lib/errors/client";
+import { BadRequest, NotFound } from "http-response-client/lib/errors/client";
 import Group from "../../classes/controllers/group-controller";
 import { IGroup } from "../../types/classes/entities/group-interface";
 
@@ -17,6 +17,7 @@ export default class CourseController extends BaseController {
 
   @Route("get", "/")
   private async getAll(req: Request, res: Response, next: NextFunction) {
+    this._req = req;
     try {
       const response = await Group.getAllGroups();
       if (!response || (response && !response.length))
@@ -28,7 +29,7 @@ export default class CourseController extends BaseController {
   }
 
   @Route("get", "/:courseId")
-  private async getGroupsByCourse(req: Request, res: Response, next: NextFunction) {
+  private async getGroupsByCourse(req: Request, res: Response) {
     const courseId = parseInt(req.params.courseId);
     if (!courseId) throw new BadRequest({ msg: "courseId not provided" });
     const response = await Group.getByCourse(courseId);

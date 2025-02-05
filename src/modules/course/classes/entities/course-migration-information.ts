@@ -1,9 +1,6 @@
-import CampusModel from "../../../../core/campus/db/models/campus";
 import BaseEntity from "../../../../core/classes/entities/base-entity";
-import CategoryModel from "../../../../core/db/models/category-model";
 import { EMigrationStatus } from "../../../../core/enums/migration-status-enum";
 import CourseMigrationInformationModel from "../../db/models/course-migration-information-model";
-import CourseModel from "../../db/models/course-model";
 import {
   CourseMigrationInformationFilter,
   ICourseMigrationInformation,

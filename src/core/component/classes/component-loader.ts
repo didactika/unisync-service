@@ -73,7 +73,6 @@ class ComponentLoader {
    * @param component - The component to initialize.
    * @param method - The method to call on the component.
    * @param params - The parameters to pass to the method.
-   * @param componentType - The type of the component, if needed.
    */
   private static initializeComponent(component: any, method: string, params: object[] | object | undefined) {
     if (component && component.default && typeof component.default[method] === "function") {

@@ -1,5 +1,4 @@
 import RabbitMQPublisher from "../../../../core/events/message-broker/classes/rabbitmq/publisher/publisher";
-import { CourseMigrationInformationUpdatedEventData } from "../../types/events/internal/course-migration-information-updated";
 import { CourseSectionCreatedEvent } from "../../types/events/message-broker/course-section-created";
 import CourseMigrationController from "./course-migration-controller";
 import SectionController from "./section-controller";

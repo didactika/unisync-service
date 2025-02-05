@@ -7,7 +7,7 @@ const observer = () => {
   BaseEventEmitter.onEvent(CourseEvents.CourseCampusCreated, async (data: CourseCampusCreated) => {
     const courseData = data.data;
     if (!courseData.courseId) return;
-    SectionController.syncFromCampus(courseData.courseId);
+    await SectionController.syncFromCampus(courseData.courseId);
   });
 }
 

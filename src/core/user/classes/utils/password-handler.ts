@@ -6,7 +6,7 @@ import environment from "../../../../config/environment";
  */
 export default class PasswordHandler {
   /**
-   * @method EncryptPassword
+   * @method encryptPassword
    * @description encrypt a password
    * @param {string} plainPassword 
    * @returns {string} encrypted password
@@ -17,7 +17,7 @@ export default class PasswordHandler {
   }
 
   /**
-   * @method DecryptPasswords
+   * @method decryptPasswords
    * @description decrypt a password
    * @param {string} storedCryptoPassword 
    * @returns {string} decrypted password
@@ -31,7 +31,7 @@ export default class PasswordHandler {
   }
 
   /**
-   * @method ComparePasswords
+   * @method comparePasswords
    * @description Compare passwords
    * @param {string}plainPassword 
    * @param {string} storedCryptoPassword 

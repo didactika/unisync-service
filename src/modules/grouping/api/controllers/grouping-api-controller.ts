@@ -4,7 +4,7 @@ import { Controller } from "../../../../core/api/decorators/controller";
 import { Middleware } from "../../../../core/api/decorators/middleware";
 import verifySessionMiddleware from "../../../../core/user/api/middlewares/session/verify-session";
 import { Route } from "../../../../core/api/decorators/route";
-import { BadRequest, Gone, NotFound } from "http-response-client/lib/errors/client";
+import { BadRequest, NotFound } from "http-response-client/lib/errors/client";
 import Grouping from "../../classes/controllers/grouping-controller";
 import { IGrouping } from "../../types/classes/entities/grouping-interface";
 
