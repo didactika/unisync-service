@@ -7,6 +7,7 @@ import User from "../../classes/controllers/user-controller";
 import { Middleware } from "../../../api/decorators/middleware";
 import verifySessionMiddleware from "../middlewares/session/verify-session";
 import isAdminMiddleware from "../middlewares/token/is-admin-middleware";
+import Parser from "../../../../utils/parser";
 
 @Controller("/users")
 export default class UserController extends BaseController {
@@ -16,13 +17,13 @@ export default class UserController extends BaseController {
     verifySessionMiddleware.execute(req, res, next);
   }
 
-  @Route("get", "/:id")
+  @Route("get", "/:userId")
   private async getById(req: Request, res: Response, next: NextFunction) {
     try {
-      const {id} = req.params;
-      if (!Number.isInteger(id)) throw new BadRequest({msg: "Invalid id"});
-      const userFound = await User.getById(Number(id));
-      if (!userFound) throw new NotFound({ msg: `User with id ${id} not found` });
+      const userId = Parser.ParseNumber(req.params.userId, {allowFloats: false, allowNegatives: false});
+      if (userId === "") throw new BadRequest({msg: "Invalid id"});
+      const userFound = await User.getById(Number(userId));
+      if (!userFound) throw new NotFound({ msg: `User with id ${userId} not found` });
       res.json(userFound).status(200);
     } catch (error) {
       next(error);
