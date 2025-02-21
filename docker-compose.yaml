@@ -1,9 +1,45 @@
+version: "3.8"
+
 services:
   dominos-service:
     build:
       context: .
-    container_name: dominos-service
+      args:
+        - APP_ENVIRONMENT=development
+    container_name: dominos-service-local
     ports:
       - "${APP_PORT}:${APP_PORT}"
     env_file:
-      - .env 
+      - ./etc/envs/.env.local
+    depends_on:
+      - postgres
+      - rabbitmq
+    volumes:
+      - .:/home/node/app
+      - /home/node/app/node_modules
+    command: ["npm", "run", "dev"]
+
+  postgres:
+    image: postgres:15
+    container_name: postgres-local
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+      - ./etc/envs/.env.local
+    volumes:
+      - ./data/db-data:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-local
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${MESSAGE_BROKER_USERNAME}
+      RABBITMQ_DEFAULT_PASS: ${MESSAGE_BROKER_PASSWORD}
+
+volumes:
+  postgres-data:
