@@ -39,8 +39,11 @@ export abstract class ComponentManager {
 
   public static getComponentNature(directory: string): string {
     for (const [type, plugins] of Object.entries(components as ComponentConfig)) {
-      for (const [plugin, dir] of Object.entries(plugins)) {
+      for (const [plugin, dir] of Object.entries(plugins)) {        
         if (dir === directory) {
+          return type;
+        }
+        if (directory.includes(dir)) {
           return type;
         }
       }

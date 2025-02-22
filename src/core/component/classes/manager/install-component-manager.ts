@@ -7,6 +7,7 @@ import { ComponentInfo, VerifyPluginsOptions } from "../../types/classes/manager
 import { EComponentNature } from "../../enums/component-nature-enum";
 import path from "path";
 import { ELoadPath } from "../../enums/load-path-enum";
+import fs from "fs/promises";
 
 class InstallComponentManager extends ComponentManager {
   private static instance: InstallComponentManager;
@@ -27,11 +28,11 @@ class InstallComponentManager extends ComponentManager {
       InstallComponentManager.instance = this.getInstance();
       await InstallComponentManager.instance.initializeModels();
       await InstallComponentManager.instance.installBasicSystemComponents();
-      const { pluginsToInstall, pluginsAlreadyInstalled } =
-        await InstallComponentManager.instance.findComponentsInDb({
-          includeSubsystem: true,
-          includeSystem: true,
-        });
+      const { pluginsToInstall, pluginsAlreadyInstalled } = await InstallComponentManager.instance.findComponentsInDb({
+        includeSubsystem: true,
+        includeSystem: true,
+        includePlugin: true,
+      });
       await InstallComponentManager.instance.installComponents(pluginsToInstall);
       await InstallComponentManager.initializeExistingComponentsModels(pluginsAlreadyInstalled);
       return true;
@@ -121,34 +122,62 @@ class InstallComponentManager extends ComponentManager {
     const pluginsToInstall: ComponentInfo[] = [];
     const pluginsAlreadyInstalled: ComponentInfo[] = [];
 
-    for (const plugin of Object.entries(this._components)) {
-      for (const dir of Object.entries(this._components[plugin[0]])) {
-        if (!options?.includeSystem && plugin.includes(EComponentNature.SYSTEM)) {
-          console.log(`Skipping non-system component: ${dir[0]}`);
+    const getSubdirectories = async (baseDir: string): Promise<string[]> => {
+      try {
+        const entries = await fs.readdir(ComponentLoader.getComponentPath(baseDir), { withFileTypes: true });
+        return entries
+          .filter((entry) => entry.isDirectory())
+          .map((entry) => path.join(baseDir, entry.name));
+      } catch (error) {
+        console.error(`❌ Error al leer subdirectorios en ${baseDir}:`, error);
+        return [];
+      }
+    };
+
+    for (const [pluginKey, pluginData] of Object.entries(this._components)) {
+      for (const [component, componentPath] of Object.entries(pluginData)) {
+        if (!options?.includeSystem && pluginKey.includes(EComponentNature.SYSTEM)) {
+          console.log(`Skipping non-system component: ${component}`);
           continue;
         }
 
-        if (!options?.includeSubsystem && plugin.includes(EComponentNature.SUBSYSTEM)) {
-          console.log(`Skipping non-subsystem component: ${dir[0]}`);
+        if (!options?.includeSubsystem && pluginKey.includes(EComponentNature.SUBSYSTEM)) {
+          console.log(`Skipping non-subsystem component: ${component}`);
           continue;
         }
 
-        const versionInfo = await this.getVersionInfo(dir[1]);
-        const isInstalled = versionInfo ? await this.isComponentInstalled(versionInfo) : false;
+        if (!options?.includePlugin && pluginKey.includes(EComponentNature.PLUGIN)) {
+          console.log(`Skipping plugins component: ${component}`);
+          continue;
+        }
 
-        if (!isInstalled) {
-          pluginsToInstall.push({
-            component: dir[0],
-            dir: dir[1],
-          });
-        } else {
-          pluginsAlreadyInstalled.push({
-            component: dir[0],
-            dir: dir[1],
-          });
+        let directoriesToCheck = [componentPath];
+        if (pluginKey.includes(EComponentNature.PLUGIN)) {
+          const subdirectories = await getSubdirectories(componentPath);
+          directoriesToCheck.pop();
+          directoriesToCheck.push(...subdirectories);
+          console.log(`📂 Subdirectorios encontrados en ${componentPath}:`, subdirectories);
+        }
+
+        for (const directory of directoriesToCheck) {
+          const versionInfo = await this.getVersionInfo(directory);
+          const isInstalled = versionInfo ? await this.isComponentInstalled(versionInfo) : false;
+
+          if (!isInstalled) {
+            pluginsToInstall.push({
+              component,
+              dir: directory,
+            });
+          } else {
+            pluginsAlreadyInstalled.push({
+              component,
+              dir: directory,
+            });
+          }
         }
       }
     }
+
     return { pluginsToInstall, pluginsAlreadyInstalled };
   }
 

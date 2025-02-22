@@ -1,23 +1,28 @@
-FROM node:16-alpine
+FROM node:20-alpine
 
 ARG APP_ENVIRONMENT
 ARG APP_PORT
 
-WORKDIR /home/node/app/dominos-service
+ENV NODE_ENV=$APP_ENVIRONMENT
+ENV PORT=$APP_PORT
+
+WORKDIR /home/node/app
+
+COPY package*.json ./
+
+RUN npm install
 
 COPY ./src ./src
 COPY ./statics ./statics
-COPY package*.json ./
 COPY tsconfig.json ./
 
-RUN npm i
-
-RUN npm run build
+RUN if [ "$APP_ENVIRONMENT" = "production" ]; then \
+      npm run build && \
+      rm -r ./src && \
+      rm ./tsconfig.json && \
+      rm ./package*.json; \
+    fi
 
 EXPOSE ${APP_PORT}
 
-RUN rm -r ./src
-RUN rm ./tsconfig.json
-RUN rm ./package*.json
-
-CMD [ "node", "dist/src/server.js" ]
+CMD ["/bin/sh", "-c", "if [ \"$APP_ENVIRONMENT\" = \"development\" ]; then npm run dev; else node dist/src/server.js; fi"]

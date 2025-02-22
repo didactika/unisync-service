@@ -21,6 +21,7 @@ export async function loadControllersAndRegisterRoutes(app: Application) {
   const { pluginsAlreadyInstalled } = await InstallComponentManager.getInstance().findComponentsInDb({
     includeSubsystem: true,
     includeSystem: true,
+    includePlugin: true,
   });
 
   for (const componentInfo of [coreComponentInfo, ...pluginsAlreadyInstalled]) {
