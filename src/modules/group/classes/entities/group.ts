@@ -19,7 +19,6 @@ class Group extends BaseEntity<IGroup> implements IGroup {
     this._idOnCampus = group.idOnCampus;
   }
 
-  //Getters
   get idnumber(): string | undefined {
     return this._idnumber;
   }
@@ -39,8 +38,6 @@ class Group extends BaseEntity<IGroup> implements IGroup {
   get idOnCampus(): number {
     return this._idOnCampus;
   }
-
-  //Setters
 
   set idnumber(value: string | undefined) {
     this._idnumber = value;
