@@ -56,11 +56,11 @@ export async function loadControllersAndRegisterRoutes(app: Application) {
         } else {
             console.log(`Controller directory not found for component: ${componentInfo.component}`);
         }
-        app.use(() => {
-            throw new NotFound({msg: "This route is not allowed"});
-        });
-        app.use((err: Error, req: Request, res: Response, next: NextFunction): void => {
-            ErrorResponseMiddleware.errorCatcher(err, res);
-        });
     }
+    app.use(() => {
+        throw new NotFound({msg: "This route is not allowed"});
+    });
+    app.use((err: Error, req: Request, res: Response, next: NextFunction): void => {
+        ErrorResponseMiddleware.errorCatcher(err, res);
+    });
 }
