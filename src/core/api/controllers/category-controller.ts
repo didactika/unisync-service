@@ -5,7 +5,7 @@ import BaseController from "./base-controller";
 import {Middleware} from "../decorators/middleware";
 import verifySessionMiddleware from "../../user/api/middlewares/session/verify-session";
 import Category from "../../classes/controllers/category-controller";
-import {BadRequest, NotFound} from "http-response-client/lib/errors/client";
+import {NotFound} from "http-response-client/lib/errors/client";
 
 @Controller("/category")
 export default class CategoryController extends BaseController {
@@ -17,24 +17,21 @@ export default class CategoryController extends BaseController {
     @Route("get", "/")
     private async getAll(req: Request, res: Response, next: NextFunction) {
         try {
-            const response = await Category.getAllCategories();
-            if (!response || (response && !response.length))
-                throw new NotFound({msg: "No categories found"});
-            res.json(response);
+            const categoriesFound = await Category.getAll();
+            if (!categoriesFound.length) throw new NotFound({msg: "No categories found"});
+            res.json(categoriesFound);
         } catch (error) {
             next(error);
         }
     }
 
-    @Route("get", "/:campusId")
-    private async getCategoriesFromCampus(req: Request, res: Response, next: NextFunction) {
+    @Route("get", "/:categoryId")
+    private async getById(req: Request, res: Response, next: NextFunction) {
         try {
-            const campusId = parseInt(req.params.campusId);
-            if (!campusId) throw new BadRequest({msg: "CampusId not provided!"});
-            const response = await Category.getCategoriesFromCampus(campusId);
-            if (!response || (response && !response.length))
-                throw new NotFound({msg: "No categories found on campus"});
-            res.json(response);
+            const categoryId = parseInt(req.params.categoryId);
+            const categoryFound = await Category.getOne({id: categoryId});
+            if (!categoryFound) throw new NotFound({msg: "Category not found"});
+            res.json(categoryFound);
         } catch (error) {
             next(error);
         }

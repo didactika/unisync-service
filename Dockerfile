@@ -3,26 +3,24 @@ FROM node:20-alpine
 ARG APP_ENVIRONMENT
 ARG APP_PORT
 
-ENV NODE_ENV=$APP_ENVIRONMENT
-ENV PORT=$APP_PORT
+ENV NODE_ENV=${APP_ENVIRONMENT}
+ENV PORT=${APP_PORT}
 
 WORKDIR /home/node/app
 
-COPY package*.json ./
+COPY package.json package-lock.json ./
+RUN npm install --legacy-peer-deps
 
-RUN npm install
+RUN npm install -g typescript
 
-COPY ./src ./src
-COPY ./statics ./statics
-COPY tsconfig.json ./
+COPY . .
 
-RUN if [ "$APP_ENVIRONMENT" = "production" ]; then \
+RUN if [ "$NODE_ENV" = "production" ]; then \
       npm run build && \
       rm -r ./src && \
-      rm ./tsconfig.json && \
-      rm ./package*.json; \
+      rm ./tsconfig.json; \
     fi
 
-EXPOSE ${APP_PORT}
+EXPOSE ${PORT}
 
-CMD ["/bin/sh", "-c", "if [ \"$APP_ENVIRONMENT\" = \"development\" ]; then npm run dev; else node dist/src/server.js; fi"]
+CMD ["sh", "-c", "if [ \"$NODE_ENV\" = \"development\" ]; then npm run dev; else node dist/src/server.js; fi"]
