@@ -5,6 +5,4 @@ dist
 
 .env
 
-package-lock.json
-
 data/db-data
