@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import MigrationController from "../../../../core/classes/controllers/migration-controller";
+import Migration from "../../../../core/classes/controllers/migration-controller";
 import {Route} from "../../../../core/api/decorators/route";
 import {Controller} from "../../../../core/api/decorators/controller";
 import {BadRequest, NotFound} from "http-response-client/lib/errors/client";
@@ -7,12 +7,12 @@ import CourseMigrationController from "../../classes/controllers/course-migratio
 import CourseCampusController from "../../classes/controllers/course-campus-controller";
 import CampusController from "../../../../core/campus/classes/controllers/campus-controller";
 import Course from "../../classes/controllers/course-controller";
+import MigrationController from "../../../../core/api/controllers/migration-controller";
 
 @Controller("/")
 export default class CourseMigrationApiController extends MigrationController {
     @Route("post", "/course")
     private async createRequest(req: Request, res: Response) {
-
         const {courseOriginId, courseTargetId, courseTemplateId, campusOriginId, campusTargetId} = req.body;
         if (!courseOriginId || !campusOriginId || !campusTargetId)
             throw new BadRequest({msg: "Missing required fields"});
@@ -48,7 +48,7 @@ export default class CourseMigrationApiController extends MigrationController {
         if (!migrationId) throw new BadRequest({msg: "Missing required fields"});
         if (!idnumber && !shortname && !fullname && !categoryId) throw new BadRequest({msg: "Should provide at least one field to update"});
 
-        const migrationFound = await MigrationController.getOne({id: migrationId});
+        const migrationFound = await Migration.getOne({id: migrationId});
         if (!migrationFound || !migrationFound.courseId) throw new NotFound({msg: "Migration not found"});
 
         const courseToUpdate = await Course.getCourse(migrationFound.courseId);
