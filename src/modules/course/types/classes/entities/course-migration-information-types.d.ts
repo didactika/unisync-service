@@ -1,4 +1,4 @@
-import { EMigrationStatus } from "../../../../../core/enums/migration-status-enum";
+import {EMigrationStatus} from "../../../../../core/enums/migration-status-enum";
 
 export interface ICourseMigrationInformation {
     id?: number;
@@ -9,7 +9,7 @@ export interface ICourseMigrationInformation {
     courseTemplateId?: number;
     campusOriginId: number;
     campusTargetId: number;
-    status?: EMigrationStatus; 
+    status?: EMigrationStatus;
     createdAt?: Date;
     updatedAt?: Date;
 }

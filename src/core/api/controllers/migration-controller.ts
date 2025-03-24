@@ -7,7 +7,7 @@ import {Route} from "../decorators/route";
 import {BadRequest, NotFound} from "http-response-client/lib/errors/client";
 import Migration from "../../classes/controllers/migration-controller";
 
-@Controller("/migration")
+@Controller("/migrations")
 export default class MigrationController extends BaseController {
     @Middleware()
     private async verifySession(req: Request, res: Response, next: NextFunction) {

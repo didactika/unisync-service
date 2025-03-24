@@ -1,3 +1,3 @@
 export interface InitializableModel {
-  static initialize(): void;
+    static initialize(): void;
 }

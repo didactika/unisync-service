@@ -3,7 +3,7 @@ export interface IGroup {
     idnumber?: string;
     name: string;
     description?: string;
-    idOnCampus: number;
+    idOnCampus?: number;
     courseId: number;
     createdAt?: Date;
     updatedAt?: Date;
